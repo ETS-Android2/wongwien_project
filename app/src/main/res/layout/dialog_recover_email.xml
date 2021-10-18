@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="20dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recover Password"
+            android:textSize="30sp"
+            android:fontFamily="@font/kanit_extralight"
+            android:textFontWeight="700"
+            android:textColor="@color/primary"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:layout_marginTop="40dp"
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:fontFamily="@font/roboto"
+            android:text="Email"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:textColorHint="@color/hint"
+            app:boxStrokeColor="@color/white"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_background01"
+                android:hint="Enter your email" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:background="@drawable/edittext_background03"
+                android:text="Cancel"
+                android:textSize="12sp"
+                android:fontFamily="@font/roboto"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                app:backgroundTint="@null"
+                android:layout_marginEnd="10dp"/>
+
+            <Button
+                android:id="@+id/btnRecover"
+                android:layout_width="90dp"
+                android:layout_height="35dp"
+                android:text="Recover"
+                android:textSize="12sp"
+                android:background="@drawable/edittext_background02"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

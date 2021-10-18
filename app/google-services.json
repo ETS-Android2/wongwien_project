@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "292609608143",
+    "project_id": "wongwien-946fc",
+    "storage_bucket": "wongwien-946fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:292609608143:android:d6bd662b60a4a923c12aba",
+        "android_client_info": {
+          "package_name": "com.example.wongwien"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "292609608143-23hf6qntjk3e0blhkmoq8in265lm7h0s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRoZWM8bKHCWVfVI3KxHUwCcxUzVK6BxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "292609608143-23hf6qntjk3e0blhkmoq8in265lm7h0s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

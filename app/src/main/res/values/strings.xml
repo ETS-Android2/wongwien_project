@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Wongwien</string>
+    <string name="recovery"><u>Recovery</u></string>
+    <string name="register"><u>Register</u></string>
+    <string name="login"><u>Login</u></string>
+    <string name="gotologin">Already have account? <u>Login</u></string>
+    <string name="gotoRegister">Not have account? <u>Register</u></string>
+    <string name="gotoRecovery">Forgot your password? <u>Recovery</u></string>
+    <string name="title_activity_maps">Map</string>
+</resources>
