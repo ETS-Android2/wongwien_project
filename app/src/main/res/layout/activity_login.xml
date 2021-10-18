@@ -86,7 +86,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField2"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
@@ -111,7 +111,7 @@
             android:id="@+id/textField"
             app:endIconMode="password_toggle"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"

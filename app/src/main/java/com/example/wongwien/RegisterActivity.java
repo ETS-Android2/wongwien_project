@@ -19,14 +19,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
-
+    private static final String TAG = "RegisterActivity";
     ProgressDialog progressDialog;
-    private EditText edEmail, edPassword, edPassword2;
+    private EditText edEmail, edPassword, edPassword2,edName;
     private Button btnRegister;
     private TextView tvLogin;
     private FirebaseAuth mAuth;
+    FirebaseDatabase database ;
+    DatabaseReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name=edName.getText().toString().trim();
                 String email = edEmail.getText().toString().trim();
                 String password = edPassword.getText().toString().trim();
                 String password2 = edPassword2.getText().toString().trim();
@@ -60,13 +67,13 @@ public class RegisterActivity extends AppCompatActivity {
                     edPassword2.setError("Password does not match");
                     edPassword2.setFocusable(true);
                 } else {
-                    registerUser(email, password);
+                    registerUser(name,email, password);
                 }
             }
         });
     }
 
-    private void registerUser(String email, String password) {
+    private void registerUser(String name, String email, String password) {
         progressDialog.show();
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -76,8 +83,25 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success
                             progressDialog.dismiss();
+
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(RegisterActivity.this, "Registered..."+user.getEmail(), Toast.LENGTH_SHORT).show();
+
+                            //get user and uid from auth
+                            String email=user.getEmail();
+                            String uid=user.getUid();
+
+                            HashMap hash=new HashMap();
+                            hash.put("email",email);
+                            hash.put("uid",uid);
+                            hash.put("name",name);
+                            hash.put("image","");
+                            hash.put("cover_image","");
+
+                             ref = database.getReference("Users");
+                             ref.child(uid).setValue(hash);
+
+
+//                            Toast.makeText(RegisterActivity.this, "Registered..."+user.getEmail(), Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(RegisterActivity.this,MainActivity.class));
                             finish();
                         } else {
@@ -102,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
         edPassword2 = findViewById(R.id.edPassword2);
         btnRegister = findViewById(R.id.btnRegister2);
         tvLogin = findViewById(R.id.btnRecovery);
+        edName=findViewById(R.id.edName);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -109,5 +134,8 @@ public class RegisterActivity extends AppCompatActivity {
         //progressbar to display
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Registering User...");
+
+        //firebase database
+         database = FirebaseDatabase.getInstance();
     }
 }

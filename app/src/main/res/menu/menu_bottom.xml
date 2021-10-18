@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_review"
+        android:title="Reviews"
+        android:icon="@drawable/ic_home_holo_light"/>
+    <item
+        android:id="@+id/action_question"
+        android:title="Q &amp; A"
+        android:icon="@drawable/ic_question_holo_light"/>
+    <item
+        android:id="@+id/action_profile"
+        android:title="Profile"
+        android:icon="@drawable/ic_profile_holo_light"/>
+</menu>
