@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         Button btnCancel=view.findViewById(R.id.btnCancel);
         Button btnRecover=view.findViewById(R.id.btnRecover);
 
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        AlertDialog.Builder builder=new AlertDialog.Builder(this,R.style.CustomAlertDialog);
         builder.setView(view);
         final AlertDialog show = builder.show();
 
@@ -235,12 +235,14 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            String email=user.getEmail();
-                            String uid=user.getUid();
-                            String name=user.getDisplayName();
-                            Uri uri=user.getPhotoUrl();
 
-                            HashMap hash=new HashMap();
+                            if(task.getResult().getAdditionalUserInfo().isNewUser()){
+                                String email=user.getEmail();
+                                String uid=user.getUid();
+                                String name=user.getDisplayName();
+                                Uri uri=user.getPhotoUrl();
+
+                                HashMap hash=new HashMap();
                                 hash.put("email",email);
                                 hash.put("uid",uid);
                                 hash.put("name",name);
@@ -248,10 +250,10 @@ public class LoginActivity extends AppCompatActivity {
                                 hash.put("cover_image","");
 
 
-                            ref = database.getReference("Users");
-                            ref.child(uid).setValue(hash);
+                                ref = database.getReference("Users");
+                                ref.child(uid).setValue(hash);
 
-                            Log.d(TAG, "onComplete: google::"+hash.toString());
+                                Log.d(TAG, "onComplete: google::"+hash.toString());
 
 //                            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(LoginActivity.this);
 //                            if (acct != null) {
@@ -275,6 +277,8 @@ public class LoginActivity extends AppCompatActivity {
 //
 //                            Log.d(TAG, "onComplete: :"+hash.toString());
 //                            }
+
+                            }
 
                             startActivity(new Intent(LoginActivity.this,MainActivity.class));
                             finish();

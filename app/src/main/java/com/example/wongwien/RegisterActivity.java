@@ -86,19 +86,22 @@ public class RegisterActivity extends AppCompatActivity {
 
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            //get user and uid from auth
-                            String email=user.getEmail();
-                            String uid=user.getUid();
+                            if(task.getResult().getAdditionalUserInfo().isNewUser()){
+                                //get user and uid from auth
+                                String email=user.getEmail();
+                                String uid=user.getUid();
 
-                            HashMap hash=new HashMap();
-                            hash.put("email",email);
-                            hash.put("uid",uid);
-                            hash.put("name",name);
-                            hash.put("image","");
-                            hash.put("cover_image","");
+                                HashMap hash=new HashMap();
+                                hash.put("email",email);
+                                hash.put("uid",uid);
+                                hash.put("name",name);
+                                hash.put("image","");
+                                hash.put("cover_image","");
 
-                             ref = database.getReference("Users");
-                             ref.child(uid).setValue(hash);
+                                ref = database.getReference("Users");
+                                ref.child(uid).setValue(hash);
+
+                            }
 
 
 //                            Toast.makeText(RegisterActivity.this, "Registered..."+user.getEmail(), Toast.LENGTH_SHORT).show();

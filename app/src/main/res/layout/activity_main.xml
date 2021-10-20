@@ -20,8 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:menu="@menu/menu_bottom"
-        android:theme="@style/Theme.Wongwien.bottomNav"
-        />
+        android:theme="@style/Theme.Wongwien.bottomNav" />
 
 
 </LinearLayout>
