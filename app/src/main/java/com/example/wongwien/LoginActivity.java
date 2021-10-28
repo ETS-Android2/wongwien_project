@@ -217,11 +217,9 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-//                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-//                Log.w(TAG, "Google sign in failed", e);
                 Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
@@ -242,10 +240,12 @@ public class LoginActivity extends AppCompatActivity {
                                 String name=user.getDisplayName();
                                 Uri uri=user.getPhotoUrl();
 
-                                HashMap hash=new HashMap();
+                                HashMap<String,Object> hash=new HashMap();
                                 hash.put("email",email);
                                 hash.put("uid",uid);
                                 hash.put("name",name);
+                                hash.put("status","online");
+                                hash.put("typingStatus","none");
                                 hash.put("image",uri.toString());
                                 hash.put("cover_image","");
 

@@ -91,10 +91,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 String email=user.getEmail();
                                 String uid=user.getUid();
 
-                                HashMap hash=new HashMap();
+                                HashMap<String,Object> hash=new HashMap();
                                 hash.put("email",email);
                                 hash.put("uid",uid);
                                 hash.put("name",name);
+                                hash.put("status","online");
+                                hash.put("typingStatus","none");
                                 hash.put("image","");
                                 hash.put("cover_image","");
 

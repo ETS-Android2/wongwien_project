@@ -102,7 +102,7 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_background01"
+                android:background="@drawable/rec_cornor_gray"
                 android:hint="Enter your email" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -126,7 +126,7 @@
                 android:id="@+id/edPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_background01"
+                android:background="@drawable/rec_cornor_gray"
                 android:hint="Enter your password"
                 android:inputType="textPassword" />
 
@@ -139,7 +139,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
-            android:background="@drawable/edittext_background02"
+            android:background="@drawable/rec_cornor_primary"
             android:fontFamily="@font/roboto"
             android:text="Login"
             android:textSize="18sp"
@@ -180,7 +180,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="30dp"
-            android:background="@drawable/edittext_background05"
+            android:background="@drawable/rec_cornor_border_white"
             android:drawableLeft="@drawable/google_img"
             android:paddingLeft="20dp"
             android:text="Sign in with Google"
@@ -203,7 +203,7 @@
             android:textSize="18sp"
             android:paddingLeft="20dp"
             android:drawableLeft="@drawable/facebook_img"
-            android:background="@drawable/edittext_background06"
+            android:background="@drawable/rec_cornor_blue_facebook"
             app:backgroundTint="@null"
             android:layout_marginStart="30dp"
             android:layout_marginTop="16dp"

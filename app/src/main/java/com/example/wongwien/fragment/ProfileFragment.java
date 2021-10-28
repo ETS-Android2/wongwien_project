@@ -19,6 +19,9 @@ import android.provider.MediaStore;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,8 +31,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wongwien.ChatlistActivity;
 import com.example.wongwien.MainActivity;
 import com.example.wongwien.R;
+import com.example.wongwien.WelcomeActivity;
 import com.example.wongwien.model.ModelUser;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -86,6 +91,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
 
@@ -177,6 +183,7 @@ public class ProfileFragment extends Fragment {
                 View view=LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_name,null,false);
                 AlertDialog.Builder builder1=new AlertDialog.Builder(getContext(),R.style.CustomAlertDialog);
                 Button btnRename=view.findViewById(R.id.btnRename);
+                Button btnCancel=view.findViewById(R.id.btnCancel);
                 EditText edName=view.findViewById(R.id.edName);
                 builder1.setView(view);
                 final AlertDialog show2 = builder1.show();
@@ -203,6 +210,12 @@ public class ProfileFragment extends Fragment {
                                Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                            }
                        });
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        show2.dismiss();
                     }
                 });
             }
@@ -432,6 +445,44 @@ public class ProfileFragment extends Fragment {
         });
 
 
+    }
+
+    /*inflate option menu*/
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_top,menu);
+
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    /*handle menu item clicked*/
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_logout:
+                firebaseAuth.signOut();
+                checkUserStatus();
+                break;
+            case R.id.action_chat:
+                startActivity(new Intent(getContext(), ChatlistActivity.class));
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void checkUserStatus(){
+        //get current user
+        FirebaseUser user= firebaseAuth.getCurrentUser();
+        if(user !=null){
+            Log.d(TAG, "checkUserStatus: check User::"+user.getEmail());
+
+        }else{
+            //go back to login
+            startActivity(new Intent(getContext(), WelcomeActivity.class));
+            getActivity().finish();
+        }
     }
 
 

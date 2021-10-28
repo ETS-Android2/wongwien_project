@@ -22,13 +22,23 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth firebaseAuth;
     private static final String TAG = "MainActivity";
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase database;
+    private FirebaseUser user;
+
+    String myUid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         initView();
@@ -36,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        database=FirebaseDatabase.getInstance();
+
         //actionbar
         ActionBar actionbar=getSupportActionBar();
 
@@ -95,23 +107,40 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user= firebaseAuth.getCurrentUser();
         if(user !=null){
             //get user
-            Toast.makeText(this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
-
-
-            Log.d(TAG, "checkUserStatus: check User::"+user.getEmail());
-
-
+            myUid=user.getUid();
         }else{
             //go back to login
             startActivity(new Intent(MainActivity.this,WelcomeActivity.class));
             finish();
         }
     }
+    private void checkOnlineStatus(String status){
+        DatabaseReference onlineRef=database.getReference("Users").child(myUid);
+
+        HashMap<String,Object> hashMap=new HashMap<>();
+        hashMap.put("status",status);
+
+        onlineRef.getRef().updateChildren(hashMap);
+    }
 
     @Override
     protected void onStart() {
         checkUserStatus();
+        checkOnlineStatus("online");
         super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        String timeStamp=String.valueOf(System.currentTimeMillis());
+        checkOnlineStatus(timeStamp);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        checkOnlineStatus("online");
+        super.onResume();
     }
 
     @Override
@@ -120,24 +149,5 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    /*inflate option menu*/
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_top,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    /*handle menu item clicked*/
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.action_logout:
-                firebaseAuth.signOut();
-                checkUserStatus();
-                break;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

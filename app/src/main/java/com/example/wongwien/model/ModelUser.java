@@ -1,21 +1,19 @@
 package com.example.wongwien.model;
 
 public class ModelUser {
-    private String uid;
-    private String name;
-    private String email;
-    private String image;
-    private String cover_image;
+    private String uid,name,email,image,status,cover_image,typingStatus;
 
     public ModelUser() {
     }
 
-    public ModelUser(String uid, String name, String email, String image, String cover_image) {
+    public ModelUser(String uid, String name, String email, String image, String status, String cover_image, String typingStatus) {
         this.uid = uid;
         this.name = name;
         this.email = email;
         this.image = image;
+        this.status = status;
         this.cover_image = cover_image;
+        this.typingStatus = typingStatus;
     }
 
     public String getUid() {
@@ -50,6 +48,14 @@ public class ModelUser {
         this.image = image;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getCover_image() {
         return cover_image;
     }
@@ -58,14 +64,11 @@ public class ModelUser {
         this.cover_image = cover_image;
     }
 
-    @Override
-    public String toString() {
-        return "ModelUser{" +
-                "uid='" + uid + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", image='" + image + '\'' +
-                ", cover_image='" + cover_image + '\'' +
-                '}';
+    public String getTypingStatus() {
+        return typingStatus;
+    }
+
+    public void setTypingStatus(String typingStatus) {
+        this.typingStatus = typingStatus;
     }
 }
