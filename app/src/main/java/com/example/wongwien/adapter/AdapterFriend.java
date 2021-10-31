@@ -1,5 +1,6 @@
 package com.example.wongwien.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Layout;
@@ -69,6 +70,7 @@ public class AdapterFriend extends RecyclerView.Adapter<AdapterFriend.Myholder>{
                 Intent intent=new Intent(context, ChatActivity.class);
                 intent.putExtra("hisUid",hisUid);
                 context.startActivity(intent);
+//                ((Activity)context).finish();
             }
         });
     }

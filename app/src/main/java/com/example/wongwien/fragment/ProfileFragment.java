@@ -35,6 +35,7 @@ import com.example.wongwien.ChatlistActivity;
 import com.example.wongwien.MainActivity;
 import com.example.wongwien.R;
 import com.example.wongwien.WelcomeActivity;
+import com.example.wongwien.ZoomActivity;
 import com.example.wongwien.model.ModelUser;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -82,6 +83,9 @@ public class ProfileFragment extends Fragment {
     String storagePermissions[];
     Uri image_uri;
     String imgType;
+
+    String imgPerson,imgCover;
+
     private TextView tvName, tvEmail;
     private CircleImageView imagePerson;
     private ImageView imageCover;
@@ -104,6 +108,28 @@ public class ProfileFragment extends Fragment {
         initPermission();
         getProfileUser();
 
+
+        imagePerson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(imgPerson!=null && !imgPerson.equals("")){
+                Intent intent=new Intent(getActivity(), ZoomActivity.class);
+                intent.putExtra("image",imgPerson);
+                getActivity().startActivity(intent);
+                }
+            }
+        });
+
+        imageCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(imgCover!=null && !imgCover.equals("")){
+                Intent intent=new Intent(getActivity(), ZoomActivity.class);
+                intent.putExtra("image",imgCover);
+                getActivity().startActivity(intent);
+                }
+            }
+        });
         return view;
     }
 
@@ -128,9 +154,11 @@ public class ProfileFragment extends Fragment {
 
                 if (!user.getImage().equals("")) {
                     Picasso.get().load(user.getImage()).into(imagePerson);
+                    imgPerson=user.getImage();
                 }
                 if (!user.getCover_image().equals("")) {
                     Picasso.get().load(user.getCover_image()).into(imageCover);
+                    imgCover=user.getCover_image();
                 }
 
             }

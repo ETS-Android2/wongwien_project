@@ -144,6 +144,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        String timeStamp=String.valueOf(System.currentTimeMillis());
+        checkOnlineStatus(timeStamp);
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();

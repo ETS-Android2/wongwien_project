@@ -53,6 +53,7 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView imgStatus;
     private RecyclerView rcChat;
     private EdittextV2 edMessage;
+    LinearLayoutManager layoutManager;
 
     FirebaseDatabase database;
     FirebaseUser user;
@@ -163,7 +164,6 @@ public class ChatActivity extends AppCompatActivity {
                         chatList.add(chat);
                     }
                     adapterChat=new AdapterChat(hisImg,chatList,ChatActivity.this);
-                    rcChat.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
                     rcChat.setAdapter(adapterChat);
                 }
             }
@@ -191,15 +191,54 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void unused) {
                 edMessage.setText("");
-                Toast.makeText(ChatActivity.this, "success", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull  Exception e) {
-                Toast.makeText(ChatActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onFailure: "+e.getMessage());
             }
         });
+
+        //collect all contact person that message with
+        DatabaseReference ref2=database.getReference("MessageList").child(myUid).child(hisUid);
+        ref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    HashMap<String,Object>hash=new HashMap<>();
+                    hash.put("id",hisUid);
+
+                    ref2.setValue(hash);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+                Log.d(TAG, "onCancelled: "+error.getMessage());
+            }
+        });
+
+        DatabaseReference ref3=database.getReference("MessageList").child(hisUid).child(myUid);
+        Log.d(TAG, "sendMessage: hisUid::"+hisUid+" myUid::"+myUid);
+        ref3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    HashMap<String,Object>hash=new HashMap<>();
+                    hash.put("id",myUid);
+
+                    ref3.setValue(hash);
+
+                    Log.d(TAG, "sendMessage onDataChange: complete on his");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+                Log.d(TAG, "onCancelled: "+error.getMessage());
+            }
+        });
+
     }
 
     private void loadHisUser() {
@@ -243,14 +282,17 @@ public class ChatActivity extends AppCompatActivity {
         firebaseAuth=FirebaseAuth.getInstance();
         database=FirebaseDatabase.getInstance();
 
+        layoutManager=new LinearLayoutManager(ChatActivity.this);
+        layoutManager.setStackFromEnd(true);
+        rcChat.setHasFixedSize(true);
+        rcChat.setLayoutManager(layoutManager);
+
     }
     private void checkUserStatus(){
         //get current user
          user= firebaseAuth.getCurrentUser();
         if(user !=null){
             myUid=user.getUid();
-            Log.d(TAG, "checkUserStatus: myUid::"+myUid);
-
         }else{
             //go back to login
             startActivity(new Intent(this, WelcomeActivity.class));
@@ -270,7 +312,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private void checkTypingStatus(String status){
         DatabaseReference onlineRef=database.getReference("Users").child(myUid);
-        Log.d(TAG, "checkOnlineStatus: myUid::"+myUid);
 
         HashMap<String,Object>hashMap=new HashMap<>();
         hashMap.put("typingStatus",status);
@@ -342,10 +383,24 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        String timeStamp=String.valueOf(System.currentTimeMillis());
+        checkOnlineStatus(timeStamp);
+        super.onDestroy();
+    }
+
+    @Override
     protected void onResume() {
         checkOnlineStatus("online");
         checkHisStatus();
         checkTypingStatus("none");
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+//        Intent intent =new Intent(ChatActivity.this,ChatlistActivity.class);
+//        startActivity(intent);
+        super.onBackPressed();
     }
 }

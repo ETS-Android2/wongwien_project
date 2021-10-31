@@ -1,77 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ChatActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:theme="@style/Theme.Wongwien.softActionbar"
-        android:background="@color/backgroundApp">
 
-        <LinearLayout
-            android:gravity="center_vertical"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/Theme.Wongwien.softActionbar"
+            android:background="@color/backgroundApp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgPerson"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/person_icon"
-                app:civ_border_color="@color/primary"
-                app:civ_border_width="2dp" />
-            <ImageView
-                android:id="@+id/imgStatus"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:background="@drawable/status_online"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="-15dp"/>
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Name"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/txtStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="status of user"
-                    android:textColor="#8F88AC"
-                    android:textSize="13sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </com.google.android.material.appbar.MaterialToolbar>
-
-    <androidx.core.widget.NestedScrollView
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcChat"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </androidx.core.widget.NestedScrollView>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgPerson"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/person_icon"
+                    app:civ_border_color="@color/primary"
+                    app:civ_border_width="2dp" />
+                <ImageView
+                    android:id="@+id/imgStatus"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:background="@drawable/status_online"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="-15dp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/txtStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="status of user"
+                        android:textColor="#8F88AC"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginBottom="70dp"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/rcChat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <LinearLayout
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -110,4 +107,4 @@
             android:background="@color/white"/>
 
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

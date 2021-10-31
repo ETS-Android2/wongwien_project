@@ -13,8 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Wongwien">
-        <activity android:name=".ChatActivity"
-            android:theme="@style/Theme.Wongwien.noActionbar"></activity>
+        <activity android:name=".AddQuestionActivity"
+            android:theme="@style/Theme.Wongwien.noActionbar" />
+        <activity
+            android:name=".ZoomActivity"
+            android:theme="@style/Theme.Wongwien.noActionbar" />
+        <activity
+            android:name=".ChatActivity"
+            android:theme="@style/Theme.Wongwien.noActionbar" />
         <activity android:name=".ChatlistActivity" />
         <activity
             android:name=".RegisterActivity"
