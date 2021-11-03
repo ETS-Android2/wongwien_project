@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintVertical_bias="0.091" />
 
     <ImageView
         android:id="@+id/imageView5"
@@ -35,7 +35,7 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="84dp"
         android:fontFamily="@font/kanit_extralight"
         android:text="Register"
         android:textColor="@color/primary"
@@ -82,10 +82,12 @@
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:hintEnabled="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView111">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.example.wongwien.EdittextV2
+            android:padding="20dp"
             android:id="@+id/edName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,13 +106,15 @@
         android:layout_marginEnd="30dp"
         android:textColorHint="@color/hint"
         app:boxStrokeWidth="0dp"
+        app:hintEnabled="false"
         app:boxStrokeWidthFocused="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.example.wongwien.EdittextV2
             android:id="@+id/edEmail"
+            android:padding="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rec_cornor_gray"
@@ -140,6 +144,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:textColorHint="@color/hint"
+        app:hintEnabled="false"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         app:endIconMode="password_toggle"
@@ -147,9 +152,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.example.wongwien.EdittextV2
             android:id="@+id/edPassword"
             android:layout_width="match_parent"
+            android:padding="20dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rec_cornor_gray"
             android:hint="Enter your password"
@@ -175,6 +181,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textField4"
         android:layout_width="0dp"
+        app:hintEnabled="false"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
@@ -187,8 +194,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.example.wongwien.EdittextV2
             android:id="@+id/edPassword2"
+            android:padding="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rec_cornor_gray"
@@ -253,7 +261,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="246dp" />
+        app:layout_constraintGuide_begin="197dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

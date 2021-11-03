@@ -11,4 +11,5 @@
     <color name="textRecovery">#A494DB</color>
     <color name="primary">#6E55CF</color>
     <color name="backgroundApp">#E5E1F6</color>
+    <color name="gray">#757575</color>
 </resources>

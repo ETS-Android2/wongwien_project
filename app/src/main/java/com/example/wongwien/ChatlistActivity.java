@@ -3,10 +3,14 @@ package com.example.wongwien;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,6 +22,9 @@ import android.widget.Toast;
 
 import com.example.wongwien.adapter.AdapterFriend;
 import com.example.wongwien.adapter.AdapterMessageList;
+import com.example.wongwien.databinding.ActivityChatlistBinding;
+import com.example.wongwien.fragment.chatlist.LoadFriendFragment;
+import com.example.wongwien.fragment.chatlist.LoadMessageFragment;
 import com.example.wongwien.model.ModelChat;
 import com.example.wongwien.model.ModelUser;
 import com.example.wongwien.model.ModelContact;
@@ -35,43 +42,54 @@ import java.util.List;
 
 public class ChatlistActivity extends AppCompatActivity {
     private static final String TAG = "ChatlistActivity";
+    private ActivityChatlistBinding binding;
+
+    String myUid;
+    int  showMessage = 1;
+
+    List<ModelContact> contactlist;
+    ArrayList<ModelUser> userList;
+    ArrayList<ModelUser> userContactlist;
 
     private FirebaseUser user;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private DatabaseReference ref;
 
-
-    private View underlineMessage, underlineFriend;
-    private TextView tvMessages, tvFriends;
-    private EdittextV2 edSearch;
-    private RecyclerView rcList;
-    AdapterFriend adapterFriend;
-    AdapterMessageList adapterMessageList;
-    String myUid;
-    boolean showMessage=true;
-    String lastMessage;
-    String lastTime;
-
-    List<ModelUser> userList;
-    List<ModelContact>contactlist;
-    List<ModelUser>userContactlist;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chatlist);
+        binding=ActivityChatlistBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         initView();
         checkUserStatus();
 
-        loadUserInfo();
-
-        initViewFunction();
+        loadUserInfoToActionBar();
 
         checkShowDisplay();
 
-        edSearch.addTextChangedListener(new TextWatcher() {
+        binding.linearFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.underlineFriends.setBackgroundColor(getResources().getColor(R.color.primary));
+                binding.underlineMessage.setBackgroundColor(getResources().getColor(R.color.white));
+                showMessage=2;
+                checkShowDisplay();
+            }
+        });
+
+        binding.linearMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.underlineFriends.setBackgroundColor(getResources().getColor(R.color.white));
+                binding.underlineMessage.setBackgroundColor(getResources().getColor(R.color.primary));
+                showMessage=1;
+                checkShowDisplay();
+            }
+        });
+
+        binding.edSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -82,7 +100,6 @@ public class ChatlistActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(s.toString().trim())) {
                     searchFriend(s.toString().trim());
                 } else {
-                    loadFriend();
                     checkShowDisplay();
                 }
             }
@@ -96,33 +113,32 @@ public class ChatlistActivity extends AppCompatActivity {
     }
 
     private void checkShowDisplay() {
-        Log.d(TAG, "checkShowDisplay: showStatus::"+showMessage);
-        if(showMessage){
-            loadMessageList();
-            underlineFriend.setBackgroundColor(getResources().getColor(R.color.white));
-            underlineMessage.setBackgroundColor(getResources().getColor(R.color.primary));
-
-        }else{
-            loadFriend();
-            underlineFriend.setBackgroundColor(getResources().getColor(R.color.primary));
-            underlineMessage.setBackgroundColor(getResources().getColor(R.color.white));
+        switch(showMessage){
+            case 1:
+                loadMessageList();
+                break;
+            case 2:
+                loadFriend();
+                break;
+            default:
+                break;
         }
     }
 
     /*
-    * load contact->load model user contact ->find last message
-    * */
+     * load contact->load model user contact ->find last message
+     * */
     private void loadMessageList() {
         Log.d(TAG, "loadMessageList: ");
-        contactlist=new ArrayList<>();
+        contactlist = new ArrayList<>();
 
-        ref=database.getReference("MessageList").child(myUid);
+        ref = database.getReference("MessageList").child(myUid);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 contactlist.clear();
-                for(DataSnapshot d:snapshot.getChildren()){
-                    ModelContact id=d.getValue(ModelContact.class);
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    ModelContact id = d.getValue(ModelContact.class);
                     contactlist.add(id);
 
                 }
@@ -130,169 +146,176 @@ public class ChatlistActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
 
     private void loadModelUserContact() {
-        userContactlist=new ArrayList<>();
+        userContactlist = new ArrayList<>();
 
-        ref=database.getReference("Users");
+        ref = database.getReference("Users");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userContactlist.clear();
-                for(DataSnapshot d:snapshot.getChildren()){
-                    ModelUser user=d.getValue(ModelUser.class);
-                    for(ModelContact contact:contactlist){
-                        if(contact.getId().equals(user.getUid())){
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    ModelUser user = d.getValue(ModelUser.class);
+                    for (ModelContact contact : contactlist) {
+                        if (contact.getId().equals(user.getUid())) {
                             userContactlist.add(user);
                         }
                     }
                 }
-
-                adapterMessageList=new AdapterMessageList(ChatlistActivity.this,userContactlist);
-
-                for(int i=0;i<userContactlist.size();i++){
-                    findLastMessage(userContactlist.get(i).getUid());
-                }
+                loadMessageToFragment();
+//                adapterMessageList = new AdapterMessageList(ChatlistActivity.this, userContactlist);
+//
+//                for (int i = 0; i < userContactlist.size(); i++) {
+//                    findLastMessage(userContactlist.get(i).getUid());
+//                }
             }
 
             @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
-                Log.d(TAG, "onCancelled: "+error.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: " + error.getMessage());
             }
         });
 
     }
 
-    private void findLastMessage(String uid) {
-        ref=database.getReference("Chats");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull  DataSnapshot snapshot) {
-                for(DataSnapshot d:snapshot.getChildren()){
-
-                    ModelChat chat=d.getValue(ModelChat.class);
-                    if((chat.getSender().equals(uid)&&chat.getReceiver().equals(myUid))||
-                            (chat.getReceiver().equals(uid)&&chat.getSender().equals(myUid))){
-
-                        lastMessage =chat.getMessage();
-                        lastTime =chat.getTimeStamp();
-                    }
-                }
-                adapterMessageList.notifyDataSetChanged();
-                adapterMessageList.setLastMessage(uid,lastMessage);
-                adapterMessageList.setLastTime(uid,lastTime);
-                rcList.setAdapter(adapterMessageList);
-            }
-
-            @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
-
-            }
-        });
-    }
 
     private void searchFriend(String query) {
-            ref = database.getReference("Users");
-            ref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    userList.clear();
-                    for(DataSnapshot d:snapshot.getChildren()){
-                        ModelUser user1 = d.getValue(ModelUser.class);
+        ref = database.getReference("Users");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userList.clear();
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    ModelUser user1 = d.getValue(ModelUser.class);
 
-                        if (!user1.getUid().equals(user.getUid())) {
-                            if (user1.getName().toLowerCase().contains(query.toLowerCase()) ||
-                                    user1.getEmail().toLowerCase().contains(query.toLowerCase())) {
-                                userList.add(user1);
-                            }
+                    if (!user1.getUid().equals(user.getUid())) {
+                        if (user1.getName().toLowerCase().contains(query.toLowerCase()) ||
+                                user1.getEmail().toLowerCase().contains(query.toLowerCase())) {
+                            userList.add(user1);
                         }
-                        adapterFriend=new AdapterFriend(userList,ChatlistActivity.this);
-                        rcList.setAdapter(adapterFriend);
                     }
-
+                    loadFriendToFragment();
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.d(TAG, "onCancelled: "+error.getMessage());
-                }
-            });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: " + error.getMessage());
+            }
+        });
     }
 
     private void loadFriend() {
         Log.d(TAG, "loadFriend: ");
-        ref=FirebaseDatabase.getInstance().getReference("Users");
+        ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userList.clear();
 
-                for(DataSnapshot d:snapshot.getChildren()){
-                    ModelUser user1=d.getValue(ModelUser.class);
-                    if(!user1.getUid().equals(user.getUid())){
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    ModelUser user1 = d.getValue(ModelUser.class);
+                    if (!user1.getUid().equals(user.getUid())) {
                         userList.add(user1);
                     }
-                    adapterFriend=new AdapterFriend(userList,ChatlistActivity.this);
-                    rcList.setAdapter(adapterFriend);
+                    loadFriendToFragment();
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
-                Log.d(TAG, "onCancelled: "+error.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "onCancelled: " + error.getMessage());
             }
         });
     }
 
-    private void initViewFunction() {
-        tvFriends.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                underlineFriend.setBackgroundColor(getResources().getColor(R.color.primary));
-                underlineMessage.setBackgroundColor(getResources().getColor(R.color.white));
+    private void loadFriendToFragment() {
 
-                showMessage=false;
-                checkShowDisplay();
-            }
-        });
-        underlineFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                underlineFriend.setBackgroundColor(getResources().getColor(R.color.primary));
-                underlineMessage.setBackgroundColor(getResources().getColor(R.color.white));
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("list", userList);
+        try {
+            LoadFriendFragment frag = new LoadFriendFragment();
+            frag.setArguments(bundle);
 
-                showMessage=false;
-                checkShowDisplay();
-            }
-        });
-        tvMessages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                underlineFriend.setBackgroundColor(getResources().getColor(R.color.white));
-                underlineMessage.setBackgroundColor(getResources().getColor(R.color.primary));
+            FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+            trans.replace(R.id.container, frag, "");
+            trans.commit();
 
-                showMessage=true;
-                checkShowDisplay();
-            }
-        });
-        underlineMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                underlineFriend.setBackgroundColor(getResources().getColor(R.color.white));
-                underlineMessage.setBackgroundColor(getResources().getColor(R.color.primary));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                showMessage=true;
-                checkShowDisplay();
-            }
-        });
+    }
+    private void loadMessageToFragment() {
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("list", userContactlist);
+        bundle.putString("myUid", myUid);
+        try {
+            LoadMessageFragment frag = new LoadMessageFragment();
+            frag.setArguments(bundle);
+
+            FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+            trans.replace(R.id.container, frag, "");
+            trans.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    private void loadUserInfo() {
+//    private void initViewFunction() {
+//        tvFriends.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                underlineFriend.setBackgroundColor(getResources().getColor(R.color.primary));
+//                underlineMessage.setBackgroundColor(getResources().getColor(R.color.white));
+//
+//                showMessage = false;
+//                checkShowDisplay();
+//            }
+//        });
+//        underlineFriend.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                underlineFriend.setBackgroundColor(getResources().getColor(R.color.primary));
+//                underlineMessage.setBackgroundColor(getResources().getColor(R.color.white));
+//
+//                showMessage = false;
+//                checkShowDisplay();
+//            }
+//        });
+//        tvMessages.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                underlineFriend.setBackgroundColor(getResources().getColor(R.color.white));
+//                underlineMessage.setBackgroundColor(getResources().getColor(R.color.primary));
+//
+//                showMessage = true;
+//                checkShowDisplay();
+//            }
+//        });
+//        underlineMessage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                underlineFriend.setBackgroundColor(getResources().getColor(R.color.white));
+//                underlineMessage.setBackgroundColor(getResources().getColor(R.color.primary));
+//
+//                showMessage = true;
+//                checkShowDisplay();
+//            }
+//        });
+//    }
+
+    private void loadUserInfoToActionBar() {
         ref = database.getReference("Users").child(user.getUid());
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -313,16 +336,6 @@ public class ChatlistActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        tvMessages = findViewById(R.id.tvMessages);
-        tvFriends = findViewById(R.id.tvFriends);
-        edSearch = findViewById(R.id.edSearch);
-        underlineMessage = findViewById(R.id.underlineMessage);
-        underlineFriend = findViewById(R.id.underlineFriends);
-        rcList=findViewById(R.id.rcList);
-
-        rcList.setHasFixedSize(true);
-        rcList.setLayoutManager(new LinearLayoutManager(ChatlistActivity.this));
-
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
@@ -330,26 +343,28 @@ public class ChatlistActivity extends AppCompatActivity {
         userList = new ArrayList<>();
     }
 
-    private void checkUserStatus(){
+    private void checkUserStatus() {
         //get current user
-         user= firebaseAuth.getCurrentUser();
-        if(user !=null){
-            myUid=user.getUid();
+        user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            myUid = user.getUid();
 
-        }else{
+        } else {
             //go back to login
-            startActivity(new Intent(this, WelcomeActivity.class));
+            startActivity(new Intent(this, SplashActivity.class));
             finish();
         }
     }
-    private void checkOnlineStatus(String status){
-        DatabaseReference onlineRef=database.getReference("Users").child(myUid);
 
-        HashMap<String,Object> hashMap=new HashMap<>();
-        hashMap.put("status",status);
+    private void checkOnlineStatus(String status) {
+        DatabaseReference onlineRef = database.getReference("Users").child(myUid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", status);
 
         onlineRef.getRef().updateChildren(hashMap);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -364,7 +379,7 @@ public class ChatlistActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         Log.d(TAG, "onStart: ");
-        Log.d(TAG, "onStart: showStatus::"+showMessage);
+        Log.d(TAG, "onStart: showStatus::" + showMessage);
 
         checkUserStatus();
         checkOnlineStatus("online");
@@ -376,40 +391,21 @@ public class ChatlistActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         Log.d(TAG, "onPause: ");
-        String timeStamp=String.valueOf(System.currentTimeMillis());
+        String timeStamp = String.valueOf(System.currentTimeMillis());
         checkOnlineStatus(timeStamp);
-//        try{
-//            userList.clear();
-//            contactlist.clear();
-//            userContactlist.clear();
-//            adapterFriend.notifyDataSetChanged();
-//            adapterMessageList.notifyDataSetChanged();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
 
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-//        try{
-//            userList.clear();
-//            contactlist.clear();
-//            userContactlist.clear();
-//            adapterFriend.notifyDataSetChanged();
-//            adapterMessageList.notifyDataSetChanged();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: ");
-        String timeStamp=String.valueOf(System.currentTimeMillis());
+        String timeStamp = String.valueOf(System.currentTimeMillis());
         checkOnlineStatus(timeStamp);
         super.onDestroy();
     }
@@ -417,7 +413,7 @@ public class ChatlistActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         Log.d(TAG, "onResume: ");
-        Log.d(TAG, "onResume: showStatus::"+showMessage);
+        Log.d(TAG, "onResume: showStatus::" + showMessage);
 
         checkOnlineStatus("online");
 

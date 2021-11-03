@@ -1,6 +1,7 @@
 package com.example.wongwien.fragment;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -32,8 +33,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wongwien.ChatlistActivity;
+import com.example.wongwien.EdittextV2;
 import com.example.wongwien.MainActivity;
 import com.example.wongwien.R;
+import com.example.wongwien.SearchActivity;
+import com.example.wongwien.SplashActivity;
 import com.example.wongwien.WelcomeActivity;
 import com.example.wongwien.ZoomActivity;
 import com.example.wongwien.model.ModelUser;
@@ -103,7 +107,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
         initView(view);
         initPermission();
         getProfileUser();
@@ -208,12 +211,16 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 show.dismiss();
 
-                View view=LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_name,null,false);
+                View view1=LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_name,null,false);
                 AlertDialog.Builder builder1=new AlertDialog.Builder(getContext(),R.style.CustomAlertDialog);
-                Button btnRename=view.findViewById(R.id.btnRename);
-                Button btnCancel=view.findViewById(R.id.btnCancel);
-                EditText edName=view.findViewById(R.id.edName);
-                builder1.setView(view);
+
+                Button btnRename=view1.findViewById(R.id.btnRename);
+                Button btnCancel=view1.findViewById(R.id.btnCancel);
+
+                EdittextV2 edName=view1.findViewById(R.id.edName2);
+
+                builder1.setView(view1);
+
                 final AlertDialog show2 = builder1.show();
 
                 btnRename.setOnClickListener(new View.OnClickListener() {
@@ -494,6 +501,9 @@ public class ProfileFragment extends Fragment {
             case R.id.action_chat:
                 startActivity(new Intent(getContext(), ChatlistActivity.class));
                 break;
+            case R.id.action_search:
+                startActivity(new Intent(getContext(), SearchActivity.class));
+                break;
             default:
                 break;
         }
@@ -508,7 +518,7 @@ public class ProfileFragment extends Fragment {
 
         }else{
             //go back to login
-            startActivity(new Intent(getContext(), WelcomeActivity.class));
+            startActivity(new Intent(getContext(), SplashActivity.class));
             getActivity().finish();
         }
     }

@@ -1,6 +1,7 @@
 package com.example.wongwien.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wongwien.QuesAnsDetailActivity;
 import com.example.wongwien.R;
 import com.example.wongwien.model.ModelQuestionAns;
 
@@ -40,6 +42,7 @@ public class AdapterQuestion extends  RecyclerView.Adapter<AdapterQuestion.Myhol
     public void onBindViewHolder(@NonNull AdapterQuestion.Myholder holder, int position) {
         String question=list.get(position).getQuestion();
         String timeStamp=list.get(position).getTimeStamp();
+        String qId=list.get(position).getqId();
 
 
         //conver time stamp to dd/mm/yyyy hh:mm am/pm
@@ -49,6 +52,14 @@ public class AdapterQuestion extends  RecyclerView.Adapter<AdapterQuestion.Myhol
 
         holder.txtQuestion.setText(question);
         holder.txtTime.setText(dateTime);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, QuesAnsDetailActivity.class);
+                intent.putExtra("qId",qId);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -8,13 +8,15 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.wongwien.fragment.ProfileFragment;
-import com.example.wongwien.fragment.QuestionAnsFragment;
+import com.example.wongwien.fragment.QuesAnsFragment;
 import com.example.wongwien.fragment.ReviewsFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -34,18 +36,22 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private FirebaseUser user;
 
-    String myUid;
+    boolean doubleBackToExitPressedOnce = false;
+    String myUid="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         initView();
 
+        Log.d(TAG, "onCreate: usr:::"+myUid);
+
     }
 
     private void initView() {
+        //firebase Auth
+        firebaseAuth =FirebaseAuth.getInstance();
         database=FirebaseDatabase.getInstance();
 
         //actionbar
@@ -75,14 +81,14 @@ public class MainActivity extends AppCompatActivity {
                         fr1.commit();
                         return true;
                     case R.id.action_question:
-                        actionbar.setTitle("Reviews");
-                        QuestionAnsFragment questionAnsFragment=new QuestionAnsFragment();
+                        actionbar.setTitle("Question-Ans");
+                    QuesAnsFragment questionAnsFragment=new QuesAnsFragment();
                         FragmentTransaction fr2=getSupportFragmentManager().beginTransaction();
                         fr2.replace(R.id.container,questionAnsFragment,"");
                         fr2.commit();
                         return true;
                     case R.id.action_profile:
-                        actionbar.setTitle("Reviews");
+                        actionbar.setTitle("Profile");
                         ProfileFragment profileFragment=new ProfileFragment();
                         FragmentTransaction fr3=getSupportFragmentManager().beginTransaction();
                         fr3.replace(R.id.container,profileFragment,"");
@@ -93,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //firebase Auth
-        firebaseAuth =FirebaseAuth.getInstance();
     }
 
     @Override
@@ -104,27 +108,39 @@ public class MainActivity extends AppCompatActivity {
     }
     private void checkUserStatus(){
         //get current user
-        FirebaseUser user= firebaseAuth.getCurrentUser();
-        if(user !=null){
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
             //get user
             myUid=user.getUid();
+            Log.d(TAG, "checkUserStatus: User"+myUid);
+
+            try{
+                WelcomeActivity.welcomeActivity.finish();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }else{
             //go back to login
-            startActivity(new Intent(MainActivity.this,WelcomeActivity.class));
+            startActivity(new Intent(MainActivity.this,SplashActivity.class));
             finish();
         }
     }
     private void checkOnlineStatus(String status){
-        DatabaseReference onlineRef=database.getReference("Users").child(myUid);
+        if(myUid != null ||!myUid.equals("")){
+            DatabaseReference onlineRef = database.getReference("Users").child(myUid);
 
-        HashMap<String,Object> hashMap=new HashMap<>();
-        hashMap.put("status",status);
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("status", status);
 
-        onlineRef.getRef().updateChildren(hashMap);
+            onlineRef.getRef().updateChildren(hashMap);
+        }
+
     }
 
     @Override
     protected void onStart() {
+        Log.d(TAG, "onStart: ");
         checkUserStatus();
         checkOnlineStatus("online");
         super.onStart();
@@ -132,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        Log.d(TAG, "onPause: ");
         String timeStamp=String.valueOf(System.currentTimeMillis());
         checkOnlineStatus(timeStamp);
         super.onPause();
@@ -139,12 +156,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "onResume: ");
+        checkUserStatus();
+
         checkOnlineStatus("online");
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
         String timeStamp=String.valueOf(System.currentTimeMillis());
         checkOnlineStatus(timeStamp);
         super.onDestroy();
@@ -152,9 +173,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
 
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 
 }

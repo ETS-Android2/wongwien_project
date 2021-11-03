@@ -13,7 +13,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Wongwien">
-        <activity android:name=".AddQuestionActivity"
+        <activity android:name=".SplashActivity"
+            android:theme="@style/Theme.Wongwien.noActionbar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".QuesAnsDetailActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity
+            android:name=".AddQuestionActivity"
             android:theme="@style/Theme.Wongwien.noActionbar" />
         <activity
             android:name=".ZoomActivity"
@@ -32,11 +43,6 @@
             android:name=".LoginActivity"
             android:theme="@style/Theme.Wongwien.noActionbar" />
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data

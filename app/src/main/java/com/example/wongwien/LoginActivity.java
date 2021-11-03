@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Layout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private Button btnLogin,btnGoogle,btnFacebook;
     private TextView tvRegister,tvRecovery;
-    private EditText edEmail,edPassword;
+    private EdittextV2 edEmail,edPassword;
 
     private FirebaseAuth firebaseAuth;
     FirebaseDatabase database ;
@@ -64,7 +65,12 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
 
@@ -76,9 +82,16 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                     edEmail.setError("Invalid Email");
+                    edEmail.requestFocus();
                     edEmail.setFocusable(true);
                 }else{
-                    loginUser(email,password);
+                    if(!TextUtils.isEmpty(password)){
+                        loginUser(email,password);
+                    }else{
+                        edPassword.setError("Please fill your password");
+                        edPassword.requestFocus();
+                        edPassword.setFocusable(true);
+                    }
                 }
             }
         });
@@ -100,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showPasswordDialog() {
         View view= LayoutInflater.from(this).inflate(R.layout.dialog_recover_email,null,false);
-        EditText edEmail2=view.findViewById(R.id.edEmail);
+        EdittextV2 edEmail2=view.findViewById(R.id.edEmail);
         Button btnCancel=view.findViewById(R.id.btnCancel);
         Button btnRecover=view.findViewById(R.id.btnRecover);
 
@@ -165,7 +178,11 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             progressDialog.dismiss();
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+
+                            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
                             finish();
 
                         } else {
@@ -280,7 +297,10 @@ public class LoginActivity extends AppCompatActivity {
 
                             }
 
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.

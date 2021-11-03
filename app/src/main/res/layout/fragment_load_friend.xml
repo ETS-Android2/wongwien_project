@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.question.RecentlyFragmentQuestion">
+    tools:context=".fragment.chatlist.LoadMessageFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:id="@+id/rcView"
-        tools:listitem="@layout/row_question"/>
+        tools:listitem="@layout/row_chatlist_friend"
+        android:layout_height="match_parent" />
 
 </FrameLayout>

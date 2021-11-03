@@ -27,7 +27,7 @@ import java.util.HashMap;
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
     ProgressDialog progressDialog;
-    private EditText edEmail, edPassword, edPassword2,edName;
+    private EdittextV2 edEmail, edPassword, edPassword2,edName;
     private Button btnRegister;
     private TextView tvLogin;
     private FirebaseAuth mAuth;
@@ -44,7 +44,10 @@ public class RegisterActivity extends AppCompatActivity {
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 

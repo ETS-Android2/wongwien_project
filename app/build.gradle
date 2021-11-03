@@ -30,18 +30,6 @@ android {
     buildFeatures {
         viewBinding true
     }
-    android.sourceSets {
-        main {
-
-            res.srcDirs =
-                    [
-                            'src/main/res/layout/question_fragment',
-                            'src/main/res/layout',
-                            'src/main/res'
-                    ]
-        }
-
-    }
 }
 
 dependencies {

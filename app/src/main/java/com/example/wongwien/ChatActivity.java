@@ -295,7 +295,7 @@ public class ChatActivity extends AppCompatActivity {
             myUid=user.getUid();
         }else{
             //go back to login
-            startActivity(new Intent(this, WelcomeActivity.class));
+            startActivity(new Intent(this, SplashActivity.class));
             finish();
         }
     }

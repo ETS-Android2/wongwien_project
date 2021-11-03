@@ -13,8 +13,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgPerson"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/person_icon"
             app:civ_border_color="@color/primary"
             app:civ_border_width="2dp"/>
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="Name User"
                 android:textStyle="bold"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/primary"/>
             <TextView
                 android:id="@+id/tvEmail"
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="email@gmail.com"
-                android:textSize="15dp"/>
+                android:textSize="14dp"/>
         </LinearLayout>
 
     </LinearLayout>

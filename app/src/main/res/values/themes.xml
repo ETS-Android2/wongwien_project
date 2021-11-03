@@ -3,7 +3,7 @@
     <style name="Theme.Wongwien" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#6E55CF</item>
-        <item name="colorPrimaryVariant">#3F51B5</item>
+        <item name="colorPrimaryVariant">#6E55CF</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
 
     <!-- Base primary application theme on action bar. -->
@@ -27,6 +28,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
 
     <!-- Base soft application theme. -->
@@ -42,6 +44,8 @@
         <!-- Status bar color. -->
         <item name="colorControlNormal">@color/primary</item>
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
 
     <!-- Base soft application theme. -->
@@ -53,6 +57,8 @@
 
         <item name="colorControlNormal">@color/white</item>
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
 
     <style name="Theme.Wongwien.bottomNav" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -62,6 +68,7 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -73,8 +80,39 @@
         <item name="paddingEnd">40dp</item>
     </style>
 
-        <style name="chipCustom" parent="@style/Widget.MaterialComponents.Chip.Entry">
+    <style name="chipCustom" parent="@style/Widget.MaterialComponents.Chip.Choice" >
         <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">13sp</item>
+        <item name="textFillColor">@color/primary</item>
+        <item name="chipBackgroundColor">@color/backgroundApp</item>
     </style>
 
+<!--    If you want to apply the animation on "dialog" then firstly add below code in styles.xml file-->
+<!--    <style name="my_style”>-->
+<!--    <item-->
+<!--         name="@android:windowEnterAnimation">@anim/opening_anim</item>-->
+<!--    <item-->
+<!--        name="@android:windowExitAnimation">@anim/closing_anim</item>-->
+<!--    </style>-->
+
+<!--    final Dialog dialog = new Dialog(activity);-->
+<!--    dialog.getWindow().getAttributes().windowAnimations = R.style.my_style;-->
+
+<!--    If you want to apply the animation on "view" then write below code-->
+
+<!--    txtMessage = (TextView) findViewById(R.id.txtMessage);-->
+
+<!--    // load the animation-->
+<!--    Animation animFadein = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation);-->
+
+<!--    // start the animation-->
+<!--    txtMessage.startAnimation(animFadein);-->
+
+
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
 </resources>

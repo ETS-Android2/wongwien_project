@@ -5,6 +5,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
@@ -12,6 +14,7 @@ import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -48,7 +51,7 @@ public class AddQuestionActivity extends AppCompatActivity {
 
     MaterialToolbar toolbar;
     ActionBar actionBar;
-    String myUid,myImg,myName;
+    String myUid,myImg,myName,myEmail;
     String tag;
 
     FirebaseDatabase database;
@@ -83,6 +86,10 @@ public class AddQuestionActivity extends AppCompatActivity {
                 if(!TextUtils.isEmpty(tag)){
                     addToChipGroup(tag,chipGroup);
                     edTag.setText("");
+//                    edTag.clearFocus();
+
+                    hideKeyboard(AddQuestionActivity.this);
+
                 }
             }
         });
@@ -113,6 +120,16 @@ public class AddQuestionActivity extends AppCompatActivity {
             }
         });
     }
+    private   void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 
     private void uploadQuestion(String question, String descrip, String tag, String collection) {
         String timeStamp=String.valueOf(System.currentTimeMillis());
@@ -126,12 +143,14 @@ public class AddQuestionActivity extends AppCompatActivity {
         hashMap.put("uId",myUid);
         hashMap.put("uImg",myImg);
         hashMap.put("uName",myName);
+        hashMap.put("uEmail",myEmail);
+        hashMap.put("qId",timeStamp);
 
         ref=database.getReference("QuestionAns");
         ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                finish();
+                onBackPressed();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -149,6 +168,7 @@ public class AddQuestionActivity extends AppCompatActivity {
                 ModelUser modelUser=snapshot.getValue(ModelUser.class);
                 myName=modelUser.getName();
                 myImg=modelUser.getImage();
+                myEmail=modelUser.getEmail();
             }
 
             @Override
@@ -159,9 +179,17 @@ public class AddQuestionActivity extends AppCompatActivity {
     }
 
     private void addToChipGroup(String tag, ChipGroup chipGroup) {
-        Chip chip=new Chip(AddQuestionActivity.this,null,R.style.chipCustom);
+        Chip chip = new Chip(this);
+        ChipDrawable chipDrawable = ChipDrawable.createFromAttributes(this,
+                null,
+                0,
+                R.style.chipCustom);
+        chip.setChipDrawable(chipDrawable);
+
+//        Chip chip=new Chip(AddQuestionActivity.this,null,R.style.chipCustom);
         chip.setChipText(tag);
         chip.setCloseIconEnabled(true);
+        chip.setTextAppearanceResource(R.style.chipCustom);
         chip.setClickable(false);
         chip.setCheckable(false);
         chipGroup.addView(chip);
@@ -221,9 +249,15 @@ public class AddQuestionActivity extends AppCompatActivity {
             myUid=user.getUid();
         }else{
             //go back to login
-            startActivity(new Intent(this, WelcomeActivity.class));
+            startActivity(new Intent(this, SplashActivity.class));
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 
     @Override

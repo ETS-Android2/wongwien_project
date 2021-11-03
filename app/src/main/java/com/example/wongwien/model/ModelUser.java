@@ -1,6 +1,9 @@
 package com.example.wongwien.model;
 
-public class ModelUser {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ModelUser  implements Parcelable {
     private String uid,name,email,image,status,cover_image,typingStatus;
 
     public ModelUser() {
@@ -15,6 +18,28 @@ public class ModelUser {
         this.cover_image = cover_image;
         this.typingStatus = typingStatus;
     }
+
+    protected ModelUser(Parcel in) {
+        uid = in.readString();
+        name = in.readString();
+        email = in.readString();
+        image = in.readString();
+        status = in.readString();
+        cover_image = in.readString();
+        typingStatus = in.readString();
+    }
+
+    public static final Creator<ModelUser> CREATOR = new Creator<ModelUser>() {
+        @Override
+        public ModelUser createFromParcel(Parcel in) {
+            return new ModelUser(in);
+        }
+
+        @Override
+        public ModelUser[] newArray(int size) {
+            return new ModelUser[size];
+        }
+    };
 
     public String getUid() {
         return uid;
@@ -70,5 +95,21 @@ public class ModelUser {
 
     public void setTypingStatus(String typingStatus) {
         this.typingStatus = typingStatus;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uid);
+        dest.writeString(name);
+        dest.writeString(email);
+        dest.writeString(image);
+        dest.writeString(status);
+        dest.writeString(cover_image);
+        dest.writeString(typingStatus);
     }
 }

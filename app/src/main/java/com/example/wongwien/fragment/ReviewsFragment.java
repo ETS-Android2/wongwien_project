@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.example.wongwien.ChatlistActivity;
 import com.example.wongwien.MainActivity;
 import com.example.wongwien.R;
+import com.example.wongwien.SearchActivity;
+import com.example.wongwien.SplashActivity;
 import com.example.wongwien.WelcomeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,6 +67,9 @@ public class ReviewsFragment extends Fragment {
             case R.id.action_chat:
                 startActivity(new Intent(getContext(), ChatlistActivity.class));
                 break;
+            case R.id.action_search:
+                startActivity(new Intent(getContext(), SearchActivity.class));
+                break;
             default:
                 break;
         }
@@ -79,7 +84,7 @@ public class ReviewsFragment extends Fragment {
 
         }else{
             //go back to login
-            startActivity(new Intent(getContext(), WelcomeActivity.class));
+            startActivity(new Intent(getContext(), SplashActivity.class));
             getActivity().finish();
         }
     }
