@@ -60,8 +60,10 @@ public class AdapterMessageList extends RecyclerView.Adapter<AdapterMessageList.
 
 //        //conver time stamp to dd/mm/yyyy hh:mm am/pm
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(Long.parseLong(time));
-        String dateTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", cal);
+        if(null != time){
+            cal.setTimeInMillis(Long.parseLong(time));
+        }
+            String dateTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", cal);
 
 
 

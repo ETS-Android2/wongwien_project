@@ -78,7 +78,7 @@
             android:layout_gravity="start"/>
 
         <com.example.wongwien.EdittextV2
-            android:id="@+id/edTitle"
+            android:id="@+id/edQuestion"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -43,6 +43,7 @@ public class AdapterQuestion extends  RecyclerView.Adapter<AdapterQuestion.Myhol
         String question=list.get(position).getQuestion();
         String timeStamp=list.get(position).getTimeStamp();
         String qId=list.get(position).getqId();
+        String qUid=list.get(position).getuId();
 
 
         //conver time stamp to dd/mm/yyyy hh:mm am/pm
@@ -57,6 +58,7 @@ public class AdapterQuestion extends  RecyclerView.Adapter<AdapterQuestion.Myhol
             public void onClick(View v) {
                 Intent intent=new Intent(context, QuesAnsDetailActivity.class);
                 intent.putExtra("qId",qId);
+                intent.putExtra("qUid",qUid);
                 context.startActivity(intent);
             }
         });

@@ -9,17 +9,23 @@ public class ModelQuestionAns implements Parcelable {
     String uName;
     String uEmail;
     String tag;
+    String point;
     String question;
     String descrip;
     String collection;
     String timeStamp;
+    String qId;
 
-    public ModelQuestionAns(String uId, String uImg, String uName, String uEmail, String tag, String question, String descrip, String collection, String timeStamp, String qId) {
+    public ModelQuestionAns() {
+    }
+
+    public ModelQuestionAns(String uId, String uImg, String uName, String uEmail, String tag, String point, String question, String descrip, String collection, String timeStamp, String qId) {
         this.uId = uId;
         this.uImg = uImg;
         this.uName = uName;
         this.uEmail = uEmail;
         this.tag = tag;
+        this.point = point;
         this.question = question;
         this.descrip = descrip;
         this.collection = collection;
@@ -33,6 +39,7 @@ public class ModelQuestionAns implements Parcelable {
         uName = in.readString();
         uEmail = in.readString();
         tag = in.readString();
+        point = in.readString();
         question = in.readString();
         descrip = in.readString();
         collection = in.readString();
@@ -51,28 +58,6 @@ public class ModelQuestionAns implements Parcelable {
             return new ModelQuestionAns[size];
         }
     };
-
-    public String getuEmail() {
-        return uEmail;
-    }
-
-    public void setuEmail(String uEmail) {
-        this.uEmail = uEmail;
-    }
-
-    public String getqId() {
-        return qId;
-    }
-
-    public void setqId(String qId) {
-        this.qId = qId;
-    }
-
-    String qId;
-
-    public ModelQuestionAns() {
-    }
-
 
     public String getuId() {
         return uId;
@@ -98,12 +83,28 @@ public class ModelQuestionAns implements Parcelable {
         this.uName = uName;
     }
 
+    public String getuEmail() {
+        return uEmail;
+    }
+
+    public void setuEmail(String uEmail) {
+        this.uEmail = uEmail;
+    }
+
     public String getTag() {
         return tag;
     }
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public String getPoint() {
+        return point;
+    }
+
+    public void setPoint(String point) {
+        this.point = point;
     }
 
     public String getQuestion() {
@@ -138,20 +139,12 @@ public class ModelQuestionAns implements Parcelable {
         this.timeStamp = timeStamp;
     }
 
-    @Override
-    public String toString() {
-        return "ModelQuestionAns{" +
-                "uId='" + uId + '\'' +
-                ", uImg='" + uImg + '\'' +
-                ", uName='" + uName + '\'' +
-                ", uEmail='" + uEmail + '\'' +
-                ", tag='" + tag + '\'' +
-                ", question='" + question + '\'' +
-                ", descrip='" + descrip + '\'' +
-                ", collection='" + collection + '\'' +
-                ", timeStamp='" + timeStamp + '\'' +
-                ", qId='" + qId + '\'' +
-                '}';
+    public String getqId() {
+        return qId;
+    }
+
+    public void setqId(String qId) {
+        this.qId = qId;
     }
 
     @Override
@@ -166,6 +159,7 @@ public class ModelQuestionAns implements Parcelable {
         dest.writeString(uName);
         dest.writeString(uEmail);
         dest.writeString(tag);
+        dest.writeString(point);
         dest.writeString(question);
         dest.writeString(descrip);
         dest.writeString(collection);

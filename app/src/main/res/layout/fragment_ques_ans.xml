@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swiperefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundApp"
@@ -34,7 +40,7 @@
                 android:textSize="20sp" />
 
             <View
-                android:id="@+id/underlineMessage"
+                android:id="@+id/underlineRecently"
                 android:layout_width="wrap_content"
                 android:layout_height="10dp"
                 android:layout_gravity="center"
@@ -61,7 +67,7 @@
                 android:textSize="20sp" />
 
             <View
-                android:id="@+id/underlineFriends"
+                android:id="@+id/underlinePopular"
                 android:layout_width="wrap_content"
                 android:layout_height="10dp"
                 android:layout_gravity="center"
@@ -148,3 +154,4 @@
         android:layout_height="match_parent"/>
 
 </LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -111,6 +111,7 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/btnUp"
                 android:layout_width="20dp"
                 android:background="@color/white"
                 android:layout_height="20dp"
@@ -118,6 +119,7 @@
                 android:src="@drawable/ic_up_secound_primary"/>
 
             <ImageButton
+                android:id="@+id/btnDown"
                 android:layout_width="20dp"
                 android:background="@color/white"
                 android:layout_height="20dp"
@@ -131,6 +133,31 @@
                 android:layout_margin="5dp"
                 android:src="@drawable/ic_share_secound_primary"/>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:padding="7dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:background="@drawable/rec_low_corner_left_background_app"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:id="@+id/txtPoint"
+            android:text="0"/>
+<!--        <ImageView-->
+<!--            android:layout_width="20dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:src="@drawable/ic_star_white"/>-->
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

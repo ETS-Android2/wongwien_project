@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -51,6 +52,23 @@ public class SearchActivity extends AppCompatActivity {
         actionbar.setDisplayShowHomeEnabled(true);
 
         database=FirebaseDatabase.getInstance();
+
+        Intent intent=getIntent();
+        if(intent!=null){
+            String tag=intent.getStringExtra("tag");
+            String collection=intent.getStringExtra("collection");
+
+            if(collection!=null && collection.equals("question")){
+                isFindReview=false;
+                binding.edSearch.setText(tag);
+                message=tag;
+
+                clearMode();
+                binding.underlineQues.setBackgroundColor(getResources().getColor(R.color.primary));
+                checkMessageAndCheckFilter();
+            }
+        }
+
 
 //        clearMode();
         clearFilter();
@@ -216,6 +234,12 @@ public class SearchActivity extends AppCompatActivity {
         }else {
             binding.linearShowResult.setVisibility(View.GONE);
             binding.linearShowEmpty.setVisibility(View.VISIBLE);
+
+            if(isFindReview){
+
+            }else{
+//                binding.edSearch.setHint("Search question,user,tag,discription,email.");
+            }
         }
     }
 
