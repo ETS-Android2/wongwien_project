@@ -242,6 +242,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     private void firebaseAuthWithGoogle(String idToken) {
+        progressDialog.setMessage("Logging In...");
+        progressDialog.show();
+
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -296,6 +299,8 @@ public class LoginActivity extends AppCompatActivity {
 //                            }
 
                             }
+
+                            progressDialog.dismiss();
 
                             Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

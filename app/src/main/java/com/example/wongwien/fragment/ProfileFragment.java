@@ -76,7 +76,7 @@ public class ProfileFragment extends Fragment {
     //permission pick image constants
     private static final int IMAGE_PICK_GALLERY_REQUEST_CODE = 300;
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 400;
-    FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth;  
     FirebaseDatabase database;
     FirebaseUser user;
     DatabaseReference ref;

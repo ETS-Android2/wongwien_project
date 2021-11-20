@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.wongwien.AddReviewActivity;
 import com.example.wongwien.ChatlistActivity;
 import com.example.wongwien.MainActivity;
 import com.example.wongwien.R;
@@ -70,6 +71,8 @@ public class ReviewsFragment extends Fragment {
             case R.id.action_search:
                 startActivity(new Intent(getContext(), SearchActivity.class));
                 break;
+            case R.id.action_add:
+                startActivity(new Intent(getContext(), AddReviewActivity.class));
             default:
                 break;
         }

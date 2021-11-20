@@ -1,95 +1,57 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:theme="@style/Theme.Wongwien.customDarActionbar"
-        android:background="@color/primary">
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:singleLine="true"
-            android:textStyle="bold"
-            android:text="Add Question"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-
-        <RelativeLayout
-            android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btnPost"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="POST"
-                app:backgroundTint="@null"
-                android:textColor="@color/primary"
-                android:textStyle="bold"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/rec_low_cornor_white"/>
-        </RelativeLayout>
-    </com.google.android.material.appbar.MaterialToolbar>
+    tools:context=".fragment.add_review.AddReviewNoImageFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:layout_height="match_parent"
+        android:padding="20dp"
         android:orientation="vertical">
 
-        <Spinner
-            android:layout_gravity="end"
-            android:id="@+id/spinnerCollection"
-            style="@style/spinner_style"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="40dp" />
-    </LinearLayout>
+            android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:layout_height="wrap_content">
+            <Spinner
+                android:layout_gravity="end"
+                android:id="@+id/spinnerCollection"
+                style="@style/spinner_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="40dp" />
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Question"
+            android:text="Title Review"
             android:textSize="20sp"
             android:textColor="@color/primary"
             android:textStyle="bold"
             android:layout_gravity="start"/>
 
         <com.example.wongwien.EdittextV2
-            android:id="@+id/edQuestion"
-            android:layout_margin="10dp"
+            android:id="@+id/edTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:background="@drawable/dialog_bg"
-            android:padding="5dp"
             android:gravity="start"
-            android:minHeight="50dp"
+            android:hint="Add your title review"
             android:inputType="textCapSentences|textMultiLine"
-            android:textSize="18sp"
-            android:hint="Add some question..."/>
+            android:minHeight="50dp"
+            android:padding="5dp"
+            android:textSize="18sp" />
+
         <TextView
-            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Description"
@@ -100,15 +62,16 @@
 
         <com.example.wongwien.EdittextV2
             android:id="@+id/edDescription"
-            android:layout_width="match_parent"
-            android:padding="5dp"
             android:layout_margin="10dp"
-            android:minHeight="120dp"
-            android:gravity="start"
-            android:inputType="textCapSentences|textMultiLine"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/dialog_bg"
-            android:hint="Add some description..."/>
+            android:padding="5dp"
+            android:gravity="start"
+            android:minHeight="50dp"
+            android:inputType="textCapSentences|textMultiLine"
+            android:textSize="18sp"
+            android:hint="Add your description review"/>
 
         <TextView
             android:id="@+id/txtAddtag"
@@ -173,9 +136,13 @@
 
         </com.google.android.material.chip.ChipGroup>
 
+        <Button
+            android:id="@+id/btnPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Post"
+            android:layout_marginTop="20dp"
+            android:textSize="14sp"
+            android:textAllCaps="false"/>
     </LinearLayout>
-
-
-
-
-</LinearLayout>
+</ScrollView>
