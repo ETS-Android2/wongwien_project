@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.show_review.Pattern3Fragment">
+
+    <!--    not finished yet!!!!!!-->
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgPerson"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/person_icon"
+                app:civ_border_color="@color/primary"
+                app:civ_border_width="2dp" />
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"/>
+                <TextView
+                    android:id="@+id/txtEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="xxxx@gmail.com"
+                    android:textSize="10sp"
+                    android:textColor="@color/primary"/>
+                <TextView
+                    android:id="@+id/txtTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12/20/21 20:21AM"
+                    android:textSize="8sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="7dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:background="@drawable/rec_corner_left_background_app"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:id="@+id/txtPoint"
+                    android:text="0"/>
+                <ImageView
+                    android:layout_marginStart="5dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_star_white"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="Title Review"
+                android:textColor="@color/primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.example.wongwien.EdittextV2
+                android:id="@+id/edTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/dialog_bg"
+                android:gravity="start"
+                android:hint="Add your title review"
+                android:inputType="textCapSentences|textMultiLine"
+                android:minHeight="50dp"
+                android:padding="5dp"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/hint"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/im1"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/image_icon" />
+
+                </LinearLayout>
+                <com.example.wongwien.EdittextV2
+                    android:id="@+id/edD1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/dialog_bg"
+                    android:gravity="start"
+                    android:hint="Add your description of image"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minHeight="50dp"
+                    android:padding="5dp"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/hint"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:id="@+id/im2"
+                        android:src="@drawable/image_icon"
+                        android:adjustViewBounds="true" />
+
+                </LinearLayout>
+
+                <com.example.wongwien.EdittextV2
+                    android:id="@+id/edD2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/dialog_bg"
+                    android:gravity="start"
+                    android:hint="Add your description of image"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minHeight="50dp"
+                    android:padding="5dp"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/addmore1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add more review"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold"
+                    android:layout_gravity="end"
+                    android:layout_margin="10dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/more2"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/hint"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/im3"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:src="@drawable/image_icon"
+                        android:adjustViewBounds="true" />
+
+                </LinearLayout>
+                <com.example.wongwien.EdittextV2
+                    android:id="@+id/edD3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/dialog_bg"
+                    android:gravity="start"
+                    android:hint="Add your description of image"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minHeight="50dp"
+                    android:padding="5dp"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/addmore2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add more review"
+                    android:textColor="@color/primary"
+                    android:textStyle="bold"
+                    android:layout_gravity="end"
+                    android:layout_margin="10dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/more3"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/hint"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/im4"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:src="@drawable/image_icon"
+                        android:adjustViewBounds="true" />
+
+                </LinearLayout>
+                <com.example.wongwien.EdittextV2
+                    android:id="@+id/edD4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/dialog_bg"
+                    android:gravity="start"
+                    android:hint="Add your description of image"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minHeight="50dp"
+                    android:padding="5dp"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtAddtag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:padding="10dp"
+                android:text="Add Tag"
+                android:textColor="@color/primary"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/showTag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="Tag"
+                    android:textColor="@color/primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                    <com.example.wongwien.EdittextV2
+                        android:id="@+id/edTag"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/dialog_bg"
+                        android:hint="Typing something..."
+                        android:padding="10dp"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/btnAdd"
+                        app:backgroundTint="@null"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rec_low_cornor_white"
+                        android:text="Add"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="false"
+                android:padding="10dp">
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <Button
+                android:id="@+id/btnPost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Post"
+                android:layout_marginTop="20dp"
+                android:textSize="14sp"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

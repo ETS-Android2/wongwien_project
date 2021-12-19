@@ -13,7 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Wongwien">
-        <activity android:name=".AddReviewActivity"
+        <activity
+            android:name=".ReviewDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddReviewActivity"
             android:theme="@style/Theme.Wongwien.noActionbar" />
         <activity
             android:name=".SplashActivity"
@@ -45,7 +49,7 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/Theme.Wongwien.noActionbar" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.example.wongwien.databinding.ActivitySearchBinding;
 import com.example.wongwien.fragment.search.SearchQuestionFragment;
+import com.example.wongwien.fragment.search.SearchReviewFragment;
 import com.example.wongwien.model.ModelQuestionAns;
+import com.example.wongwien.model.ModelReview;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +37,7 @@ public class SearchActivity extends AppCompatActivity {
     int category=111;
     String key[]={"","General","Course","Food","Domitory","Tours"};
     ArrayList<ModelQuestionAns>questionlist;
+    ArrayList<ModelReview>reviewlist;
 
     FirebaseDatabase database;
     DatabaseReference ref;
@@ -189,10 +192,15 @@ public class SearchActivity extends AppCompatActivity {
 
                     if(isFindReview){
                         Log.d(TAG, "checkMessageAndCheckFilter: isFindReview::"+isFindReview);
+                        if (checkFilterCategory()) {
+                            findReviewWithFilter(s.toString());
+                        } else {
+                            findAllReview(s.toString());
+                        }
                     }else{
                         Log.d(TAG, "checkMessageAndCheckFilter: isFindReview::"+isFindReview);
                         Log.d(TAG, "onTextChanged: form EDSEARCH");
-                        if (checkFilterQuestion()) {
+                        if (checkFilterCategory()) {
                             findQuestionWithFilter(s.toString());
                         } else {
                             findAllQuestion(s.toString());
@@ -219,11 +227,16 @@ public class SearchActivity extends AppCompatActivity {
         if(!TextUtils.isEmpty(message)){
             if(isFindReview){
                 Log.d(TAG, "checkMessageAndCheckFilter: isFindReview::"+isFindReview);
-                Toast.makeText(this, "isFindReview::"+isFindReview, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "isFindReview::"+isFindReview, Toast.LENGTH_SHORT).show();
+                if (checkFilterCategory()) {
+                    findReviewWithFilter(message.toString());
+                } else {
+                    findAllReview(message.toString());
+                }
             }else{
                 Log.d(TAG, "checkMessageAndCheckFilter: isFindReview::"+isFindReview);
                 Log.d(TAG, "checkMessageAndCheckFilter: from checkMessageAndCheckFilter");
-                if (checkFilterQuestion()) {
+                if (checkFilterCategory()) {
                     findQuestionWithFilter(message.toString());
                 } else {
                     findAllQuestion(message.toString());
@@ -268,6 +281,8 @@ public class SearchActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                questionlist.clear();
+
                 for(DataSnapshot d:snapshot.getChildren()){
                     ModelQuestionAns model=d.getValue(ModelQuestionAns.class);
 
@@ -288,8 +303,54 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
+    private void findAllReview(String s) {
+        reviewlist=new ArrayList<>();
 
-    private boolean checkFilterQuestion(){
+        ref=database.getReference("Reviews");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                reviewlist.clear();
+
+                for(DataSnapshot d:snapshot.getChildren()){
+                    ModelReview model=d.getValue(ModelReview.class);
+
+                    if(model.getR_title().toLowerCase().contains(s.toLowerCase())||
+                            model.getR_desc0().toLowerCase().contains(s.toLowerCase())||
+
+                            checkContainMessage(model,s)||
+
+                            model.getR_tag().toLowerCase().contains(s.toLowerCase())||
+                            model.getuName().toLowerCase().contains(s.toLowerCase())||
+                            model.getuEmail().toLowerCase().contains(s.toLowerCase())){
+                        reviewlist.add(model);
+                    }
+                }
+                loadReviewToFragment(reviewlist);
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+
+            }
+        });
+    }
+    private boolean checkContainMessage(ModelReview model,String s){
+        try{
+            if(
+                    model.getR_desc1().toLowerCase().contains(s.toLowerCase())||
+                            model.getR_desc2().toLowerCase().contains(s.toLowerCase())||
+                            model.getR_desc3().toLowerCase().contains(s.toLowerCase())
+            ){
+                return true;
+            }
+        }catch (Exception e){
+            return false;
+        }
+        return false;
+    }
+
+    private boolean checkFilterCategory(){
         if(category==111){
             return false;
         }
@@ -311,10 +372,10 @@ public class SearchActivity extends AppCompatActivity {
 
                     ModelQuestionAns model=d.getValue(ModelQuestionAns.class);
                     if(model.getQuestion().toLowerCase().contains(s.toLowerCase())||
-                    model.getDescrip().toLowerCase().contains(s.toLowerCase())||
-                    model.getTag().toLowerCase().contains(s.toLowerCase())||
-                    model.getuName().toLowerCase().contains(s.toLowerCase())||
-                    model.getuEmail().toLowerCase().contains(s.toLowerCase())){
+                            model.getDescrip().toLowerCase().contains(s.toLowerCase())||
+                            model.getTag().toLowerCase().contains(s.toLowerCase())||
+                            model.getuName().toLowerCase().contains(s.toLowerCase())||
+                            model.getuEmail().toLowerCase().contains(s.toLowerCase())){
                         questionlist.add(model);
                     }
                 }
@@ -329,7 +390,40 @@ public class SearchActivity extends AppCompatActivity {
         });
 
     }
+    private void findReviewWithFilter(String s) {
+        reviewlist=new ArrayList<>();
 
+        String keyword=key[category];
+        ref=database.getReference("Reviews");
+        Query query=ref.orderByChild("r_collection").equalTo(keyword);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                reviewlist.clear();
+
+                for(DataSnapshot d:snapshot.getChildren()){
+
+                    ModelReview model=d.getValue(ModelReview.class);
+                    if(model.getR_title().toLowerCase().contains(s.toLowerCase())||
+                            model.getR_desc0().toLowerCase().contains(s.toLowerCase())||
+                            checkContainMessage(model,s)||
+                            model.getR_tag().toLowerCase().contains(s.toLowerCase())||
+                            model.getuName().toLowerCase().contains(s.toLowerCase())||
+                            model.getuEmail().toLowerCase().contains(s.toLowerCase())){
+                        reviewlist.add(model);
+                    }
+                }
+
+                loadReviewToFragment(reviewlist);
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+
+            }
+        });
+
+    }
 
     private void loadQuestionToFragment(ArrayList<ModelQuestionAns> questionlist) {
         Bundle bundle=new Bundle();
@@ -342,11 +436,16 @@ public class SearchActivity extends AppCompatActivity {
         fr3.replace(R.id.fraglistSearch,frag,"");
         fr3.commit();
     }
+    private void loadReviewToFragment(ArrayList<ModelReview> reviewlist) {
+        Bundle bundle=new Bundle();
+        bundle.putParcelableArrayList("list", reviewlist);
+//        showList();
+        SearchReviewFragment frag=new SearchReviewFragment();
+        frag.setArguments(bundle);
 
-    private void showList(){
-        for(ModelQuestionAns d:questionlist){
-            Log.d(TAG, "showList: "+d.toString());
-        }
+        FragmentTransaction fr3=getSupportFragmentManager().beginTransaction();
+        fr3.replace(R.id.fraglistSearch,frag,"");
+        fr3.commit();
     }
 
     @Override

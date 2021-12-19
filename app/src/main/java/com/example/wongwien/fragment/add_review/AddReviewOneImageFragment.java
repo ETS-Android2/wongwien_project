@@ -19,11 +19,15 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +36,7 @@ import com.example.wongwien.R;
 import com.example.wongwien.databinding.FragmentAddReviewOneImgBinding;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
+import com.squareup.picasso.Picasso;
 
 import javax.xml.transform.Result;
 
@@ -47,6 +52,9 @@ public class AddReviewOneImageFragment extends Fragment {
     //permission pick image constants
     private static final int IMAGE_PICK_GALLERY_REQUEST_CODE = 300;
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 400;
+
+
+    private GetAllDataToActivity getdata;
 
     Uri image_uri;
     @Override
@@ -91,13 +99,13 @@ public class AddReviewOneImageFragment extends Fragment {
         });
 
         /*
-        * first  show dialog--> check permission
-        * return true pick image
-        *        false request permission--> on result permission
-        *
-        * to pickk image--> intent code to pick uri --> on activity on result
-        * return image by code id
-        * */
+         * first  show dialog--> check permission
+         * return true pick image
+         *        false request permission--> on result permission
+         *
+         * to pick image--> intent code to pick uri --> on activity on result
+         * return image by code id
+         * */
         binding.tvImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,27 +140,66 @@ public class AddReviewOneImageFragment extends Fragment {
             }
         });
 
+        binding.btnPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadImage(image_uri);
+            }
+        });
+
         return binding.getRoot();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable  Intent data) {
         if(resultCode==RESULT_OK){
-            switch(resultCode){
+            switch(requestCode){
                 case IMAGE_PICK_CAMERA_REQUEST_CODE:
-                    uploadImage(image_uri);
+                    changeImageToImageView(binding.tvImage,image_uri);
+                    break;
+
+                case IMAGE_PICK_GALLERY_REQUEST_CODE:
+                    image_uri=data.getData();
+
+                    changeImageToImageView(binding.tvImage,image_uri);
                     break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void uploadImage(Uri image_uri) {
+    public void changeImageToImageView(ImageView imageView, Uri img){
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        imageView.setImageURI(img);
 
+    }
+    private void uploadImage(Uri image_uri) {
+        String tag=getAllTag();
+        String title = binding.edTitle.getText().toString().trim();
+        String collection = binding.spinnerCollection.getSelectedItem().toString();
+        String descipt = binding.edDescription.getText().toString().trim();
+
+        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(descipt)) {
+
+            if(TextUtils.isEmpty(tag)){
+                tag="";
+            }
+
+            if(!image_uri.equals("") && image_uri!=null){
+                getdata.uploadReviewWithOneImage(title, descipt,tag,collection,image_uri);
+
+//                Log.d(TAG, "uploadImage: upload image::"+image_uri);
+//                Picasso.get().load(image_uri).into(binding.tvImage);
+            }
+        }else{
+            Toast.makeText(getContext(), "Please fill all", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void pickFromGallery() {
-
+        Intent gallery=new Intent(Intent.ACTION_PICK);
+        gallery.setType("image/*");
+        startActivityForResult(gallery,IMAGE_PICK_GALLERY_REQUEST_CODE);
     }
 
     private void pickFromCamera() {
@@ -164,6 +211,7 @@ public class AddReviewOneImageFragment extends Fragment {
 
         Intent cameraIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
+        startActivityForResult(cameraIntent,IMAGE_PICK_CAMERA_REQUEST_CODE);
     }
 
     @Override
@@ -179,6 +227,17 @@ public class AddReviewOneImageFragment extends Fragment {
                         Toast.makeText(getActivity(), "Plase enable camera & storage permission", Toast.LENGTH_SHORT).show();
                     }
                 }
+                break;
+            case STORAGE_REQUEST_CODE:
+                if (grantResults.length > 0) {
+                    boolean writeStorageAcceipted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if (writeStorageAcceipted) {
+                        pickFromGallery();
+                    } else {
+                        Toast.makeText(getActivity(), "Plase enable storage permission", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
@@ -195,14 +254,14 @@ public class AddReviewOneImageFragment extends Fragment {
 
     private boolean checkCameraPermission() {
         boolean result= ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-        ==(PackageManager.PERMISSION_GRANTED);
+                ==(PackageManager.PERMISSION_GRANTED);
         boolean result2= ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        ==(PackageManager.PERMISSION_GRANTED);
+                ==(PackageManager.PERMISSION_GRANTED);
         return result&&result2;
     }
     private boolean checkStoragePermission() {
         boolean result2= ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        ==(PackageManager.PERMISSION_GRANTED);
+                ==(PackageManager.PERMISSION_GRANTED);
         return result2;
     }
 
@@ -253,7 +312,7 @@ public class AddReviewOneImageFragment extends Fragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
-
+        getdata= (GetAllDataToActivity) getActivity();
         super.onAttach(context);
     }
 }

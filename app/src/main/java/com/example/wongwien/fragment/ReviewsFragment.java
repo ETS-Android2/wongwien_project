@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,12 +25,39 @@ import com.example.wongwien.R;
 import com.example.wongwien.SearchActivity;
 import com.example.wongwien.SplashActivity;
 import com.example.wongwien.WelcomeActivity;
+import com.example.wongwien.adapter.AdapterQuestion;
+import com.example.wongwien.adapter.AdapterReview;
+import com.example.wongwien.databinding.FragmentReviewsBinding;
+import com.example.wongwien.fragment.question.LoadListShowFragment;
+import com.example.wongwien.model.ModelQuestionAns;
+import com.example.wongwien.model.ModelReview;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ReviewsFragment extends Fragment {
-    private FirebaseAuth firebaseAuth;
     private static final String TAG = "ReviewsFragment";
+    private FragmentReviewsBinding binding;
+
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference ref;
+    private FirebaseDatabase database;
+
+    int category = 0;
+    boolean isRecent = true;
+    String categoryList[]={"General","Course","Food","Domitory","Tours"};
+
+    AdapterReview adapter;
+    ArrayList<ModelReview> reviewLists;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true); //show menu option in fragment
@@ -37,14 +67,214 @@ public class ReviewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_reviews, container, false);
+        binding=FragmentReviewsBinding.inflate(inflater,container,false);
+        View view=binding.getRoot();
 
-        //firebase Auth
-        firebaseAuth =FirebaseAuth.getInstance();
+        initView();
+//        loadReivewList();
+        checkLoadData();
+//        loadQuestion();
+
+        binding.swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                checkLoadData();
+                binding.swiperefresh.setRefreshing(false);
+            }
+        });
+        binding.liRecent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllMode();
+                isRecent=true;
+                checkLoadData();
+            }
+        });
+
+        binding.liPopular.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllMode();
+                isRecent=false;
+                checkLoadData();
+            }
+        });
+
+        binding.txtGenneral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllSelected();
+                binding.txtGenneral.setTextColor(getResources().getColor(R.color.white));
+                binding.txtGenneral.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
+                category = 0;
+                checkLoadData();
+            }
+        });
+        binding.txtCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllSelected();
+                binding.txtCourse.setTextColor(getResources().getColor(R.color.white));
+                binding.txtCourse.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
+                category = 1;
+                checkLoadData();
+            }
+        });
+        binding.txtFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllSelected();
+                binding.txtFood.setTextColor(getResources().getColor(R.color.white));
+                binding.txtFood.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
+                category = 2;
+                checkLoadData();
+            }
+        });
+        binding.txtDormitory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllSelected();
+                binding.txtDormitory.setTextColor(getResources().getColor(R.color.white));
+                binding.txtDormitory.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
+                category = 3;
+                checkLoadData();
+            }
+        });
+        binding.txtTours.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearAllSelected();
+                binding.txtTours.setTextColor(getResources().getColor(R.color.white));
+                binding.txtTours.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
+                category = 4;
+                checkLoadData();
+            }
+        });
 
         return view;
     }
+    private void clearAllMode(){
+        binding.underlinePopular.setBackgroundColor(getResources().getColor(R.color.white));
+        binding.underlineRecently.setBackgroundColor(getResources().getColor(R.color.white));
+    }
+
+    private void clearAllSelected() {
+        binding.txtGenneral.setTextColor(getResources().getColor(R.color.gray));
+        binding.txtCourse.setTextColor(getResources().getColor(R.color.gray));
+        binding.txtFood.setTextColor(getResources().getColor(R.color.gray));
+        binding.txtDormitory.setTextColor(getResources().getColor(R.color.gray));
+        binding.txtTours.setTextColor(getResources().getColor(R.color.gray));
+
+        binding.txtGenneral.setBackgroundColor(getResources().getColor(R.color.white));
+        binding.txtCourse.setBackgroundColor(getResources().getColor(R.color.white));
+        binding.txtFood.setBackgroundColor(getResources().getColor(R.color.white));
+        binding.txtDormitory.setBackgroundColor(getResources().getColor(R.color.white));
+        binding.txtTours.setBackgroundColor(getResources().getColor(R.color.white));
+    }
+    private void initView() {
+        //firebase Auth
+        firebaseAuth =FirebaseAuth.getInstance();
+        database= FirebaseDatabase.getInstance();
+
+        reviewLists=new ArrayList<>();
+    }
+
+
+    private void checkLoadData() {
+        if (isRecent) {
+            binding.underlinePopular.setBackgroundColor(getResources().getColor(R.color.white));
+            binding.underlineRecently.setBackgroundColor(getResources().getColor(R.color.primary));
+
+            loadRecentlyByCategory();
+
+        } else {
+            binding.underlinePopular.setBackgroundColor(getResources().getColor(R.color.primary));
+            binding.underlineRecently.setBackgroundColor(getResources().getColor(R.color.white));
+
+            loadPopularBycategory();
+        }
+    }
+
+    private void loadRecentlyByCategory() {
+        ref = FirebaseDatabase.getInstance().getReference("Reviews");
+        Query query = ref.orderByChild("r_collection").equalTo(categoryList[category]);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                reviewLists.clear();
+
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    ModelReview model = d.getValue(ModelReview.class);
+
+                    if (model.getR_collection().equals(categoryList[category])) {
+                        Log.d(TAG, "*************onDataChange: model:"+model.getR_type());
+                        reviewLists.add(model);
+                    }
+                }
+                showReviewsToRecycler_reverse();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void loadPopularBycategory() {
+        ref=FirebaseDatabase.getInstance().getReference("Reviews");
+        Query query=ref.orderByChild("r_point");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull  DataSnapshot snapshot) {
+                reviewLists.clear();
+                for(DataSnapshot d:snapshot.getChildren()){
+                    ModelReview model=d.getValue(ModelReview.class);
+
+                    if(model.getR_collection().equals(categoryList[category])){
+                        Log.d(TAG, "onDataChange: model:"+model.getR_type()+"  point::"+model.getR_point());
+
+                        reviewLists.add(model);
+                    }
+                }
+                showReviewsToRecycler_reverse();
+            }
+
+            @Override
+            public void onCancelled(@NonNull  DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void showReviewsToRecycler_reverse(){
+        adapter=new AdapterReview(getContext(),reviewLists);
+        adapter.notifyDataSetChanged();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+
+        binding.rcView.setLayoutManager(linearLayoutManager);
+        binding.rcView.setHasFixedSize(true);
+
+        binding.rcView.setAdapter(adapter);
+    }
+
+    private void showReviewsToRecycler(){
+        adapter=new AdapterReview(getContext(),reviewLists);
+        adapter.notifyDataSetChanged();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(false);
+        linearLayoutManager.setStackFromEnd(true);
+
+        binding.rcView.setLayoutManager(linearLayoutManager);
+        binding.rcView.setHasFixedSize(true);
+
+        binding.rcView.setAdapter(adapter);
+    }
+
 
     /*inflate option menu*/
     @Override
