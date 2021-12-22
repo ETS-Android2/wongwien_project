@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.add_review.AddReviewImageVertitcalFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:orientation="vertical">
 
         <Spinner
-            android:layout_gravity="end"
             android:id="@+id/spinnerCollection"
             style="@style/spinner_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:padding="10dp"
             android:paddingStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
             android:paddingEnd="40dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:padding="20dp"
             android:text="Title Review"
             android:textColor="@color/primary"
             android:textSize="20sp"
@@ -41,29 +43,33 @@
             android:hint="Add your title review"
             android:inputType="textCapSentences|textMultiLine"
             android:minHeight="50dp"
-            android:padding="5dp"
+            android:padding="20dp"
             android:textSize="18sp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/hint"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:background="@color/backgroundApp"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/im1"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
                     android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
                     android:src="@drawable/image_icon" />
-
             </LinearLayout>
+
+
             <com.example.wongwien.EdittextV2
                 android:id="@+id/edD1"
                 android:layout_width="wrap_content"
@@ -77,27 +83,28 @@
                 android:minHeight="50dp"
                 android:padding="5dp"
                 android:textSize="18sp" />
-
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/hint"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:background="@color/backgroundApp"
+                android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
                     android:id="@+id/im2"
-                    android:src="@drawable/image_icon"
-                    android:adjustViewBounds="true" />
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/image_icon" />
             </LinearLayout>
 
             <com.example.wongwien.EdittextV2
@@ -118,34 +125,38 @@
                 android:id="@+id/addmore1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
                 android:text="Add more review"
                 android:textColor="@color/primary"
-                android:textStyle="bold"
-                android:layout_gravity="end"
-                android:layout_margin="10dp"/>
+                android:textStyle="bold" />
         </LinearLayout>
+
+
         <LinearLayout
             android:id="@+id/more2"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/hint"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:background="@color/backgroundApp"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/im3"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:src="@drawable/image_icon"
-                    android:adjustViewBounds="true" />
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/image_icon" />
             </LinearLayout>
+
             <com.example.wongwien.EdittextV2
                 android:id="@+id/edD3"
                 android:layout_width="wrap_content"
@@ -159,38 +170,43 @@
                 android:minHeight="50dp"
                 android:padding="5dp"
                 android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/addmore2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
                 android:text="Add more review"
                 android:textColor="@color/primary"
-                android:textStyle="bold"
-                android:layout_gravity="end"
-                android:layout_margin="10dp"/>
+                android:textStyle="bold" />
         </LinearLayout>
+
+
         <LinearLayout
             android:id="@+id/more3"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/hint"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:background="@color/backgroundApp"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/im4"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:src="@drawable/image_icon"
-                    android:adjustViewBounds="true" />
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/image_icon" />
             </LinearLayout>
+
             <com.example.wongwien.EdittextV2
                 android:id="@+id/edD4"
                 android:layout_width="wrap_content"
@@ -204,6 +220,8 @@
                 android:minHeight="50dp"
                 android:padding="5dp"
                 android:textSize="18sp" />
+
+
         </LinearLayout>
 
         <TextView
@@ -213,6 +231,7 @@
             android:layout_gravity="end"
             android:padding="10dp"
             android:text="Add Tag"
+            android:layout_marginEnd="10dp"
             android:textColor="@color/primary"
             android:textStyle="bold" />
 
@@ -229,6 +248,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:text="Tag"
+                android:layout_marginStart="10dp"
                 android:textColor="@color/primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -251,13 +271,13 @@
 
                 <Button
                     android:id="@+id/btnAdd"
-                    app:backgroundTint="@null"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rec_low_cornor_white"
                     android:text="Add"
                     android:textAllCaps="false"
-                    android:textColor="@color/primary" />
+                    android:textColor="@color/primary"
+                    app:backgroundTint="@null" />
             </LinearLayout>
 
         </LinearLayout>
@@ -265,7 +285,7 @@
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="16dp"
             android:duplicateParentState="false"
             android:padding="10dp">
 
@@ -275,10 +295,10 @@
             android:id="@+id/btnPost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:text="Post"
-            android:layout_marginTop="20dp"
-            android:textSize="14sp"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </ScrollView>

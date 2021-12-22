@@ -4,21 +4,23 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/drawable/rec_corner_left_background_app.xml" value="0.2484375" />
-        <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/activity_ques_ans_detail.xml" value="0.1793478260869565" />
+        <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/activity_add_review.xml" value="0.23229166666666667" />
+        <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/activity_ques_ans_detail.xml" value="0.4" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/activity_review_detail.xml" value="0.21822916666666667" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/dialog_recover_email.xml" value="0.152" />
-        <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_add_review_image_vertitcal.xml" value="0.2" />
+        <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_add_review_image_vertitcal.xml" value="0.264" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_add_review_no_image.xml" value="0.23229166666666667" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_add_review_one_img.xml" value="0.23229166666666667" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_pattern1.xml" value="0.23229166666666667" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_pattern2.xml" value="0.21822916666666667" />
-        <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_pattern3.xml" value="0.23229166666666667" />
+        <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_pattern3.xml" value="0.18936567164179105" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_reviews.xml" value="0.1793478260869565" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_search_question.xml" value="0.23229166666666667" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/fragment_search_review.xml" value="0.2" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/row_chat_left.xml" value="0.1793478260869565" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/row_chatlist_friend.xml" value="0.1793478260869565" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/row_comment.xml" value="0.1793478260869565" />
+        <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/row_question.xml" value="0.23229166666666667" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/row_review_pattern1.xml" value="0.4" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/row_review_pattern2.xml" value="0.23229166666666667" />
         <entry key="..\:/project_final/wongwein/wongwien_project/app/src/main/res/layout/row_review_pattern3.xml" value="0.23229166666666667" />

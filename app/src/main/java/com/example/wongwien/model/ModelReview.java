@@ -5,13 +5,13 @@ import android.os.Parcelable;
 
 public class ModelReview implements Parcelable {
     String rId,r_collection,r_desc0,r_desc1,r_desc2,r_desc3,r_desc4,
-            r_image0,r_image1,r_image3,r_image4,r_num,r_point,r_tag,r_timeStamp,r_title,
-            r_type,uEmail,uId,uImage,uName;
+            r_image0,r_image1,r_image2,r_image3,r_image4,r_num,r_point,r_tag,r_timeStamp,r_title,
+            r_type,uEmail,uId,uImg,uName;
 
     public ModelReview() {
     }
 
-    public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image3, String r_image4, String r_num, String r_point, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImage, String uName) {
+    public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image2, String r_image3, String r_image4, String r_num, String r_point, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImg, String uName) {
         this.rId = rId;
         this.r_collection = r_collection;
         this.r_desc0 = r_desc0;
@@ -21,6 +21,7 @@ public class ModelReview implements Parcelable {
         this.r_desc4 = r_desc4;
         this.r_image0 = r_image0;
         this.r_image1 = r_image1;
+        this.r_image2 = r_image2;
         this.r_image3 = r_image3;
         this.r_image4 = r_image4;
         this.r_num = r_num;
@@ -31,7 +32,7 @@ public class ModelReview implements Parcelable {
         this.r_type = r_type;
         this.uEmail = uEmail;
         this.uId = uId;
-        this.uImage = uImage;
+        this.uImg = uImg;
         this.uName = uName;
     }
 
@@ -45,6 +46,7 @@ public class ModelReview implements Parcelable {
         r_desc4 = in.readString();
         r_image0 = in.readString();
         r_image1 = in.readString();
+        r_image2 = in.readString();
         r_image3 = in.readString();
         r_image4 = in.readString();
         r_num = in.readString();
@@ -55,7 +57,7 @@ public class ModelReview implements Parcelable {
         r_type = in.readString();
         uEmail = in.readString();
         uId = in.readString();
-        uImage = in.readString();
+        uImg = in.readString();
         uName = in.readString();
     }
 
@@ -143,6 +145,14 @@ public class ModelReview implements Parcelable {
         this.r_image1 = r_image1;
     }
 
+    public String getR_image2() {
+        return r_image2;
+    }
+
+    public void setR_image2(String r_image2) {
+        this.r_image2 = r_image2;
+    }
+
     public String getR_image3() {
         return r_image3;
     }
@@ -223,12 +233,12 @@ public class ModelReview implements Parcelable {
         this.uId = uId;
     }
 
-    public String getuImage() {
-        return uImage;
+    public String getuImg() {
+        return uImg;
     }
 
-    public void setuImage(String uImage) {
-        this.uImage = uImage;
+    public void setuImg(String uImg) {
+        this.uImg = uImg;
     }
 
     public String getuName() {
@@ -251,6 +261,7 @@ public class ModelReview implements Parcelable {
                 ", r_desc4='" + r_desc4 + '\'' +
                 ", r_image0='" + r_image0 + '\'' +
                 ", r_image1='" + r_image1 + '\'' +
+                ", r_image2='" + r_image2 + '\'' +
                 ", r_image3='" + r_image3 + '\'' +
                 ", r_image4='" + r_image4 + '\'' +
                 ", r_num='" + r_num + '\'' +
@@ -261,7 +272,7 @@ public class ModelReview implements Parcelable {
                 ", r_type='" + r_type + '\'' +
                 ", uEmail='" + uEmail + '\'' +
                 ", uId='" + uId + '\'' +
-                ", uImage='" + uImage + '\'' +
+                ", uImg='" + uImg + '\'' +
                 ", uName='" + uName + '\'' +
                 '}';
     }
@@ -282,6 +293,7 @@ public class ModelReview implements Parcelable {
         dest.writeString(r_desc4);
         dest.writeString(r_image0);
         dest.writeString(r_image1);
+        dest.writeString(r_image2);
         dest.writeString(r_image3);
         dest.writeString(r_image4);
         dest.writeString(r_num);
@@ -292,7 +304,7 @@ public class ModelReview implements Parcelable {
         dest.writeString(r_type);
         dest.writeString(uEmail);
         dest.writeString(uId);
-        dest.writeString(uImage);
+        dest.writeString(uImg);
         dest.writeString(uName);
     }
 }

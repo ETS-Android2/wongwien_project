@@ -207,7 +207,6 @@ public class ReviewsFragment extends Fragment {
                     ModelReview model = d.getValue(ModelReview.class);
 
                     if (model.getR_collection().equals(categoryList[category])) {
-                        Log.d(TAG, "*************onDataChange: model:"+model.getR_type());
                         reviewLists.add(model);
                     }
                 }
@@ -275,6 +274,11 @@ public class ReviewsFragment extends Fragment {
         binding.rcView.setAdapter(adapter);
     }
 
+    @Override
+    public void onResume() {
+//        checkLoadData();
+        super.onResume();
+    }
 
     /*inflate option menu*/
     @Override

@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="#Tag"
-                android:textSize="14sp"
+                android:textSize="10sp"
                 android:textColor="@color/primary"/>
 
             <com.google.android.material.chip.ChipGroup

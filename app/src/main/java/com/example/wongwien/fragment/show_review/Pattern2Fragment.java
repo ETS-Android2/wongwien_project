@@ -1,5 +1,6 @@
 package com.example.wongwien.fragment.show_review;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,10 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.wongwien.QuesAnsDetailActivity;
 import com.example.wongwien.R;
+import com.example.wongwien.SearchActivity;
 import com.example.wongwien.databinding.FragmentPattern1Binding;
 import com.example.wongwien.databinding.FragmentPattern2Binding;
 import com.example.wongwien.model.ModelReview;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipDrawable;
+import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -53,8 +59,8 @@ public class Pattern2Fragment extends Fragment {
         binding.txtTime.setText(dateTime);
 
         try{
-            if(review.getuImage()!=null){
-                Picasso.get().load(review.getuImage()).into(binding.imgPerson);
+            if(review.getuImg()!=null){
+                Picasso.get().load(review.getuImg()).into(binding.imgPerson);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -68,6 +74,42 @@ public class Pattern2Fragment extends Fragment {
             e.printStackTrace();
         }
 
+        String tag=review.getR_tag();
+        if (!tag.equals("")) {
+            String tags[] = tag.split("::");
+            for (String s : tags) {
+                if (!s.equals("")) {
+                    addToChipGroup(s, binding.chipGroup);
+                }
+            }
+        }
+
         return view;
+    }
+    private void addToChipGroup(String s, ChipGroup chipGroup) {
+        Chip chip = new Chip(getContext());
+        ChipDrawable chipDrawable = ChipDrawable.createFromAttributes(getContext(),
+                null,
+                0,
+                R.style.chipCustom);
+        chip.setChipDrawable(chipDrawable);
+
+//        Chip chip = new Chip(QuesAnsDetailActivity.this, null, R.style.chipCustom);
+        chip.setChipText(s);
+        chip.setCloseIconEnabled(false);
+        chip.setClickable(true);
+        chip.setCheckable(false);
+        chip.setTextAppearanceResource(R.style.chipCustom);
+        chipGroup.addView(chip);
+
+        chip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SearchActivity.class);
+                intent.putExtra("tag", s);
+                intent.putExtra("collection", "review");
+                startActivity(intent);
+            }
+        });
     }
 }

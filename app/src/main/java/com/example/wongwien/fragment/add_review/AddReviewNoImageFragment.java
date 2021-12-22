@@ -20,13 +20,20 @@ import com.example.wongwien.AddQuestionActivity;
 import com.example.wongwien.AddReviewActivity;
 import com.example.wongwien.R;
 import com.example.wongwien.databinding.FragmentAddReviewNoImageBinding;
+import com.example.wongwien.model.ModelReview;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AddReviewNoImageFragment extends Fragment {
     private FragmentAddReviewNoImageBinding binding;
     private GetAllDataToActivity getdata;
+
+    DatabaseReference ref;
+    ModelReview review;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,68 @@ public class AddReviewNoImageFragment extends Fragment {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCollection.setAdapter(adapter);
+
+        Bundle bundle=getArguments();
+        if(bundle!=null){
+            review=bundle.getParcelable("list");
+
+            binding.edTitle.setText(review.getR_title());
+            binding.edDescription.setText(review.getR_desc0());
+            String tag=review.getR_tag();
+            if (!tag.equals("")) {
+                String tags[] = tag.split("::");
+                for (String s : tags) {
+                    if (!s.equals("")) {
+                        addToChipGroup(s, binding.chipGroup);
+                    }
+                }
+            }
+            binding.btnPost.setText("Update");
+            binding.btnPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String rId=review.getrId();
+
+                    String tag=getAllTag();
+                    String title = binding.edTitle.getText().toString().trim();
+                    String collection = binding.spinnerCollection.getSelectedItem().toString();
+                    String descipt = binding.edDescription.getText().toString().trim();
+
+                    ref= FirebaseDatabase.getInstance().getReference("Reviews").child(rId);
+                    ref.child("r_title").setValue(title);
+                    ref.child("r_desc0").setValue(descipt);
+                    ref.child("r_collection").setValue(collection);
+                    ref.child("r_tag").setValue(tag).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            getdata.updateReview(true);
+                        }
+                    });
+                }
+            });
+
+        }else{
+            binding.btnPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String tag=getAllTag();
+                    String title = binding.edTitle.getText().toString().trim();
+                    String collection = binding.spinnerCollection.getSelectedItem().toString();
+                    String descipt = binding.edDescription.getText().toString().trim();
+
+                    if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(descipt)) {
+
+                        if(TextUtils.isEmpty(tag)){
+                            tag="";
+                        }
+
+                        getdata.uploadReviewWithNoImage(title, descipt,tag,collection);
+                    }else{
+                        Toast.makeText(getContext(), "Please fill all", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
 
 
         binding.txtAddtag.setOnClickListener(new View.OnClickListener() {
@@ -73,26 +142,7 @@ public class AddReviewNoImageFragment extends Fragment {
             }
         });
 
-        binding.btnPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tag=getAllTag();
-                String title = binding.edTitle.getText().toString().trim();
-                String collection = binding.spinnerCollection.getSelectedItem().toString();
-                String descipt = binding.edDescription.getText().toString().trim();
 
-                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(descipt)) {
-
-                    if(TextUtils.isEmpty(tag)){
-                        tag="";
-                    }
-
-                    getdata.uploadReviewWithNoImage(title, descipt,tag,collection);
-                }else{
-                    Toast.makeText(getContext(), "Please fill all", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
         return binding.getRoot();
     }
 

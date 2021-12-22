@@ -3,6 +3,7 @@ package com.example.wongwien.fragment.add_review;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,13 +35,25 @@ import android.widget.Toast;
 
 import com.example.wongwien.R;
 import com.example.wongwien.databinding.FragmentAddReviewOneImgBinding;
+import com.example.wongwien.model.ModelReview;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import javax.xml.transform.Result;
 
 import static android.app.Activity.RESULT_OK;
+
+import java.util.HashMap;
 
 public class AddReviewOneImageFragment extends Fragment {
     private static final String TAG = "AddReviewOneImageFragme";
@@ -57,6 +70,14 @@ public class AddReviewOneImageFragment extends Fragment {
     private GetAllDataToActivity getdata;
 
     Uri image_uri;
+    ModelReview review;
+    DatabaseReference ref;
+    FirebaseStorage storage;
+
+    ProgressDialog progressDialog;
+
+    boolean isUpdate=false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +93,69 @@ public class AddReviewOneImageFragment extends Fragment {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCollection.setAdapter(adapter);
+
+        progressDialog=new ProgressDialog(getContext());
+
+        Bundle bundle=getArguments();
+        if(bundle!=null){
+            review=bundle.getParcelable("list");
+
+            binding.edTitle.setText(review.getR_title());
+            binding.edDescription.setText(review.getR_desc0());
+
+            String image=review.getR_image0();
+            try{
+                if(image!=null ||!image.equals("")){
+                    changeImageToImageView(binding.tvImage,image);
+                    image_uri=Uri.parse(image);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            String tag=review.getR_tag();
+            if (!tag.equals("")) {
+                String tags[] = tag.split("::");
+                for (String s : tags) {
+                    if (!s.equals("")) {
+                        addToChipGroup(s);
+                    }
+                }
+            }
+            isUpdate=true;
+
+            binding.btnPost.setText("Update");
+            binding.btnPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String rId=review.getrId();
+
+                    String tag=getAllTag();
+                    String title = binding.edTitle.getText().toString().trim();
+                    String collection = binding.spinnerCollection.getSelectedItem().toString();
+                    String descipt = binding.edDescription.getText().toString().trim();
+
+                    ref= FirebaseDatabase.getInstance().getReference("Reviews").child(rId);
+                    ref.child("r_title").setValue(title);
+                    ref.child("r_desc0").setValue(descipt);
+                    ref.child("r_image0").setValue(String.valueOf(image_uri));
+                    ref.child("r_collection").setValue(collection);
+                    ref.child("r_tag").setValue(tag).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            getdata.updateReview(true);
+                        }
+                    });
+                }
+            });
+
+        }else{
+            binding.btnPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    uploadImage(image_uri);
+                }
+            });
+        }
 
         binding.txtAddtag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,12 +224,6 @@ public class AddReviewOneImageFragment extends Fragment {
             }
         });
 
-        binding.btnPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadImage(image_uri);
-            }
-        });
 
         return binding.getRoot();
     }
@@ -167,10 +245,56 @@ public class AddReviewOneImageFragment extends Fragment {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
+    public void changeImageToImageView(ImageView imageView, String img) {
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        try{
+            Picasso.get().load(img).into(imageView);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     public void changeImageToImageView(ImageView imageView, Uri img){
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         imageView.setImageURI(img);
+
+        if(isUpdate){
+            progressDialog.setMessage("Upload image...");
+            progressDialog.show();
+
+            String timeStamp = String.valueOf(System.currentTimeMillis());
+
+            String filePathAndName = "Review_image/" + review.getuId() + "_" + timeStamp;
+            storage=FirebaseStorage.getInstance();
+
+            StorageReference s_ref = storage.getReference().child(filePathAndName);
+            s_ref.putFile(img).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> urlTask = s_ref.putFile(img).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+                            // Continue with the task to get the download URL
+                            return s_ref.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                Uri downloadUri = task.getResult();
+                                Log.d(TAG, "onComplete: img Uri::" + downloadUri);
+
+                                image_uri=downloadUri;
+                                progressDialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            });
+        }
 
     }
     private void uploadImage(Uri image_uri) {

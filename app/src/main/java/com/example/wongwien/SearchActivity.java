@@ -69,6 +69,14 @@ public class SearchActivity extends AppCompatActivity {
                 clearMode();
                 binding.underlineQues.setBackgroundColor(getResources().getColor(R.color.primary));
                 checkMessageAndCheckFilter();
+            }else{
+                isFindReview=true;
+                binding.edSearch.setText(tag);
+                message=tag;
+
+                clearMode();
+                binding.underlineReview.setBackgroundColor(getResources().getColor(R.color.primary));
+                checkMessageAndCheckFilter();
             }
         }
 

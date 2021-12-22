@@ -5,6 +5,7 @@ import static android.app.Activity.RESULT_OK;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,9 +34,23 @@ import android.widget.Toast;
 
 import com.example.wongwien.EdittextV2;
 import com.example.wongwien.R;
+import com.example.wongwien.SplashActivity;
 import com.example.wongwien.databinding.FragmentAddReviewImageVertitcalBinding;
+import com.example.wongwien.model.ModelReview;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -66,8 +81,18 @@ public class AddReviewImageVertitcalFragment extends Fragment {
     int codeRequest_gallery;
     Uri image_uri;
 
-    ArrayList<Uri>allUri;
+    Uri[] allUriPosition;
     ArrayList<String>allDescrip;
+
+    ProgressDialog progressDialog;
+    FirebaseStorage storage;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+
+    String myUid;
+
+    ModelReview review;
+    DatabaseReference ref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,14 +104,135 @@ public class AddReviewImageVertitcalFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding=FragmentAddReviewImageVertitcalBinding.inflate(inflater);
 
-        allUri=new ArrayList<>();
-        allDescrip=new ArrayList<>();
+        initView();
+        checkUserStatus();
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.collections, R.layout.spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCollection.setAdapter(adapter);
+
+        Bundle bundle=getArguments();
+        if(bundle!=null){
+
+            review=bundle.getParcelable("list");
+            binding.edTitle.setText(review.getR_title());
+
+            switch (Integer.parseInt(review.getR_num())){
+                case 1:
+                    binding.edD1.setText(review.getR_desc0());
+                    changeImageToImageView(binding.im1,review.getR_image0(),0);
+                    break;
+
+                case 2:
+                    binding.edD1.setText(review.getR_desc0());
+                    binding.edD2.setText(review.getR_desc1());
+
+                    changeImageToImageView(binding.im1,review.getR_image0(),0);
+                    changeImageToImageView(binding.im2,review.getR_image1(),1);
+                    break;
+
+                case 3:
+                    binding.more2.setVisibility(View.VISIBLE);
+
+                    binding.addmore1.setVisibility(View.GONE);
+
+                    binding.edD1.setText(review.getR_desc0());
+                    binding.edD2.setText(review.getR_desc1());
+                    binding.edD3.setText(review.getR_desc2());
+
+                    changeImageToImageView(binding.im1,review.getR_image0(),0);
+                    changeImageToImageView(binding.im2,review.getR_image1(),1);
+                    changeImageToImageView(binding.im3,review.getR_image2(),2);
+                    break;
+                case 4:
+                    binding.more2.setVisibility(View.VISIBLE);
+                    binding.more3.setVisibility(View.VISIBLE);
+
+                    binding.addmore1.setVisibility(View.GONE);
+                    binding.addmore2.setVisibility(View.GONE);
+
+                    binding.edD1.setText(review.getR_desc0());
+                    binding.edD2.setText(review.getR_desc1());
+                    binding.edD3.setText(review.getR_desc2());
+                    binding.edD4.setText(review.getR_desc3());
+
+                    changeImageToImageView(binding.im1,review.getR_image0(),0);
+                    changeImageToImageView(binding.im2,review.getR_image1(),1);
+                    changeImageToImageView(binding.im3,review.getR_image2(),2);
+                    changeImageToImageView(binding.im4,review.getR_image3(),3);
+                    break;
+                default:
+                    break;
+            }
+            String tag=review.getR_tag();
+            if (!tag.equals("")) {
+                String tags[] = tag.split("::");
+                for (String s : tags) {
+                    if (!s.equals("")) {
+                        addToChipGroup(s);
+                    }
+                }
+            }
+            binding.btnPost.setText("Update");
+            binding.btnPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String rId=review.getrId();
+
+                    String tag=getAllTag();
+                    String title = binding.edTitle.getText().toString().trim();
+                    String collection = binding.spinnerCollection.getSelectedItem().toString();
+
+                    ref= FirebaseDatabase.getInstance().getReference("Reviews").child(rId);
+                    ref.child("r_title").setValue(title);
+
+                    int count=0;
+                    for(int i=0;i<allUriPosition.length;i++){
+                        if(allUriPosition[i]!=null){
+                            count++;
+                        }
+                    }
+//                    Log.d(TAG, "onClick: count::"+count);
+
+                    try{
+                        ref.child("r_desc0").setValue(binding.edD1.getText().toString().trim());
+                        ref.child("r_desc1").setValue(binding.edD2.getText().toString().trim());
+                        ref.child("r_desc2").setValue(binding.edD3.getText().toString().trim());
+                        ref.child("r_desc3").setValue(binding.edD4.getText().toString().trim());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    try{
+                        ref.child("r_image0").setValue(String.valueOf(allUriPosition[0]));
+                        ref.child("r_image1").setValue(String.valueOf(allUriPosition[1]));
+                        ref.child("r_image2").setValue(String.valueOf(allUriPosition[2]));
+                        ref.child("r_image3").setValue(String.valueOf(allUriPosition[3]));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    ref.child("r_num").setValue(String.valueOf(count));
+                    ref.child("r_collection").setValue(collection);
+                    ref.child("r_tag").setValue(tag).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            getdata.updateReview(true);
+                        }
+                    });
+                }
+            });
+
+        }else{
+            binding.btnPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    uploadData();
+                }
+            });
+        }
 
         binding.addmore1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,13 +314,15 @@ public class AddReviewImageVertitcalFragment extends Fragment {
         });
 
 
-        binding.btnPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadData();
-            }
-        });
         return binding.getRoot();
+    }
+
+    private void initView() {
+        allUriPosition=new Uri[4];
+        allDescrip=new ArrayList<>();
+        progressDialog=new ProgressDialog(getContext());
+        storage=FirebaseStorage.getInstance();
+        firebaseAuth=FirebaseAuth.getInstance();
     }
 
     private void uploadData() {
@@ -192,11 +340,32 @@ public class AddReviewImageVertitcalFragment extends Fragment {
                     binding.edD1,binding.edD2,binding.edD3,binding.edD4
             };
 
-            for(int i=0;i<allUri.size();i++){
-                allDescrip.add(edViews[i].getText().toString().trim());
+
+
+            for(int i=0;i<allUriPosition.length;i++){
+                if (!TextUtils.isEmpty(edViews[i].getText().toString().trim())){
+                    allDescrip.add(edViews[i].getText().toString().trim());
+                }else{
+                    allDescrip.add("");
+                }
             }
 
-            getdata.uploadReviewWithVerticalImage(title,allDescrip,allUri,tag,collection);
+            ArrayList<Uri>allImageUri=new ArrayList<>();
+
+            int count=0;
+
+            for(int i=0;i<allUriPosition.length;i++){
+                if(allUriPosition[i]!=null){
+                    count++;
+                    allImageUri.add(allUriPosition[i]);
+                }
+            }
+
+            for(int i=0;i<allImageUri.size();i++){
+                Log.d(TAG, "uploadData: image::"+allImageUri.get(i));
+            }
+
+            getdata.uploadReviewWithVerticalImage(title,allDescrip,allImageUri,tag,collection,count);
 
 
         }else{
@@ -247,44 +416,41 @@ public class AddReviewImageVertitcalFragment extends Fragment {
         if(resultCode==RESULT_OK){
             switch(requestCode){
                 case IMAGE_PICK_CAMERA_REQUEST_CODE_1:
-                    changeImageToImageView(binding.im1,image_uri);
+                    changeImageToImageView(binding.im1,image_uri,0);
                     Log.d(TAG, "onActivityResult: image::"+image_uri);
                     break;
 
                 case IMAGE_PICK_GALLERY_REQUEST_CODE_1:
                     image_uri=data.getData();
-                    changeImageToImageView(binding.im1,image_uri);
-                    Log.d(TAG, "onActivityResult: requestcode::"+codeRequest_gallery);
-                    Log.d(TAG, "onActivityResult: image::"+image_uri);
+                    changeImageToImageView(binding.im1,image_uri,0);
                     break;
 
                 case IMAGE_PICK_CAMERA_REQUEST_CODE_2:
-                    changeImageToImageView(binding.im2,image_uri);
+                    changeImageToImageView(binding.im2,image_uri,1);
                     break;
 
                 case IMAGE_PICK_GALLERY_REQUEST_CODE_2:
                     image_uri=data.getData();
-                    changeImageToImageView(binding.im2,image_uri);
+                    changeImageToImageView(binding.im2,image_uri,1);
                     break;
 
                 case IMAGE_PICK_CAMERA_REQUEST_CODE_3:
-                    changeImageToImageView(binding.im3,image_uri);
+                    changeImageToImageView(binding.im3,image_uri,2);
                     break;
 
                 case IMAGE_PICK_GALLERY_REQUEST_CODE_3:
                     image_uri=data.getData();
-                    changeImageToImageView(binding.im3,image_uri);
+                    changeImageToImageView(binding.im3,image_uri,2);
                     break;
 
                 case IMAGE_PICK_CAMERA_REQUEST_CODE_4:
-                    changeImageToImageView(binding.im4,image_uri);
+                    changeImageToImageView(binding.im4,image_uri,3);
                     break;
 
                 case IMAGE_PICK_GALLERY_REQUEST_CODE_4:
                     image_uri=data.getData();
-                    changeImageToImageView(binding.im4,image_uri);
+                    changeImageToImageView(binding.im4,image_uri,3);
                     break;
-
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -406,19 +572,82 @@ public class AddReviewImageVertitcalFragment extends Fragment {
         return txtTag;
     }
 
-    public void changeImageToImageView(ImageView imageView, Uri img){
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView.setImageURI(img);
+    public void changeImageToImageView(ImageView imageView, Uri img, int i){
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+//        imageView.setImageURI(img);
 
-        allUri.add(img);
+        progressDialog.setMessage("Upload image...");
+        progressDialog.show();
 
-        Log.d(TAG, "changeImageToImageView: img::"+img);
+        String timeStamp = String.valueOf(System.currentTimeMillis());
 
+        String filePathAndName = "Review_image/" + myUid + "_" + timeStamp;
+        storage= FirebaseStorage.getInstance();
+
+        StorageReference s_ref = storage.getReference().child(filePathAndName);
+        s_ref.putFile(img).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> urlTask = s_ref.putFile(img).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+
+                        // Continue with the task to get the download URL
+                        return s_ref.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUri = task.getResult();
+                            Log.d(TAG, "onComplete: img Uri::" + downloadUri);
+
+                            image_uri=downloadUri;
+                            allUriPosition[i]=image_uri;
+
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
+
+        try{
+            Picasso.get().load(image_uri).into(imageView);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void changeImageToImageView(ImageView imageView, String img,int i){
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        try{
+            Picasso.get().load(img).into(imageView);
+            allUriPosition[i]=Uri.parse(img);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         getdata= (GetAllDataToActivity) getActivity();
         super.onAttach(context);
+    }
+
+    private void checkUserStatus() {
+        //get current user
+        user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            myUid = user.getUid();
+        } else {
+            //go back to login
+            startActivity(new Intent(getContext(), SplashActivity.class));
+        }
     }
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.show_review.Pattern3Fragment">
+    tools:context=".fragment.show_review.Pattern2Fragment">
 
-    <!--    not finished yet!!!!!!-->
 
     <LinearLayout
         android:layout_marginTop="10dp"
@@ -83,268 +82,156 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="20dp">
-
+            android:orientation="vertical">
             <TextView
+                android:id="@+id/r_title"
+                android:padding="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="Title Review"
-                android:textColor="@color/primary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <com.example.wongwien.EdittextV2
-                android:id="@+id/edTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/dialog_bg"
-                android:gravity="start"
-                android:hint="Add your title review"
-                android:inputType="textCapSentences|textMultiLine"
-                android:minHeight="50dp"
-                android:padding="5dp"
-                android:textSize="18sp" />
+                android:text="this is a title"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/reviewTitle"/>
 
             <LinearLayout
+                android:id="@+id/set0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/hint"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
                     <ImageView
-                        android:id="@+id/im1"
+                        android:id="@+id/r_image0"
+                        android:layout_gravity="center"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/image_icon" />
-
-                </LinearLayout>
-                <com.example.wongwien.EdittextV2
-                    android:id="@+id/edD1"
+                        android:src="@drawable/image_icon"/>
+                <TextView
+                    android:padding="20dp"
+                    android:id="@+id/r_desc0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/dialog_bg"
-                    android:gravity="start"
-                    android:hint="Add your description of image"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:minHeight="50dp"
-                    android:padding="5dp"
-                    android:textSize="18sp" />
-
+                    android:text="this is description ................"
+                    android:textColor="@color/reviewDescrip"
+                    android:textSize="14sp"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/set1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/hint"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
                     <ImageView
+                        android:id="@+id/r_image1"
+                        android:layout_gravity="center"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:id="@+id/im2"
-                        android:src="@drawable/image_icon"
-                        android:adjustViewBounds="true" />
-
-                </LinearLayout>
-
-                <com.example.wongwien.EdittextV2
-                    android:id="@+id/edD2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/dialog_bg"
-                    android:gravity="start"
-                    android:hint="Add your description of image"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:minHeight="50dp"
-                    android:padding="5dp"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/addmore1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add more review"
-                    android:textColor="@color/primary"
-                    android:textStyle="bold"
-                    android:layout_gravity="end"
-                    android:layout_margin="10dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/more2"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/hint"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:id="@+id/im3"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:src="@drawable/image_icon"
-                        android:adjustViewBounds="true" />
-
-                </LinearLayout>
-                <com.example.wongwien.EdittextV2
-                    android:id="@+id/edD3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/dialog_bg"
-                    android:gravity="start"
-                    android:hint="Add your description of image"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:minHeight="50dp"
-                    android:padding="5dp"
-                    android:textSize="18sp" />
-                <TextView
-                    android:id="@+id/addmore2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add more review"
-                    android:textColor="@color/primary"
-                    android:textStyle="bold"
-                    android:layout_gravity="end"
-                    android:layout_margin="10dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/more3"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/hint"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:id="@+id/im4"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:src="@drawable/image_icon"
-                        android:adjustViewBounds="true" />
-
-                </LinearLayout>
-                <com.example.wongwien.EdittextV2
-                    android:id="@+id/edD4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/dialog_bg"
-                    android:gravity="start"
-                    android:hint="Add your description of image"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:minHeight="50dp"
-                    android:padding="5dp"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/txtAddtag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:padding="10dp"
-                android:text="Add Tag"
-                android:textColor="@color/primary"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/showTag"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:text="Tag"
-                    android:textColor="@color/primary"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal">
-
-                    <com.example.wongwien.EdittextV2
-                        android:id="@+id/edTag"
-                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/dialog_bg"
-                        android:hint="Typing something..."
-                        android:padding="10dp"
-                        android:textSize="15sp" />
-
-                    <Button
-                        android:id="@+id/btnAdd"
-                        app:backgroundTint="@null"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rec_low_cornor_white"
-                        android:text="Add"
-                        android:textAllCaps="false"
-                        android:textColor="@color/primary" />
-                </LinearLayout>
-
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/image_icon"/>
+                <TextView
+                    android:padding="20dp"
+                    android:id="@+id/r_desc1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="this is description ................"
+                    android:textColor="@color/reviewDescrip"
+                    android:textSize="14sp"/>
             </LinearLayout>
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
+            <LinearLayout
+                android:id="@+id/set2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:duplicateParentState="false"
-                android:padding="10dp">
-
-            </com.google.android.material.chip.ChipGroup>
-
-            <Button
-                android:id="@+id/btnPost"
+                android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/r_image2"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/image_icon"/>
+                <TextView
+                    android:padding="20dp"
+                    android:id="@+id/r_desc2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="this is description ................"
+                    android:textColor="@color/reviewDescrip"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/set3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Post"
-                android:layout_marginTop="20dp"
-                android:textSize="14sp"
-                android:textAllCaps="false"/>
+                android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/r_image3"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/image_icon"/>
+                <TextView
+                    android:padding="20dp"
+                    android:id="@+id/r_desc3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="this is description ................"
+                    android:textColor="@color/reviewDescrip"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:duplicateParentState="false">
+
+            <!--                <com.google.android.material.chip.Chip-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:visibility="visible"-->
+            <!--                    android:text="helllo"/>-->
+        </com.google.android.material.chip.ChipGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnUp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:background="@color/white"
+                android:src="@drawable/ic_up_secound_primary" />
+
+            <ImageButton
+                android:id="@+id/btnDown"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:background="@color/white"
+                android:src="@drawable/ic_down_secound_primary" />
+
+            <ImageButton
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:background="@color/white"
+                android:src="@drawable/ic_share_secound_primary" />
         </LinearLayout>
     </LinearLayout>
-</FrameLayout>
+</ScrollView>
