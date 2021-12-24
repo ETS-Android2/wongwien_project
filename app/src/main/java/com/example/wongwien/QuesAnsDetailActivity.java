@@ -372,7 +372,6 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void hideKeyboard(Activity activity) {

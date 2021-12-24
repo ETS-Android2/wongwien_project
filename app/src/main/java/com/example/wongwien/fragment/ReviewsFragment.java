@@ -276,7 +276,7 @@ public class ReviewsFragment extends Fragment {
 
     @Override
     public void onResume() {
-//        checkLoadData();
+//       checkLoadData();
         super.onResume();
     }
 

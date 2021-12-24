@@ -5,6 +5,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,6 +57,8 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.Myholder
         }catch (Exception e){
             e.printStackTrace();
         }
+
+
     }
 
     @Override
@@ -66,6 +69,7 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.Myholder
     class Myholder extends RecyclerView.ViewHolder{
         private TextView txtName,txtTime,txtComment;
         private CircleImageView imgPerson;
+
         public Myholder(@NonNull  View itemView) {
             super(itemView);
             imgPerson=itemView.findViewById(R.id.imgPerson);
