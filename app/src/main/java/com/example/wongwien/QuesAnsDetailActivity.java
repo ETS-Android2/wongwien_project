@@ -11,20 +11,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wongwien.adapter.AdapterComment;
 import com.example.wongwien.databinding.ActivityQuesAnsDetailBinding;
-import com.example.wongwien.databinding.ActivityWelcomeBinding;
-import com.example.wongwien.model.ModelChat;
 import com.example.wongwien.model.ModelComment;
 import com.example.wongwien.model.ModelQuestionAns;
 import com.example.wongwien.model.ModelUser;
@@ -35,7 +30,6 @@ import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,13 +44,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 
 public class QuesAnsDetailActivity extends AppCompatActivity {
     private static final String TAG = "QuesAnsDetailActivity";
     ActionBar actionBar;
-    AdapterComment adapter;
+    AdapterComment adapterComment;
     String myUid, myImage, myName;
     String qId, qUid;
     String mark = "none";
@@ -299,10 +291,10 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                     ModelComment comment = d.getValue(ModelComment.class);
                     comments.add(comment);
                 }
-                adapter = new AdapterComment(comments, QuesAnsDetailActivity.this);
+                adapterComment = new AdapterComment(comments, QuesAnsDetailActivity.this);
                 binding.rcComment.setHasFixedSize(true);
                 binding.rcComment.setLayoutManager(new LinearLayoutManager(QuesAnsDetailActivity.this));
-                binding.rcComment.setAdapter(adapter);
+                binding.rcComment.setAdapter(adapterComment);
             }
 
             @Override

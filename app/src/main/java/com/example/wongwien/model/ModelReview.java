@@ -7,8 +7,10 @@ public class ModelReview implements Parcelable {
     String rId,r_collection,r_desc0,r_desc1,r_desc2,r_desc3,r_desc4,
             r_image0,r_image1,r_image2,r_image3,r_image4,r_num,r_point,r_tag,r_timeStamp,r_title,
             r_type,uEmail,uId,uImg,uName;
+    int countDisplay;
 
     public ModelReview() {
+        countDisplay=0;
     }
 
     public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image2, String r_image3, String r_image4, String r_num, String r_point, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImg, String uName) {
@@ -34,6 +36,15 @@ public class ModelReview implements Parcelable {
         this.uId = uId;
         this.uImg = uImg;
         this.uName = uName;
+        this.countDisplay=0;
+    }
+
+    public int getCountDisplay() {
+        return countDisplay;
+    }
+
+    public void setCountDisplay(int countDisplay) {
+        this.countDisplay = countDisplay;
     }
 
     protected ModelReview(Parcel in) {

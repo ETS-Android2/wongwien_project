@@ -11,69 +11,66 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="3dp"
+        android:layout_margin="20dp"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Option:"
+            android:textSize="15sp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"/>
+        <Button
             android:id="@+id/layoutEdName"
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:background="@drawable/background_dialog_edit_profile"
-            android:layout_height="60dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Edit Name"
-                android:textSize="20sp"
-                android:textColor="@color/primary"
-                android:gravity="center"
-                android:layout_gravity="center"/>
-        </LinearLayout>
-        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Edit Name"
+            android:textAllCaps="false"
+            app:backgroundTint="@null"
+            android:textSize="17sp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:background="@drawable/rec_cornor_border_white"/>
+
+        <Button
             android:id="@+id/layoutEdProfile"
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:background="@drawable/background_dialog_edit_profile"
-            android:layout_height="60dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Edit Profile"
-                android:textSize="20sp"
-                android:textColor="@color/primary"
-                android:gravity="center"
-                android:layout_gravity="center"/>
-        </LinearLayout>
-        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Edit Profile"
+            android:textAllCaps="false"
+            app:backgroundTint="@null"
+            android:textSize="17sp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:background="@drawable/rec_cornor_border_white"/>
+        <Button
             android:id="@+id/layoutEdProfileCover"
-            android:layout_margin="5dp"
             android:layout_width="match_parent"
-            android:background="@drawable/background_dialog_edit_profile"
-            android:layout_height="60dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Edit Profile Cover"
-                android:textSize="20sp"
-                android:textColor="@color/primary"
-                android:gravity="center"
-                android:layout_gravity="center"/>
-        </LinearLayout>
-        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Edit Profile Cover"
+            android:textAllCaps="false"
+            app:backgroundTint="@null"
+            android:textSize="17sp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:background="@drawable/rec_cornor_border_white"/>
+        <Button
             android:id="@+id/layoutAddReview"
-            android:layout_margin="5dp"
             android:layout_width="match_parent"
-            android:background="@drawable/background_dialog_edit_profile"
-            android:layout_height="60dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Add Review"
-                android:textSize="20sp"
-                android:textColor="@color/primary"
-                android:gravity="center"
-                android:layout_gravity="center"/>
-        </LinearLayout>
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Add Review"
+            android:textAllCaps="false"
+            app:backgroundTint="@null"
+            android:textSize="17sp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:background="@drawable/rec_cornor_border_white"/>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

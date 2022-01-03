@@ -199,10 +199,10 @@ public class ProfileFragment extends Fragment {
     private void showEditDialog() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_edit_profile, null, false);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
-        LinearLayout edName = view.findViewById(R.id.layoutEdName);
-        LinearLayout edProfile = view.findViewById(R.id.layoutEdProfile);
-        LinearLayout edProfielCover = view.findViewById(R.id.layoutEdProfileCover);
-        LinearLayout addReview = view.findViewById(R.id.layoutAddReview);
+        Button edName = view.findViewById(R.id.layoutEdName);
+        Button edProfile = view.findViewById(R.id.layoutEdProfile);
+        Button edProfielCover = view.findViewById(R.id.layoutEdProfileCover);
+        Button addReview = view.findViewById(R.id.layoutAddReview);
         builder.setView(view);
         final AlertDialog show = builder.show();
 

@@ -7,11 +7,11 @@
     app:cardCornerRadius="10dp">
 
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -50,76 +50,145 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
+        <HorizontalScrollView
+            android:id="@+id/hsv"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="horizontal"
-            android:background="@color/backgroundApp">
-            <ImageView
-                android:layout_gravity="center"
-                android:id="@+id/r_image0"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                android:src="@drawable/image_icon"/>
+            android:layout_height="wrap_content"
+            android:scrollbarSize="2dp"
+            android:scrollbarThumbHorizontal="@color/backgroundApp"
+            android:scrollbars="horizontal" >
 
-            <RelativeLayout
-                android:layout_gravity="center"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/r_image1"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/image_icon" />
-
-                <LinearLayout
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/white">
+                <RelativeLayout
+                    android:id="@+id/cover00"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/gray"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/r_image0"
+                        android:layout_width="400dp"
+                        android:layout_height="250dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/image_icon" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/r_desc0"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/r_image0"
+                        android:layout_centerHorizontal="true"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="10dp"
+                        android:text="this is description ................"
+                        android:textColor="@color/reviewDescrip"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:visibility="visible"
+                    android:id="@+id/cover01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/r_image1"
+                        android:layout_width="400dp"
+                        android:layout_height="250dp"
                         android:layout_gravity="center"
-                        android:text="More ..."
-                        android:textSize="14sp"
-                        android:gravity="center"
-                        android:textColor="#FFFFFF"
-                        android:textStyle="bold" />
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/image_icon" />
 
-                </LinearLayout>
-            </RelativeLayout>
+                    <TextView
+                        android:layout_below="@+id/r_image1"
+                        android:id="@+id/r_desc1"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_height="wrap_content"
+                        android:text="this is description ................"
+                        android:textColor="@color/reviewDescrip"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/cover02"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <ImageView
+                        android:id="@+id/r_image2"
+                        android:layout_width="400dp"
+                        android:layout_height="250dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/image_icon" />
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_below="@+id/r_image2"
+                        android:id="@+id/r_desc2"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_height="wrap_content"
+                        android:text="this is description ................"
+                        android:textColor="@color/reviewDescrip"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/cover03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/r_image3"
+                        android:layout_width="400dp"
+                        android:layout_height="250dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/image_icon" />
+
+                    <TextView
+                        android:layout_below="@+id/r_image3"
+                        android:id="@+id/r_desc3"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_height="wrap_content"
+                        android:text="this is description ................"
+                        android:textColor="@color/reviewDescrip"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+        </HorizontalScrollView>
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="10dp"
-            android:layout_marginTop="20dp"
             android:paddingEnd="20dp"
             android:paddingStart="20dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/r_desc0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="this is description ................"
-                android:textColor="@color/reviewDescrip"
-                android:textSize="14sp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -127,17 +196,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/score"
                         android:orientation="horizontal">
-
                         <ImageView
                             android:id="@+id/starScore"
                             android:layout_width="20dp"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_star_empty_primary" />
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_star_empty_primary"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
