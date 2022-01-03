@@ -52,6 +52,14 @@
         <entry key="..\:/project_final/wongwein3/wongwien_project/app/src/main/res/layout/dialog_review_score.xml" value="0.23229166666666667" />
         <entry key="..\:/project_final/wongwein3/wongwien_project/app/src/main/res/layout/fragment_pattern2.xml" value="0.23229166666666667" />
         <entry key="..\:/project_final/wongwein3/wongwien_project/app/src/main/res/layout/fragment_profile.xml" value="0.23229166666666667" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/background_profile.xml" value="0.2484375" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/background_question.xml" value="0.2484375" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/background_review.xml" value="0.2484375" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_add_question.xml" value="0.2" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_chatlist.xml" value="0.2" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_ques_ans_detail.xml" value="0.23229166666666667" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_ques_ans.xml" value="0.23229166666666667" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_reviews.xml" value="0.23229166666666667" />
       </map>
     </option>
   </component>

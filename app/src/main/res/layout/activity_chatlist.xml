@@ -31,6 +31,7 @@
                 android:textColor="@color/primary"
                 android:textSize="20sp" />
             <View
+                android:layout_marginTop="10dp"
                 android:id="@+id/underlineMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="10dp"
@@ -53,6 +54,7 @@
                 android:textColor="@color/primary"
                 android:textSize="20sp" />
             <View
+                android:layout_marginTop="10dp"
                 android:id="@+id/underlineFriends"
                 android:layout_width="wrap_content"
                 android:layout_height="10dp"
@@ -85,6 +87,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <FrameLayout
+        android:layout_marginTop="5dp"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
