@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -169,14 +171,39 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ReviewDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("list", reviews.get(position));
-
-                intent.putExtra("bundle", bundle);
-                context.startActivity(intent);
+                goToReviewDetail(position);
             }
         });
+
+        if(getItemViewType(position)==PATTERN_REVIEW_3){
+
+            holder.cover00.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToReviewDetail(position);
+                }
+            });
+            holder.cover01.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToReviewDetail(position);
+                }
+            });
+
+            holder.cover02.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToReviewDetail(position);
+                }
+            });
+
+            holder.cover03.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToReviewDetail(position);
+                }
+            });
+        }
 
         holder.score.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,6 +301,15 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 //            }
 //        });
 //
+    }
+
+    private void goToReviewDetail(int position){
+        Intent intent = new Intent(context, ReviewDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("list", reviews.get(position));
+
+        intent.putExtra("bundle", bundle);
+        context.startActivity(intent);
     }
 
     private void calculateScore(ModelReview review, int star, Myholder holder) {
@@ -517,6 +553,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
                 r_image1 = itemView.findViewById(R.id.r_image1);
                 r_image2 = itemView.findViewById(R.id.r_image2);
                 r_image3 = itemView.findViewById(R.id.r_image3);
+                hsv = itemView.findViewById(R.id.hsv);
             }catch (Exception e){
                 e.printStackTrace();
             }
