@@ -67,6 +67,18 @@
             android:textAllCaps="false"
             app:backgroundTint="@null"
             android:textSize="17sp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:background="@drawable/rec_cornor_border_white"/>
+        <Button
+            android:id="@+id/layoutAddQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Add Question"
+            android:textAllCaps="false"
+            app:backgroundTint="@null"
+            android:textSize="17sp"
             android:layout_marginBottom="20dp"
             android:textColor="@color/primary"
             android:textStyle="bold"

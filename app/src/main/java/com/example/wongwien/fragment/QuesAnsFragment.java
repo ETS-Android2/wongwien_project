@@ -295,7 +295,7 @@ public class QuesAnsFragment extends Fragment {
 
     @Override
     public void onStart() {
-        checkLoadData();
         super.onStart();
     }
+
 }

@@ -43,21 +43,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initView();
+        //actionbar
+        ActionBar actionbar=getSupportActionBar();
+        actionbar.setTitle("Reviews");
+
+        initView(actionbar);
+
+        Intent intent=getIntent();
+        String refresh= intent.getStringExtra("refresh");
+        if(refresh!=null){
+            if(refresh.equals("question")){
+                actionbar.setTitle("Question-Ans");
+                QuesAnsFragment questionAnsFragment=new QuesAnsFragment();
+                FragmentTransaction fr2=getSupportFragmentManager().beginTransaction();
+                fr2.replace(R.id.container,questionAnsFragment,"");
+                fr2.commit();
+            }
+        }
 
         Log.d(TAG, "onCreate: usr:::"+myUid);
 
     }
 
-    private void initView() {
+    private void initView(ActionBar actionbar) {
         //firebase Auth
         firebaseAuth =FirebaseAuth.getInstance();
         database=FirebaseDatabase.getInstance();
 
-        //actionbar
-        ActionBar actionbar=getSupportActionBar();
-
-        actionbar.setTitle("Reviews");
 //        actionbar.setDisplayHomeAsUpEnabled(true);
 //        actionbar.setDisplayShowHomeEnabled(true);
 
@@ -82,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.action_question:
                         actionbar.setTitle("Question-Ans");
-                    QuesAnsFragment questionAnsFragment=new QuesAnsFragment();
+                        QuesAnsFragment questionAnsFragment=new QuesAnsFragment();
                         FragmentTransaction fr2=getSupportFragmentManager().beginTransaction();
                         fr2.replace(R.id.container,questionAnsFragment,"");
                         fr2.commit();

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.example.wongwien.R;
 import com.example.wongwien.databinding.FragmentAddReviewImageHorizontalBinding;
 
-public class AddReviewImageHorizontalFragment extends Fragment {
+public class AddReviewImageHorizontalFragment extends Fragment{
     private FragmentAddReviewImageHorizontalBinding binding;
 
     @Override

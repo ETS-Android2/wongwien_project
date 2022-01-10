@@ -32,6 +32,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wongwien.AddQuestionActivity;
+import com.example.wongwien.AddReviewActivity;
 import com.example.wongwien.ChatlistActivity;
 import com.example.wongwien.EdittextV2;
 import com.example.wongwien.MainActivity;
@@ -203,6 +205,7 @@ public class ProfileFragment extends Fragment {
         Button edProfile = view.findViewById(R.id.layoutEdProfile);
         Button edProfielCover = view.findViewById(R.id.layoutEdProfileCover);
         Button addReview = view.findViewById(R.id.layoutAddReview);
+        Button addQuestion = view.findViewById(R.id.layoutAddQuestion);
         builder.setView(view);
         final AlertDialog show = builder.show();
 
@@ -272,7 +275,20 @@ public class ProfileFragment extends Fragment {
                 show.dismiss();
             }
         });
-
+        addReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getContext(), AddReviewActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
+        addQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getContext(), AddQuestionActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
     }
 
     private void showImagePickerDialog() {

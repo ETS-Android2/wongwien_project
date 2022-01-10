@@ -66,6 +66,7 @@ public class AddQuestionActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         initView();
+
         checkUserStatus();
 
         Intent intent=getIntent();
@@ -241,6 +242,11 @@ public class AddQuestionActivity extends AppCompatActivity {
             ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
+
+                    Intent intent=new Intent(AddQuestionActivity.this,MainActivity.class);
+                    intent.putExtra("refresh","question");
+                    startActivity(intent);
+
                     onBackPressed();
                     finish();
                 }

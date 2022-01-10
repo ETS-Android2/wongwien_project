@@ -280,6 +280,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
             @Override
             public void onSuccess(Void unused) {
                 progressDialog.dismiss();
+                gobackToMain();
                 onBackPressed();
                 finish();
             }
@@ -337,6 +338,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
                                 @Override
                                 public void onSuccess(Void unused) {
                                     progressDialog.dismiss();
+                                    gobackToMain();
                                     onBackPressed();
                                     finish();
                                 }
@@ -399,9 +401,15 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
             @Override
             public void onSuccess(Void unused) {
                 progressDialog.dismiss();
+                gobackToMain();
                 onBackPressed();
                 finish();
             }
         });
+    }
+    private void gobackToMain(){
+        Intent intent =new Intent(AddReviewActivity.this,MainActivity.class);
+        intent.putExtra("refresh","review");
+        startActivity(intent);
     }
 }
