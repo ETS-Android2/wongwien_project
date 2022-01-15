@@ -525,6 +525,10 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                ref.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                    @Override
                    public void onSuccess(Void unused) {
+                       Intent intent=new Intent(QuesAnsDetailActivity.this,MainActivity.class);
+                       intent.putExtra("refresh","question");
+                       startActivity(intent);
+
                        onBackPressed();
                        finish();
                    }

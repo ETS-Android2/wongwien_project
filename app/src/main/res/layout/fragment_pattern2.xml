@@ -138,15 +138,5 @@
             <!--                    android:text="helllo"/>-->
         </com.google.android.material.chip.ChipGroup>
 
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="10dp"
-            android:paddingEnd="20dp"
-            android:paddingStart="20dp"
-            android:orientation="vertical">
-
-        </LinearLayout>
     </LinearLayout>
 </ScrollView>

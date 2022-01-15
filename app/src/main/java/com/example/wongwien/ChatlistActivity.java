@@ -272,49 +272,6 @@ public class ChatlistActivity extends AppCompatActivity {
 
     }
 
-//    private void initViewFunction() {
-//        tvFriends.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                underlineFriend.setBackgroundColor(getResources().getColor(R.color.primary));
-//                underlineMessage.setBackgroundColor(getResources().getColor(R.color.white));
-//
-//                showMessage = false;
-//                checkShowDisplay();
-//            }
-//        });
-//        underlineFriend.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                underlineFriend.setBackgroundColor(getResources().getColor(R.color.primary));
-//                underlineMessage.setBackgroundColor(getResources().getColor(R.color.white));
-//
-//                showMessage = false;
-//                checkShowDisplay();
-//            }
-//        });
-//        tvMessages.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                underlineFriend.setBackgroundColor(getResources().getColor(R.color.white));
-//                underlineMessage.setBackgroundColor(getResources().getColor(R.color.primary));
-//
-//                showMessage = true;
-//                checkShowDisplay();
-//            }
-//        });
-//        underlineMessage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                underlineFriend.setBackgroundColor(getResources().getColor(R.color.white));
-//                underlineMessage.setBackgroundColor(getResources().getColor(R.color.primary));
-//
-//                showMessage = true;
-//                checkShowDisplay();
-//            }
-//        });
-//    }
-
     private void loadUserInfoToActionBar() {
         ref = database.getReference("Users").child(user.getUid());
         ref.addValueEventListener(new ValueEventListener() {
@@ -378,9 +335,6 @@ public class ChatlistActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        Log.d(TAG, "onStart: ");
-        Log.d(TAG, "onStart: showStatus::" + showMessage);
-
         checkUserStatus();
         checkOnlineStatus("online");
 
@@ -397,10 +351,6 @@ public class ChatlistActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
 
     @Override
     protected void onDestroy() {
@@ -408,6 +358,11 @@ public class ChatlistActivity extends AppCompatActivity {
         String timeStamp = String.valueOf(System.currentTimeMillis());
         checkOnlineStatus(timeStamp);
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override

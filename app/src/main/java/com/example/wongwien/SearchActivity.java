@@ -19,6 +19,8 @@ import com.example.wongwien.fragment.search.SearchQuestionFragment;
 import com.example.wongwien.fragment.search.SearchReviewFragment;
 import com.example.wongwien.model.ModelQuestionAns;
 import com.example.wongwien.model.ModelReview;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SearchActivity";
@@ -42,6 +45,8 @@ public class SearchActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference ref;
     String message;
+
+    String myUid="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +85,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
 
+        checkUserStatus();
 
 //        clearMode();
         clearFilter();
@@ -466,5 +472,59 @@ public class SearchActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
         super.onBackPressed();
+    }
+    @Override
+    protected void onStart() {
+        Log.d(TAG, "onStart: ");
+        checkUserStatus();
+        checkOnlineStatus("online");
+        super.onStart();
+    }
+
+    private void checkUserStatus(){
+        //get current user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            //get user
+            myUid=user.getUid();
+            Log.d(TAG, "checkUserStatus: User"+myUid);
+
+            try{
+                WelcomeActivity.welcomeActivity.finish();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    private void checkOnlineStatus(String status){
+        if(myUid != null ||!myUid.equals("")){
+            DatabaseReference onlineRef = database.getReference("Users").child(myUid);
+
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("status", status);
+
+            onlineRef.getRef().updateChildren(hashMap);
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "onPause: ");
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+        checkOnlineStatus(timeStamp);
+
+        super.onPause();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+        checkOnlineStatus(timeStamp);
+        super.onDestroy();
     }
 }

@@ -608,6 +608,10 @@ public class ReviewDetailActivity extends AppCompatActivity {
                 ref.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
+                        Intent intent=new Intent(ReviewDetailActivity.this,MainActivity.class);
+                        intent.putExtra("refresh","review");
+                        startActivity(intent);
+
                         onBackPressed();
                         finish();
                     }

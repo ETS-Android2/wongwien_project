@@ -59,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
                 fr2.replace(R.id.container,questionAnsFragment,"");
                 fr2.commit();
             }
+
+            if(refresh.equals("review")){
+                actionbar.setTitle("Reviews");
+                ReviewsFragment reviewsFragment=new ReviewsFragment();
+                FragmentTransaction fr1=getSupportFragmentManager().beginTransaction();
+                fr1.replace(R.id.container,reviewsFragment,"");
+                fr1.commit();
+            }
         }
 
         Log.d(TAG, "onCreate: usr:::"+myUid);
