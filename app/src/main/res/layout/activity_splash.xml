@@ -7,10 +7,26 @@
     android:background="@color/white"
     tools:context=".WelcomeActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/logo_w" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wongwien"
+            android:layout_gravity="center"
+            android:textColor="#AC91D8"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/kanit_extralight"/>
+    </LinearLayout>
 
 </RelativeLayout>

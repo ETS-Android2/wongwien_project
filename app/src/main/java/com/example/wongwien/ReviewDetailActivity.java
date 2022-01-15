@@ -33,6 +33,7 @@ import com.example.wongwien.fragment.show_review.Pattern2Fragment;
 import com.example.wongwien.fragment.show_review.Pattern3Fragment;
 import com.example.wongwien.model.ModelComment;
 import com.example.wongwien.model.ModelReview;
+import com.example.wongwien.model.ModelUser;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
@@ -67,6 +68,7 @@ public class ReviewDetailActivity extends AppCompatActivity {
     String myUid;
     String rUid;
     String rId;
+    String myName,myImage;
 
     int star,point,starBeforeChange;
     boolean isUseReview;
@@ -86,10 +88,13 @@ public class ReviewDetailActivity extends AppCompatActivity {
         rUid=review.getuId();
         rId=review.getrId();
 
+        loadUser();
         checkUserStatus();
         loadReviewPost();
         loadComment();
         checkReviewPointStatus(review.getrId());
+
+        Log.d(TAG, "onCreate: Myuid::"+myUid);
 
         binding.btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +173,7 @@ public class ReviewDetailActivity extends AppCompatActivity {
 
                         calculateScore(review,star);
 
+                        binding.star.setImageResource(R.drawable.ic_star_primary);
                         show.dismiss();
                     }
                 });
@@ -233,7 +239,26 @@ public class ReviewDetailActivity extends AppCompatActivity {
 
 
     }
+    private void loadUser() {
+        ref = database.getReference("Users");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    ModelUser model = d.getValue(ModelUser.class);
+                    if (model.getUid().equals(myUid)) {
+                        myName = model.getName();
+                        myImage = model.getImage();
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     private void checkPaticipation(String rId,String myUid,View view){
         try{
             DatabaseReference ref=FirebaseDatabase.getInstance().getReference("RParticipations").child(rId).child(myUid);
@@ -394,8 +419,8 @@ public class ReviewDetailActivity extends AppCompatActivity {
                     HashMap<String, String> hash = new HashMap<>();
                     hash.put("cId", timeStamp);
                     hash.put("cUid", myUid);
-                    hash.put("cImage",review.getuImg());
-                    hash.put("cName", review.getuName());
+                    hash.put("cImage",myImage);
+                    hash.put("cName", myName);
                     hash.put("comment", comment);
                     hash.put("timeStamp", timeStamp);
 

@@ -270,6 +270,8 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 
                         calculateScore(reviews.get(position), star, holder);
 
+                        holder.starScore.setImageResource(R.drawable.ic_star_primary);
+
                         show.dismiss();
                     }
                 });

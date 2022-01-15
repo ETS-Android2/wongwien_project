@@ -55,6 +55,8 @@ public class AdapterMessageList extends RecyclerView.Adapter<AdapterMessageList.
         String name=userslist.get(position).getName();
         String image=userslist.get(position).getImage();
 
+        String hisStatus=userslist.get(position).getStatus();
+
         String message= hashMapMessage.get(userslist.get(position).getUid());
         String time= hashMapTime.get(userslist.get(position).getUid());
 
@@ -65,7 +67,11 @@ public class AdapterMessageList extends RecyclerView.Adapter<AdapterMessageList.
         }
             String dateTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", cal);
 
-
+        if(hisStatus.equals("online")){
+            holder.status.setVisibility(View.VISIBLE);
+        }else{
+            holder.status.setVisibility(View.GONE);
+        }
 
         holder.txtName.setText(name);
         holder.txtTime.setText(dateTime);

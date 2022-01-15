@@ -113,6 +113,7 @@
                 <TextView
                     android:padding="20dp"
                     android:id="@+id/r_desc0"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="this is description ................"
@@ -137,6 +138,7 @@
                     android:id="@+id/r_desc1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="this is description ................"
                     android:textColor="@color/reviewDescrip"
                     android:textSize="14sp"/>
@@ -159,6 +161,7 @@
                     android:id="@+id/r_desc2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="this is description ................"
                     android:textColor="@color/reviewDescrip"
                     android:textSize="14sp"/>
@@ -181,6 +184,7 @@
                     android:id="@+id/r_desc3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="this is description ................"
                     android:textColor="@color/reviewDescrip"
                     android:textSize="14sp"/>
@@ -202,15 +206,6 @@
             <!--                    android:text="helllo"/>-->
         </com.google.android.material.chip.ChipGroup>
 
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="10dp"
-            android:paddingEnd="20dp"
-            android:paddingStart="20dp"
-            android:orientation="vertical">
 
-        </LinearLayout>
     </LinearLayout>
 </ScrollView>
