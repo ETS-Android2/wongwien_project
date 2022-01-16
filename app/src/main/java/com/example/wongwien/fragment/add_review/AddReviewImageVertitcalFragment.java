@@ -473,7 +473,7 @@ public class AddReviewImageVertitcalFragment extends Fragment {
 
             case STORAGE_REQUEST_CODE:
                 if (grantResults.length > 0) {
-                    boolean writeStorageAcceipted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeStorageAcceipted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (writeStorageAcceipted) {
                         pickFromGallery(codeRequest_gallery);
                     } else {

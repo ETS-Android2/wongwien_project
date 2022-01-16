@@ -87,8 +87,9 @@ public class SearchActivity extends AppCompatActivity {
 
         checkUserStatus();
 
-//        clearMode();
+
         clearFilter();
+
         binding.linearReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,23 +106,6 @@ public class SearchActivity extends AppCompatActivity {
                 binding.underlineQues.setBackgroundColor(getResources().getColor(R.color.primary));
                 isFindReview=false;
                 checkMessageAndCheckFilter();
-            }
-        });
-        binding.txtGenneral.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(category!=1){
-                    clearFilter();
-                    binding.txtGenneral.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
-                    binding.txtGenneral.setTextColor(getResources().getColor(R.color.white));
-                    category=1;
-                    checkMessageAndCheckFilter();
-                }else{
-                    category=111;
-                    clearFilter();
-                    checkMessageAndCheckFilter();
-                }
-
             }
         });
         binding.txtCourse.setOnClickListener(new View.OnClickListener() {
@@ -240,16 +224,12 @@ public class SearchActivity extends AppCompatActivity {
     private void checkMessageAndCheckFilter() {
         if(!TextUtils.isEmpty(message)){
             if(isFindReview){
-                Log.d(TAG, "checkMessageAndCheckFilter: isFindReview::"+isFindReview);
-//                Toast.makeText(this, "isFindReview::"+isFindReview, Toast.LENGTH_SHORT).show();
                 if (checkFilterCategory()) {
                     findReviewWithFilter(message.toString());
                 } else {
                     findAllReview(message.toString());
                 }
             }else{
-                Log.d(TAG, "checkMessageAndCheckFilter: isFindReview::"+isFindReview);
-                Log.d(TAG, "checkMessageAndCheckFilter: from checkMessageAndCheckFilter");
                 if (checkFilterCategory()) {
                     findQuestionWithFilter(message.toString());
                 } else {
@@ -275,12 +255,10 @@ public class SearchActivity extends AppCompatActivity {
         binding.underlineQues.setBackgroundColor(getResources().getColor(R.color.white));
     }
     private void clearFilter(){
-        binding.txtGenneral.setTextColor(getResources().getColor(R.color.gray));
         binding.txtCourse.setTextColor(getResources().getColor(R.color.gray));
         binding.txtFood.setTextColor(getResources().getColor(R.color.gray));
         binding.txtDormitory.setTextColor(getResources().getColor(R.color.gray));
         binding.txtTours.setTextColor(getResources().getColor(R.color.gray));
-        binding.txtGenneral.setBackgroundColor(getResources().getColor(R.color.white));
         binding.txtCourse.setBackgroundColor(getResources().getColor(R.color.white));
         binding.txtFood.setBackgroundColor(getResources().getColor(R.color.white));
         binding.txtDormitory.setBackgroundColor(getResources().getColor(R.color.white));
@@ -365,7 +343,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private boolean checkFilterCategory(){
-        if(category==111){
+        if(category==111 ){
             return false;
         }
         return true;
@@ -446,20 +424,27 @@ public class SearchActivity extends AppCompatActivity {
         SearchQuestionFragment frag=new SearchQuestionFragment();
         frag.setArguments(bundle);
 
-        FragmentTransaction fr3=getSupportFragmentManager().beginTransaction();
-        fr3.replace(R.id.fraglistSearch,frag,"");
-        fr3.commit();
+        try{
+            FragmentTransaction fr3=getSupportFragmentManager().beginTransaction();
+            fr3.replace(R.id.fraglistSearch,frag,"");
+            fr3.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     private void loadReviewToFragment(ArrayList<ModelReview> reviewlist) {
         Bundle bundle=new Bundle();
         bundle.putParcelableArrayList("list", reviewlist);
-//        showList();
         SearchReviewFragment frag=new SearchReviewFragment();
         frag.setArguments(bundle);
 
-        FragmentTransaction fr3=getSupportFragmentManager().beginTransaction();
-        fr3.replace(R.id.fraglistSearch,frag,"");
-        fr3.commit();
+        try{
+            FragmentTransaction fr3=getSupportFragmentManager().beginTransaction();
+            fr3.replace(R.id.fraglistSearch,frag,"");
+            fr3.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

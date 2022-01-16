@@ -381,7 +381,7 @@ public class ProfileFragment extends Fragment {
                 break;
             case STORAGE_REQUEST_CODE:
                 if (grantResults.length > 0) {
-                    boolean writeStorageAcceipted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeStorageAcceipted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (writeStorageAcceipted) {
                         pickFromGallery();
                     } else {
@@ -511,8 +511,13 @@ public class ProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_logout:
-                firebaseAuth.signOut();
-                checkUserStatus();
+                try{
+                    firebaseAuth.signOut();
+                    checkUserStatus();
+                }catch (Exception e){
+
+                }
+
                 break;
             case R.id.action_chat:
                 startActivity(new Intent(getContext(), ChatlistActivity.class));

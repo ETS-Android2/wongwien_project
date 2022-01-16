@@ -186,9 +186,15 @@ public class QuesAnsFragment extends Fragment {
 
                 for (DataSnapshot d : snapshot.getChildren()) {
                     ModelQuestionAns model = d.getValue(ModelQuestionAns.class);
-                    if (model.getCollection().equals(categoryList[category])) {
+
+                    if(category==0) {
                         questionLists.add(model);
+                    }else{
+                        if (model.getCollection().equals(categoryList[category])) {
+                            questionLists.add(model);
+                        }
                     }
+
                 }
                 loadShowFragment();
             }
@@ -210,9 +216,14 @@ public class QuesAnsFragment extends Fragment {
                 for(DataSnapshot d:snapshot.getChildren()){
                     ModelQuestionAns model=d.getValue(ModelQuestionAns.class);
 
-                    if(model.getCollection().equals(categoryList[category])){
+                    if(category==0){
                         questionLists.add(model);
+                    }else{
+                        if(model.getCollection().equals(categoryList[category])){
+                            questionLists.add(model);
+                        }
                     }
+
                 }
                 loadShowFragment();
             }

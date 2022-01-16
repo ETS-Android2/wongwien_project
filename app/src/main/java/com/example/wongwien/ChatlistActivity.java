@@ -222,6 +222,7 @@ public class ChatlistActivity extends AppCompatActivity {
 
                 for (DataSnapshot d : snapshot.getChildren()) {
                     ModelUser user1 = d.getValue(ModelUser.class);
+
                     if (!user1.getUid().equals(user.getUid())) {
                         userList.add(user1);
                     }

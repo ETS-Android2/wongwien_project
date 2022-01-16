@@ -206,9 +206,14 @@ public class ReviewsFragment extends Fragment {
                 for (DataSnapshot d : snapshot.getChildren()) {
                     ModelReview model = d.getValue(ModelReview.class);
 
-                    if (model.getR_collection().equals(categoryList[category])) {
+                    if(category==0){
                         reviewLists.add(model);
+                    }else{
+                        if (model.getR_collection().equals(categoryList[category])) {
+                            reviewLists.add(model);
+                        }
                     }
+
                 }
                 showReviewsToRecycler_reverse();
             }
@@ -230,11 +235,14 @@ public class ReviewsFragment extends Fragment {
                 for(DataSnapshot d:snapshot.getChildren()){
                     ModelReview model=d.getValue(ModelReview.class);
 
-                    if(model.getR_collection().equals(categoryList[category])){
-                        Log.d(TAG, "onDataChange: model:"+model.getR_type()+"  point::"+model.getR_point());
-
+                    if(category==0) {
                         reviewLists.add(model);
+                    }else{
+                        if(model.getR_collection().equals(categoryList[category])){
+                            reviewLists.add(model);
+                        }
                     }
+
                 }
                 showReviewsToRecycler_reverse();
             }
