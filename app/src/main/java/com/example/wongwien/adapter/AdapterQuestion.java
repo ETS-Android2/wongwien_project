@@ -41,6 +41,8 @@ public class AdapterQuestion extends  RecyclerView.Adapter<AdapterQuestion.Myhol
     @Override
     public void onBindViewHolder(@NonNull AdapterQuestion.Myholder holder, int position) {
         String question=list.get(position).getQuestion();
+        String qd=list.get(position).getDescrip();
+
         String timeStamp=list.get(position).getTimeStamp();
         String qId=list.get(position).getqId();
         String qUid=list.get(position).getuId();
@@ -52,6 +54,7 @@ public class AdapterQuestion extends  RecyclerView.Adapter<AdapterQuestion.Myhol
         String dateTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", cal);
 
         holder.txtQuestion.setText(question);
+        holder.txtQd.setText(qd);
         holder.txtTime.setText(dateTime);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,12 +73,13 @@ public class AdapterQuestion extends  RecyclerView.Adapter<AdapterQuestion.Myhol
     }
 
     class Myholder extends RecyclerView.ViewHolder {
-        private TextView txtQuestion,txtTime;
+        private TextView txtQuestion,txtTime,txtQd;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
             txtQuestion=itemView.findViewById(R.id.txtQuestion);
             txtTime=itemView.findViewById(R.id.txtTime);
+            txtQd=itemView.findViewById(R.id.txtQdetail);
         }
     }
 }

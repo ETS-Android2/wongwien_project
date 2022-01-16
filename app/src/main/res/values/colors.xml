@@ -12,6 +12,6 @@
     <color name="primary">#6E55CF</color>
     <color name="backgroundApp">#E5E1F6</color>
     <color name="gray">#757575</color>
-    <color name="reviewTitle">#464646</color>
-    <color name="reviewDescrip">#535353</color>
+    <color name="reviewTitle">#6E55CF</color>
+    <color name="reviewDescrip">#A99DEB</color>
 </resources>

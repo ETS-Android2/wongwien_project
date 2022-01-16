@@ -9,7 +9,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_question"
+    android:background="#E5E1F6"
     android:orientation="vertical"
     tools:context=".fragment.QuesAnsFragment">
 
@@ -42,7 +42,7 @@
             <View
                 android:id="@+id/underlineRecently"
                 android:layout_width="wrap_content"
-                android:layout_height="10dp"
+                android:layout_height="5dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@color/primary" />
@@ -69,7 +69,7 @@
             <View
                 android:id="@+id/underlinePopular"
                 android:layout_width="wrap_content"
-                android:layout_height="10dp"
+                android:layout_height="5dp"
                 android:layout_gravity="center"
                 android:background="@color/white" />
         </LinearLayout>
@@ -94,7 +94,7 @@
                 android:id="@+id/txtGenneral"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rec_conner_color_selected"
+                android:background="@drawable/background_review"
                 android:padding="10dp"
                 android:text="General"
                 android:textColor="@color/white"

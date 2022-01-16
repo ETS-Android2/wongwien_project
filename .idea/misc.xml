@@ -55,23 +55,29 @@
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/background_profile.xml" value="0.2484375" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/background_question.xml" value="0.2484375" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/background_review.xml" value="0.2484375" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/rec_corner_left_background_app.xml" value="0.2484375" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/rec_low_corner_left_background_app.xml" value="0.2484375" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/font/kanit_extralight.xml" value="0.19947916666666668" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_add_question.xml" value="0.2" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_chatlist.xml" value="0.2" />
-        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_ques_ans_detail.xml" value="0.23229166666666667" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_ques_ans_detail.xml" value="0.5997229916897507" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_review_detail.xml" value="0.264" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_splash.xml" value="0.176" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_welcome.xml" value="0.17708333333333334" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/dialog_edit_profile.xml" value="0.23229166666666667" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_load_list_show.xml" value="0.23229166666666667" />
-        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_pattern1.xml" value="0.264" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_pattern1.xml" value="0.4" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_pattern2.xml" value="0.134375" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_pattern3.xml" value="0.1" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_profile.xml" value="0.134375" />
-        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_ques_ans.xml" value="0.23229166666666667" />
-        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_reviews.xml" value="0.264" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_ques_ans.xml" value="0.536" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_reviews.xml" value="0.4" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/row_chatlist_friend.xml" value="0.23229166666666667" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/row_chatlist_message.xml" value="1.2" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/row_comment.xml" value="0.536" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/row_question.xml" value="0.4" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/row_review_pattern1.xml" value="0.72" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/row_review_pattern2.xml" value="0.536" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/row_review_pattern3.xml" value="0.4" />
       </map>
     </option>

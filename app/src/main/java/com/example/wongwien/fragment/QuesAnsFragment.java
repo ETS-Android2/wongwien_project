@@ -94,7 +94,7 @@ public class QuesAnsFragment extends Fragment {
             public void onClick(View v) {
                 clearAllSelected();
                 binding.txtGenneral.setTextColor(getResources().getColor(R.color.white));
-                binding.txtGenneral.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
+                binding.txtGenneral.setBackground(getResources().getDrawable(R.drawable.background_review));
                 category = 0;
                 checkLoadData();
             }
@@ -104,7 +104,7 @@ public class QuesAnsFragment extends Fragment {
             public void onClick(View v) {
                 clearAllSelected();
                 binding.txtCourse.setTextColor(getResources().getColor(R.color.white));
-                binding.txtCourse.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
+                binding.txtCourse.setBackground(getResources().getDrawable(R.drawable.background_review));
                 category = 1;
                 checkLoadData();
             }
@@ -114,7 +114,7 @@ public class QuesAnsFragment extends Fragment {
             public void onClick(View v) {
                 clearAllSelected();
                 binding.txtFood.setTextColor(getResources().getColor(R.color.white));
-                binding.txtFood.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
+                binding.txtFood.setBackground(getResources().getDrawable(R.drawable.background_review));
                 category = 2;
                 checkLoadData();
             }
@@ -124,7 +124,7 @@ public class QuesAnsFragment extends Fragment {
             public void onClick(View v) {
                 clearAllSelected();
                 binding.txtDormitory.setTextColor(getResources().getColor(R.color.white));
-                binding.txtDormitory.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
+                binding.txtDormitory.setBackground(getResources().getDrawable(R.drawable.background_review));
                 category = 3;
                 checkLoadData();
             }
@@ -134,7 +134,7 @@ public class QuesAnsFragment extends Fragment {
             public void onClick(View v) {
                 clearAllSelected();
                 binding.txtTours.setTextColor(getResources().getColor(R.color.white));
-                binding.txtTours.setBackground(getResources().getDrawable(R.drawable.rec_conner_color_selected));
+                binding.txtTours.setBackground(getResources().getDrawable(R.drawable.background_review));
                 category = 4;
                 checkLoadData();
             }

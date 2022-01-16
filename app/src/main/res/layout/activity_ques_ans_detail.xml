@@ -29,6 +29,7 @@
                 app:civ_border_width="2dp" />
 
             <LinearLayout
+                android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,14 +48,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="xxxx@gmail.com"
-                    android:textSize="14sp"
+                    android:textSize="11sp"
                     android:textColor="@color/primary"/>
                 <TextView
                     android:id="@+id/txtTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12/20/21 20:21AM"
-                    android:textSize="11sp"/>
+                    android:textSize="9sp"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -79,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:text="Description"
                 android:textSize="14sp"
-                android:textColor="@color/primary"/>
+                android:textColor="#A99DEB"/>
 
             <TextView
                 android:id="@+id/txtStaticTag"
@@ -138,26 +139,27 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
+        android:background="@drawable/rec_low_corner_left_background_app"
+        android:orientation="horizontal"
         android:padding="7dp"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:background="@drawable/rec_low_corner_left_background_app"
-        android:orientation="horizontal">
+        android:paddingEnd="20dp">
+
         <TextView
+            android:id="@+id/txtPoint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="0"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:id="@+id/txtPoint"
-            android:text="0"/>
-<!--        <ImageView-->
-<!--            android:layout_width="20dp"-->
-<!--            android:layout_height="20dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:src="@drawable/ic_star_white"/>-->
+            android:textStyle="bold" />
+        <!--        <ImageView-->
+        <!--            android:layout_width="20dp"-->
+        <!--            android:layout_height="20dp"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:src="@drawable/ic_star_white"/>-->
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
