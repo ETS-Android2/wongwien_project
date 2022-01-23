@@ -197,8 +197,7 @@ public class ReviewsFragment extends Fragment {
 
     private void loadRecentlyByCategory() {
         ref = FirebaseDatabase.getInstance().getReference("Reviews");
-        Query query = ref.orderByChild("r_collection").equalTo(categoryList[category]);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 reviewLists.clear();
@@ -207,8 +206,10 @@ public class ReviewsFragment extends Fragment {
                     ModelReview model = d.getValue(ModelReview.class);
 
                     if(category==0){
+                        Log.d(TAG, "onDataChange: use"+category);
                         reviewLists.add(model);
                     }else{
+                        Log.d(TAG, "onDataChange: use2"+category);
                         if (model.getR_collection().equals(categoryList[category])) {
                             reviewLists.add(model);
                         }

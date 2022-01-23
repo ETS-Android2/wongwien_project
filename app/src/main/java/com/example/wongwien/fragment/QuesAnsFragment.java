@@ -178,8 +178,7 @@ public class QuesAnsFragment extends Fragment {
 
     private void loadRecentlyByCategory() {
         ref = FirebaseDatabase.getInstance().getReference("QuestionAns");
-        Query query = ref.orderByChild("collection").equalTo(categoryList[category]);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 questionLists.clear();
