@@ -172,28 +172,29 @@
 
         <LinearLayout
             android:id="@+id/linearShowResult"
-            android:background="@drawable/rec_low_cornor_background_app"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:paddingTop="10dp"
-            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/rec_low_cornor_background_app"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:text="Results"
-                android:textSize="18sp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:textSize="18sp" />
+
             <FrameLayout
-                android:layout_marginTop="10dp"
                 android:id="@+id/fraglistSearch"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp" />
         </LinearLayout>
 
     </RelativeLayout>

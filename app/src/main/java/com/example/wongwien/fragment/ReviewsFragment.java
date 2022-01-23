@@ -294,8 +294,7 @@ public class ReviewsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_top,menu);
 
-        //hide  icon
-        menu.findItem(R.id.action_logout).setVisible(false);
+        menu.findItem(R.id.action_option).setVisible(false);
 
         super.onCreateOptionsMenu(menu,inflater);
     }
@@ -304,10 +303,6 @@ public class ReviewsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
-            case R.id.action_logout:
-                firebaseAuth.signOut();
-                checkUserStatus();
-                break;
             case R.id.action_chat:
                 startActivity(new Intent(getContext(), ChatlistActivity.class));
                 break;

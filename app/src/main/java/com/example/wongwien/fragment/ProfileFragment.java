@@ -1,7 +1,6 @@
 package com.example.wongwien.fragment;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -15,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,52 +25,45 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wongwien.AddQuestionActivity;
-import com.example.wongwien.AddReviewActivity;
 import com.example.wongwien.ChatlistActivity;
 import com.example.wongwien.EdittextV2;
-import com.example.wongwien.MainActivity;
 import com.example.wongwien.R;
 import com.example.wongwien.SearchActivity;
 import com.example.wongwien.SplashActivity;
-import com.example.wongwien.WelcomeActivity;
 import com.example.wongwien.ZoomActivity;
+import com.example.wongwien.databinding.FragmentProfileBinding;
+import com.example.wongwien.loadDataToProfileFragment;
+import com.example.wongwien.model.ModelQuestionAns;
+import com.example.wongwien.model.ModelReview;
 import com.example.wongwien.model.ModelUser;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.net.URI;
-
-import de.hdodenhof.circleimageview.CircleImageView;
+import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
+    private FragmentProfileBinding binding;
+
     //permissions constants
     private static final int CAMERA_REQUEST_CODE = 100;
     private static final int STORAGE_REQUEST_CODE = 200;
@@ -89,13 +81,12 @@ public class ProfileFragment extends Fragment {
     String storagePermissions[];
     Uri image_uri;
     String imgType;
+    String userId;
 
     String imgPerson,imgCover;
-
-    private TextView tvName, tvEmail;
-    private CircleImageView imagePerson;
-    private ImageView imageCover;
-    private FloatingActionButton btnFloat;
+    
+    ArrayList<ModelReview>reviewLists;
+    ArrayList<ModelQuestionAns>questionLists;
 
     private ProgressDialog progressDialog;
 
@@ -108,13 +99,18 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        binding=FragmentProfileBinding.inflate(inflater,container,false);
+        View view=binding.getRoot();
+
         initView(view);
+        checkUserStatus();
+
+
         initPermission();
         getProfileUser();
 
 
-        imagePerson.setOnClickListener(new View.OnClickListener() {
+        binding.imagePerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(imgPerson!=null && !imgPerson.equals("")){
@@ -125,7 +121,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        imageCover.setOnClickListener(new View.OnClickListener() {
+        binding.imageCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(imgCover!=null && !imgCover.equals("")){
@@ -135,6 +131,24 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
+        loadUserReview();
+        loadUserQA();
+
+        binding.showQA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadShowQAToFragment();
+            }
+        });
+
+        binding.showReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadShowReviewToFragment();
+            }
+        });
+
         return view;
     }
 
@@ -154,15 +168,15 @@ public class ProfileFragment extends Fragment {
                 // Get Post object and use the values to update the UI
                 ModelUser user = dataSnapshot.getValue(ModelUser.class);
 
-                tvName.setText(user.getName());
-                tvEmail.setText(user.getEmail());
+                binding.tvName.setText(user.getName());
+                binding.tvEmail.setText(user.getEmail());
 
                 if (!user.getImage().equals("")) {
-                    Picasso.get().load(user.getImage()).into(imagePerson);
+                    Picasso.get().load(user.getImage()).into(binding.imagePerson);
                     imgPerson=user.getImage();
                 }
                 if (!user.getCover_image().equals("")) {
-                    Picasso.get().load(user.getCover_image()).into(imageCover);
+                    Picasso.get().load(user.getCover_image()).into(binding.imageCover);
                     imgCover=user.getCover_image();
                 }
 
@@ -176,13 +190,92 @@ public class ProfileFragment extends Fragment {
         };
         ref.addValueEventListener(postListener);
     }
+    private void loadUserReview() {
+        reviewLists=new ArrayList<>();
+        
+        ref = FirebaseDatabase.getInstance().getReference("Reviews");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                reviewLists.clear();
 
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    ModelReview model = d.getValue(ModelReview.class);
+
+                    if(model.getuId().equals(userId)){
+                        reviewLists.add(model);
+                    }
+                }
+                binding.numReview.setText(String.valueOf(reviewLists.size()));
+                loadShowReviewToFragment();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private void loadUserQA() {
+        questionLists=new ArrayList<>();
+
+        ref = FirebaseDatabase.getInstance().getReference("QuestionAns");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                questionLists.clear();
+
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    ModelQuestionAns model = d.getValue(ModelQuestionAns.class);
+
+                    if(model.getuId().equals(userId)){
+                        questionLists.add(model);
+                    }
+                    binding.numQA.setText(String.valueOf(questionLists.size()));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void loadShowReviewToFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("review", reviewLists);
+        try {
+            loadDataToProfileFragment frag = new loadDataToProfileFragment();
+            frag.setArguments(bundle);
+
+
+            FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+            trans.replace(R.id.loadpost, frag, "");
+            trans.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void loadShowQAToFragment() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("question", questionLists);
+        try {
+            loadDataToProfileFragment frag = new loadDataToProfileFragment();
+            frag.setArguments(bundle);
+
+
+            FragmentTransaction trans = getChildFragmentManager().beginTransaction();
+            trans.replace(R.id.loadpost, frag, "");
+            trans.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void initView(View view) {
-        btnFloat = view.findViewById(R.id.btnFloat);
-        tvName = view.findViewById(R.id.tvName);
-        tvEmail = view.findViewById(R.id.tvEmail);
-        imagePerson = view.findViewById(R.id.imagePerson);
-        imageCover = view.findViewById(R.id.imageCover);
+
         progressDialog=new ProgressDialog(getContext());
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -190,12 +283,6 @@ public class ProfileFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         storage=FirebaseStorage.getInstance();
 
-        btnFloat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showEditDialog();
-            }
-        });
     }
 
     private void showEditDialog() {
@@ -204,8 +291,7 @@ public class ProfileFragment extends Fragment {
         Button edName = view.findViewById(R.id.layoutEdName);
         Button edProfile = view.findViewById(R.id.layoutEdProfile);
         Button edProfielCover = view.findViewById(R.id.layoutEdProfileCover);
-        Button addReview = view.findViewById(R.id.layoutAddReview);
-        Button addQuestion = view.findViewById(R.id.layoutAddQuestion);
+        Button logout = view.findViewById(R.id.logout);
         builder.setView(view);
         final AlertDialog show = builder.show();
 
@@ -275,18 +361,38 @@ public class ProfileFragment extends Fragment {
                 show.dismiss();
             }
         });
-        addReview.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getContext(), AddReviewActivity.class);
-                getContext().startActivity(intent);
-            }
-        });
-        addQuestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getContext(), AddQuestionActivity.class);
-                getContext().startActivity(intent);
+
+                show.dismiss();
+
+                View view1=LayoutInflater.from(getContext()).inflate(R.layout.dialog_confirm,null,false);
+                AlertDialog.Builder builder1=new AlertDialog.Builder(getContext(),R.style.CustomAlertDialog);
+
+                Button btnconfirm=view1.findViewById(R.id.confirm);
+                Button btnCancel=view1.findViewById(R.id.cancel);
+
+                EdittextV2 edName=view1.findViewById(R.id.edName2);
+
+                builder1.setView(view1);
+
+                final AlertDialog show2 = builder1.show();
+
+                btnconfirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        firebaseAuth.signOut();
+                         checkUserStatus();
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        show2.dismiss();
+                    }
+                });
+
             }
         });
     }
@@ -503,6 +609,13 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_top,menu);
 
+        menu.findItem(R.id.action_add).setVisible(false);
+//        checkUserStatus();
+
+        if(userId==null ||userId.equals("")){
+            menu.findItem(R.id.action_option).setVisible(false);
+        }
+
         super.onCreateOptionsMenu(menu,inflater);
     }
 
@@ -510,14 +623,12 @@ public class ProfileFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
-            case R.id.action_logout:
+            case R.id.action_option:
                 try{
-                    firebaseAuth.signOut();
-                    checkUserStatus();
+                    showEditDialog();
                 }catch (Exception e){
-
+                    e.printStackTrace();
                 }
-
                 break;
             case R.id.action_chat:
                 startActivity(new Intent(getContext(), ChatlistActivity.class));
@@ -533,8 +644,9 @@ public class ProfileFragment extends Fragment {
 
     private void checkUserStatus(){
         //get current user
-        FirebaseUser user= firebaseAuth.getCurrentUser();
+         user= firebaseAuth.getCurrentUser();
         if(user !=null){
+            userId=user.getUid();
             Log.d(TAG, "checkUserStatus: check User::"+user.getEmail());
 
         }else{
