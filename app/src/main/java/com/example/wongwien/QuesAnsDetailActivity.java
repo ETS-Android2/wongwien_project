@@ -95,10 +95,10 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot d : snapshot.getChildren()) {
                                 ModelQuestionAns model = d.getValue(ModelQuestionAns.class);
-                                Integer point = Integer.parseInt(model.getPoint());
+                                int point = model.getPoint();
                                 point -= 1;
 
-                                d.getRef().child("point").setValue(String.valueOf(point));
+                                d.getRef().child("point").setValue(point);
                             }
                         }
 
@@ -119,10 +119,10 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot d : snapshot.getChildren()) {
                                 ModelQuestionAns model = d.getValue(ModelQuestionAns.class);
-                                Integer point = Integer.parseInt(model.getPoint());
-                                point += 1;
+                                int point = model.getPoint();
+                                point += 2;
 
-                                d.getRef().child("point").setValue(String.valueOf(point));
+                                d.getRef().child("point").setValue(point);
                             }
                         }
 
@@ -140,10 +140,10 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot d : snapshot.getChildren()) {
                                 ModelQuestionAns model = d.getValue(ModelQuestionAns.class);
-                                Integer point = Integer.parseInt(model.getPoint());
+                                int point = model.getPoint();
                                 point += 1;
 
-                                d.getRef().child("point").setValue(String.valueOf(point));
+                                d.getRef().child("point").setValue(point);
                             }
                         }
 
@@ -172,10 +172,10 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot d : snapshot.getChildren()) {
                                 ModelQuestionAns model = d.getValue(ModelQuestionAns.class);
-                                Integer point = Integer.parseInt(model.getPoint());
+                                int point = model.getPoint();
                                 point += 1;
 
-                                d.getRef().child("point").setValue(String.valueOf(point));
+                                d.getRef().child("point").setValue(point);
                             }
                         }
 
@@ -196,10 +196,10 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot d : snapshot.getChildren()) {
                                 ModelQuestionAns model = d.getValue(ModelQuestionAns.class);
-                                Integer point = Integer.parseInt(model.getPoint());
-                                point -= 1;
+                                int point =model.getPoint();
+                                point -= 2;
 
-                                d.getRef().child("point").setValue(String.valueOf(point));
+                                d.getRef().child("point").setValue(point);
                             }
                         }
 
@@ -217,10 +217,10 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for (DataSnapshot d : snapshot.getChildren()) {
                                 ModelQuestionAns model = d.getValue(ModelQuestionAns.class);
-                                Integer point = Integer.parseInt(model.getPoint());
+                                int point = model.getPoint();
                                 point -= 1;
 
-                                d.getRef().child("point").setValue(String.valueOf(point));
+                                d.getRef().child("point").setValue(point);
                             }
                         }
 
@@ -389,7 +389,7 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                     if (model.getqId().equals(qId)) {
                         binding.txtName.setText(model.getuName());
                         binding.txtEmail.setText(model.getuEmail());
-                        binding.txtPoint.setText(model.getPoint());
+                        binding.txtPoint.setText(String.valueOf(model.getPoint()));
 
                         String timeStamp = model.getTimeStamp();
 

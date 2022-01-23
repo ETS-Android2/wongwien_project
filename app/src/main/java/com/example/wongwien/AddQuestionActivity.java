@@ -211,14 +211,14 @@ public class AddQuestionActivity extends AppCompatActivity {
     private void uploadQuestion(String question, String descrip, String tag, String collection) {
         String timeStamp=String.valueOf(System.currentTimeMillis());
 
-        HashMap<String,String>hashMap=new HashMap<>();
+        HashMap<String,Object>hashMap=new HashMap<>();
         hashMap.put("question",question);
         hashMap.put("descrip",descrip);
         hashMap.put("tag",tag);
         hashMap.put("collection",collection);
         hashMap.put("timeStamp",timeStamp);
         hashMap.put("uId",myUid);
-        hashMap.put("point","0");
+        hashMap.put("point",0);
         hashMap.put("uImg",myImg);
         hashMap.put("uName",myName);
         hashMap.put("uEmail",myEmail);

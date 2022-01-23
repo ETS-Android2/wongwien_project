@@ -41,7 +41,6 @@
             android:gravity="start"
             android:hint="Add your title review"
             android:inputType="textCapSentences|textMultiLine"
-            android:minHeight="50dp"
             android:padding="20dp"
             android:textSize="18sp" />
 
@@ -84,7 +83,7 @@
             android:gravity="start"
             android:hint="Add your description review"
             android:inputType="textCapSentences|textMultiLine"
-            android:minHeight="50dp"
+            android:minHeight="100dp"
             android:textSize="18sp" />
 
         <TextView

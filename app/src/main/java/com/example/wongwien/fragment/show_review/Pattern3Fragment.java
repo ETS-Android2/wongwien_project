@@ -42,7 +42,7 @@ public class Pattern3Fragment extends Fragment {
         String dateTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", cal);
 
         binding.rTitle.setText(review.getR_title());
-        binding.txtPoint.setText(review.getR_point());
+        binding.txtPoint.setText(String.valueOf((review.getR_point())));
         binding.txtName.setText(review.getuName());
         binding.txtEmail.setText(review.getuEmail());
         binding.txtTime.setText(dateTime);

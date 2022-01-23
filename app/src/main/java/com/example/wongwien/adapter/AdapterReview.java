@@ -86,7 +86,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 
         String timeStamp = reviews.get(position).getR_timeStamp();
         String title = reviews.get(position).getR_title();
-        String point = reviews.get(position).getR_point();
+        int scorepoint = reviews.get(position).getR_point();
 
         //conver time stamp to dd/mm/yyyy hh:mm am/pm
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
@@ -94,7 +94,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
         String dateTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", cal);
 
         holder.rTitile.setText(title);
-        holder.txtPoint.setText(point);
+        holder.txtPoint.setText(String.valueOf(scorepoint));
 
         int num = Integer.parseInt(reviews.get(position).getR_num());
 //        holder.rDesc0.setText(reviews.get(position).getR_desc0());
@@ -322,7 +322,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot d : snapshot.getChildren()) {
                     ModelReview model = d.getValue(ModelReview.class);
-                    point = Integer.parseInt(model.getR_point());
+                    point =model.getR_point();
 
 
                     Log.d(TAG, "calculateScore: star::" + star);
@@ -348,7 +348,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
                             for (DataSnapshot d : snapshot.getChildren()) {
                                 ModelReview model = d.getValue(ModelReview.class);
                                 if (model.getrId().equals(review.getrId())) {
-                                    d.getRef().child("r_point").setValue(String.valueOf(point2));
+                                    d.getRef().child("r_point").setValue(point2);
                                     changeShowTextScore(holder, point2);
                                 }
                             }

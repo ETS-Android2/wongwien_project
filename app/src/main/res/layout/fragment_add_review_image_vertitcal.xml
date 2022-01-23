@@ -35,14 +35,13 @@
 
         <com.example.wongwien.EdittextV2
             android:id="@+id/edTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/dialog_bg"
             android:gravity="start"
             android:hint="Add your title review"
             android:inputType="textCapSentences|textMultiLine"
-            android:minHeight="50dp"
             android:padding="20dp"
             android:textSize="18sp" />
 
@@ -80,7 +79,7 @@
                 android:gravity="start"
                 android:hint="Add your description of image"
                 android:inputType="textCapSentences|textMultiLine"
-                android:minHeight="50dp"
+                android:minHeight="70dp"
                 android:padding="5dp"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -117,7 +116,7 @@
                 android:gravity="start"
                 android:hint="Add your description of image"
                 android:inputType="textCapSentences|textMultiLine"
-                android:minHeight="50dp"
+                android:minHeight="70dp"
                 android:padding="5dp"
                 android:textSize="18sp" />
 
@@ -167,7 +166,7 @@
                 android:gravity="start"
                 android:hint="Add your description of image"
                 android:inputType="textCapSentences|textMultiLine"
-                android:minHeight="50dp"
+                android:minHeight="70dp"
                 android:padding="5dp"
                 android:textSize="18sp" />
 
@@ -217,7 +216,7 @@
                 android:gravity="start"
                 android:hint="Add your description of image"
                 android:inputType="textCapSentences|textMultiLine"
-                android:minHeight="50dp"
+                android:minHeight="70dp"
                 android:padding="5dp"
                 android:textSize="18sp" />
 

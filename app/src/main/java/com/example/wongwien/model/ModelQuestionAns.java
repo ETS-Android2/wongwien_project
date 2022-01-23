@@ -4,33 +4,24 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ModelQuestionAns implements Parcelable {
-    String uId;
-    String uImg;
-    String uName;
-    String uEmail;
-    String tag;
-    String point;
-    String question;
-    String descrip;
-    String collection;
-    String timeStamp;
-    String qId;
+    String uId,uImg,uName,uEmail,tag,question,descrip,collection,timeStamp,qId;
+    int point;
 
     public ModelQuestionAns() {
     }
 
-    public ModelQuestionAns(String uId, String uImg, String uName, String uEmail, String tag, String point, String question, String descrip, String collection, String timeStamp, String qId) {
+    public ModelQuestionAns(String uId, String uImg, String uName, String uEmail, String tag, String question, String descrip, String collection, String timeStamp, String qId, int point) {
         this.uId = uId;
         this.uImg = uImg;
         this.uName = uName;
         this.uEmail = uEmail;
         this.tag = tag;
-        this.point = point;
         this.question = question;
         this.descrip = descrip;
         this.collection = collection;
         this.timeStamp = timeStamp;
         this.qId = qId;
+        this.point = point;
     }
 
     protected ModelQuestionAns(Parcel in) {
@@ -39,12 +30,32 @@ public class ModelQuestionAns implements Parcelable {
         uName = in.readString();
         uEmail = in.readString();
         tag = in.readString();
-        point = in.readString();
         question = in.readString();
         descrip = in.readString();
         collection = in.readString();
         timeStamp = in.readString();
         qId = in.readString();
+        point = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uId);
+        dest.writeString(uImg);
+        dest.writeString(uName);
+        dest.writeString(uEmail);
+        dest.writeString(tag);
+        dest.writeString(question);
+        dest.writeString(descrip);
+        dest.writeString(collection);
+        dest.writeString(timeStamp);
+        dest.writeString(qId);
+        dest.writeInt(point);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ModelQuestionAns> CREATOR = new Creator<ModelQuestionAns>() {
@@ -99,14 +110,6 @@ public class ModelQuestionAns implements Parcelable {
         this.tag = tag;
     }
 
-    public String getPoint() {
-        return point;
-    }
-
-    public void setPoint(String point) {
-        this.point = point;
-    }
-
     public String getQuestion() {
         return question;
     }
@@ -147,23 +150,28 @@ public class ModelQuestionAns implements Parcelable {
         this.qId = qId;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(uId);
-        dest.writeString(uImg);
-        dest.writeString(uName);
-        dest.writeString(uEmail);
-        dest.writeString(tag);
-        dest.writeString(point);
-        dest.writeString(question);
-        dest.writeString(descrip);
-        dest.writeString(collection);
-        dest.writeString(timeStamp);
-        dest.writeString(qId);
+    public String toString() {
+        return "ModelQuestionAns{" +
+                "uId='" + uId + '\'' +
+                ", uImg='" + uImg + '\'' +
+                ", uName='" + uName + '\'' +
+                ", uEmail='" + uEmail + '\'' +
+                ", tag='" + tag + '\'' +
+                ", question='" + question + '\'' +
+                ", descrip='" + descrip + '\'' +
+                ", collection='" + collection + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
+                ", qId='" + qId + '\'' +
+                ", point=" + point +
+                '}';
     }
 }

@@ -261,7 +261,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
         ref = database.getReference("Reviews");
         String timeStamp = String.valueOf(System.currentTimeMillis());
 
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("rId", timeStamp);
         hashMap.put("r_title", title);
         hashMap.put("r_tag", tag);
@@ -270,7 +270,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
         hashMap.put("r_collection", collection);
         hashMap.put("r_desc0", descrip);
         hashMap.put("r_timeStamp", timeStamp);
-        hashMap.put("r_point", "0");
+        hashMap.put("r_point", 0);
         hashMap.put("uId", myUid);
         hashMap.put("uImg", myImg);
         hashMap.put("uName", myName);
@@ -318,7 +318,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
 
                             ref = database.getReference("Reviews");
 
-                            HashMap<String, String> hashMap = new HashMap<>();
+                            HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("rId", timeStamp);
                             hashMap.put("r_title", title);
                             hashMap.put("r_tag", tag);
@@ -328,7 +328,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
                             hashMap.put("r_image0", String.valueOf(downloadUri));
                             hashMap.put("r_desc0", descrip);
                             hashMap.put("r_timeStamp", timeStamp);
-                            hashMap.put("r_point", "0");
+                            hashMap.put("r_point", 0);
                             hashMap.put("uId", myUid);
                             hashMap.put("uImg", myImg);
                             hashMap.put("uName", myName);
@@ -378,7 +378,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
 
         ref = database.getReference("Reviews");
 
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("rId", timeStamp);
         hashMap.put("r_title", title);
         hashMap.put("r_tag", tag);
@@ -386,7 +386,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
         hashMap.put("r_num", String.valueOf(numBlockImage));
         hashMap.put("r_collection", collection);
         hashMap.put("r_timeStamp", timeStamp);
-        hashMap.put("r_point", "0");
+        hashMap.put("r_point", 0);
         hashMap.put("uId", myUid);
         hashMap.put("uImg", myImg);
         hashMap.put("uName", myName);

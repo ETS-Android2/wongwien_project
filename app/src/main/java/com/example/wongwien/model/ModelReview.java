@@ -4,47 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ModelReview implements Parcelable {
-    String rId,r_collection,r_desc0,r_desc1,r_desc2,r_desc3,r_desc4,
-            r_image0,r_image1,r_image2,r_image3,r_image4,r_num,r_point,r_tag,r_timeStamp,r_title,
-            r_type,uEmail,uId,uImg,uName;
-    int countDisplay;
+    String rId, r_collection, r_desc0, r_desc1, r_desc2, r_desc3, r_desc4,
+            r_image0, r_image1, r_image2, r_image3, r_image4, r_num, r_tag, r_timeStamp, r_title,
+            r_type, uEmail, uId, uImg, uName;
+    int r_point;
 
     public ModelReview() {
-        countDisplay=0;
-    }
-
-    public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image2, String r_image3, String r_image4, String r_num, String r_point, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImg, String uName) {
-        this.rId = rId;
-        this.r_collection = r_collection;
-        this.r_desc0 = r_desc0;
-        this.r_desc1 = r_desc1;
-        this.r_desc2 = r_desc2;
-        this.r_desc3 = r_desc3;
-        this.r_desc4 = r_desc4;
-        this.r_image0 = r_image0;
-        this.r_image1 = r_image1;
-        this.r_image2 = r_image2;
-        this.r_image3 = r_image3;
-        this.r_image4 = r_image4;
-        this.r_num = r_num;
-        this.r_point = r_point;
-        this.r_tag = r_tag;
-        this.r_timeStamp = r_timeStamp;
-        this.r_title = r_title;
-        this.r_type = r_type;
-        this.uEmail = uEmail;
-        this.uId = uId;
-        this.uImg = uImg;
-        this.uName = uName;
-        this.countDisplay=0;
-    }
-
-    public int getCountDisplay() {
-        return countDisplay;
-    }
-
-    public void setCountDisplay(int countDisplay) {
-        this.countDisplay = countDisplay;
     }
 
     protected ModelReview(Parcel in) {
@@ -61,7 +26,6 @@ public class ModelReview implements Parcelable {
         r_image3 = in.readString();
         r_image4 = in.readString();
         r_num = in.readString();
-        r_point = in.readString();
         r_tag = in.readString();
         r_timeStamp = in.readString();
         r_title = in.readString();
@@ -70,6 +34,7 @@ public class ModelReview implements Parcelable {
         uId = in.readString();
         uImg = in.readString();
         uName = in.readString();
+        r_point = in.readInt();
     }
 
     public static final Creator<ModelReview> CREATOR = new Creator<ModelReview>() {
@@ -188,14 +153,6 @@ public class ModelReview implements Parcelable {
         this.r_num = r_num;
     }
 
-    public String getR_point() {
-        return r_point;
-    }
-
-    public void setR_point(String r_point) {
-        this.r_point = r_point;
-    }
-
     public String getR_tag() {
         return r_tag;
     }
@@ -260,32 +217,37 @@ public class ModelReview implements Parcelable {
         this.uName = uName;
     }
 
-    @Override
-    public String toString() {
-        return "ModelReview{" +
-                "rId='" + rId + '\'' +
-                ", r_collection='" + r_collection + '\'' +
-                ", r_desc0='" + r_desc0 + '\'' +
-                ", r_desc1='" + r_desc1 + '\'' +
-                ", r_desc2='" + r_desc2 + '\'' +
-                ", r_desc3='" + r_desc3 + '\'' +
-                ", r_desc4='" + r_desc4 + '\'' +
-                ", r_image0='" + r_image0 + '\'' +
-                ", r_image1='" + r_image1 + '\'' +
-                ", r_image2='" + r_image2 + '\'' +
-                ", r_image3='" + r_image3 + '\'' +
-                ", r_image4='" + r_image4 + '\'' +
-                ", r_num='" + r_num + '\'' +
-                ", r_point='" + r_point + '\'' +
-                ", r_tag='" + r_tag + '\'' +
-                ", r_timeStamp='" + r_timeStamp + '\'' +
-                ", r_title='" + r_title + '\'' +
-                ", r_type='" + r_type + '\'' +
-                ", uEmail='" + uEmail + '\'' +
-                ", uId='" + uId + '\'' +
-                ", uImg='" + uImg + '\'' +
-                ", uName='" + uName + '\'' +
-                '}';
+    public int getR_point() {
+        return r_point;
+    }
+
+    public void setR_point(int r_point) {
+        this.r_point = r_point;
+    }
+
+    public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image2, String r_image3, String r_image4, String r_num, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImg, String uName, int r_point) {
+        this.rId = rId;
+        this.r_collection = r_collection;
+        this.r_desc0 = r_desc0;
+        this.r_desc1 = r_desc1;
+        this.r_desc2 = r_desc2;
+        this.r_desc3 = r_desc3;
+        this.r_desc4 = r_desc4;
+        this.r_image0 = r_image0;
+        this.r_image1 = r_image1;
+        this.r_image2 = r_image2;
+        this.r_image3 = r_image3;
+        this.r_image4 = r_image4;
+        this.r_num = r_num;
+        this.r_tag = r_tag;
+        this.r_timeStamp = r_timeStamp;
+        this.r_title = r_title;
+        this.r_type = r_type;
+        this.uEmail = uEmail;
+        this.uId = uId;
+        this.uImg = uImg;
+        this.uName = uName;
+        this.r_point = r_point;
     }
 
     @Override
@@ -294,28 +256,29 @@ public class ModelReview implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(rId);
-        dest.writeString(r_collection);
-        dest.writeString(r_desc0);
-        dest.writeString(r_desc1);
-        dest.writeString(r_desc2);
-        dest.writeString(r_desc3);
-        dest.writeString(r_desc4);
-        dest.writeString(r_image0);
-        dest.writeString(r_image1);
-        dest.writeString(r_image2);
-        dest.writeString(r_image3);
-        dest.writeString(r_image4);
-        dest.writeString(r_num);
-        dest.writeString(r_point);
-        dest.writeString(r_tag);
-        dest.writeString(r_timeStamp);
-        dest.writeString(r_title);
-        dest.writeString(r_type);
-        dest.writeString(uEmail);
-        dest.writeString(uId);
-        dest.writeString(uImg);
-        dest.writeString(uName);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(rId);
+        parcel.writeString(r_collection);
+        parcel.writeString(r_desc0);
+        parcel.writeString(r_desc1);
+        parcel.writeString(r_desc2);
+        parcel.writeString(r_desc3);
+        parcel.writeString(r_desc4);
+        parcel.writeString(r_image0);
+        parcel.writeString(r_image1);
+        parcel.writeString(r_image2);
+        parcel.writeString(r_image3);
+        parcel.writeString(r_image4);
+        parcel.writeString(r_num);
+        parcel.writeString(r_tag);
+        parcel.writeString(r_timeStamp);
+        parcel.writeString(r_title);
+        parcel.writeString(r_type);
+        parcel.writeString(uEmail);
+        parcel.writeString(uId);
+        parcel.writeString(uImg);
+        parcel.writeString(uName);
+        parcel.writeInt(r_point);
     }
 }
+

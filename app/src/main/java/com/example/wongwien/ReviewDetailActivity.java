@@ -189,7 +189,7 @@ public class ReviewDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot d:snapshot.getChildren()){
                     ModelReview model=d.getValue(ModelReview.class);
-                    point=Integer.parseInt(model.getR_point());
+                    point=model.getR_point();
 
 
                     Log.d(TAG, "calculateScore: star::"+star);
@@ -215,7 +215,7 @@ public class ReviewDetailActivity extends AppCompatActivity {
                             for(DataSnapshot d:snapshot.getChildren()){
                                 ModelReview model=d.getValue(ModelReview.class);
                                 if(model.getrId().equals(review.getrId())){
-                                    d.getRef().child("r_point").setValue(String.valueOf(point2));
+                                    d.getRef().child("r_point").setValue(point2);
                                     loadReviewFromDatabase();
                                 }
                             }

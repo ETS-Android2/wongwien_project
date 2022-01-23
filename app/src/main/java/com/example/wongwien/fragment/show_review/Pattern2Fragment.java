@@ -53,7 +53,7 @@ public class Pattern2Fragment extends Fragment {
 
         binding.rTitle.setText(review.getR_title());
         binding.rDesc0.setText(review.getR_desc0());
-        binding.txtPoint.setText(review.getR_point());
+        binding.txtPoint.setText(String.valueOf(review.getR_point()));
         binding.txtName.setText(review.getuName());
         binding.txtEmail.setText(review.getuEmail());
         binding.txtTime.setText(dateTime);
