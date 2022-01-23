@@ -65,7 +65,9 @@
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_search.xml" value="0.1" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_splash.xml" value="0.176" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/activity_welcome.xml" value="0.17708333333333334" />
-        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/dialog_edit_profile.xml" value="0.23229166666666667" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/dialog_edit_name.xml" value="0.14479166666666668" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/dialog_edit_profile.xml" value="0.264" />
+        <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/dialog_review_score.xml" value="0.14479166666666668" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_add_review_image_vertitcal.xml" value="0.264" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_add_review_no_image.xml" value="0.4" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/layout/fragment_add_review_one_img.xml" value="0.2" />
@@ -95,7 +97,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.176" />
+        <option name="scale" value="0.4" />
       </ProjectState>
     </option>
   </component>
