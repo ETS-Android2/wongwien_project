@@ -169,7 +169,15 @@ public class ProfileFragment extends Fragment {
                 ModelUser user = dataSnapshot.getValue(ModelUser.class);
 
                 binding.tvName.setText(user.getName());
-                binding.tvEmail.setText(user.getEmail());
+
+                long totalCharacters = user.getName().chars().filter(ch -> ch != ' ').count();
+
+                Log.d(TAG, "onDataChange: total"+totalCharacters);
+                if(totalCharacters<9){
+                    binding.tvEmail.setText(user.getEmail());
+                }else{
+                    binding.tvEmail.setText("");
+                }
 
                 if (!user.getImage().equals("")) {
                     Picasso.get().load(user.getImage()).into(binding.imagePerson);

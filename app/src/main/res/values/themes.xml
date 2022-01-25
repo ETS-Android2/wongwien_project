@@ -88,27 +88,6 @@
         <item name="chipBackgroundColor">@color/backgroundApp</item>
     </style>
 
-<!--    If you want to apply the animation on "dialog" then firstly add below code in styles.xml file-->
-<!--    <style name="my_style”>-->
-<!--    <item-->
-<!--         name="@android:windowEnterAnimation">@anim/opening_anim</item>-->
-<!--    <item-->
-<!--        name="@android:windowExitAnimation">@anim/closing_anim</item>-->
-<!--    </style>-->
-
-<!--    final Dialog dialog = new Dialog(activity);-->
-<!--    dialog.getWindow().getAttributes().windowAnimations = R.style.my_style;-->
-
-<!--    If you want to apply the animation on "view" then write below code-->
-
-<!--    txtMessage = (TextView) findViewById(R.id.txtMessage);-->
-
-<!--    // load the animation-->
-<!--    Animation animFadein = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation);-->
-
-<!--    // start the animation-->
-<!--    txtMessage.startAnimation(animFadein);-->
-
 
     <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
