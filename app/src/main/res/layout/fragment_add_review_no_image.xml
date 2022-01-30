@@ -82,6 +82,15 @@
             android:textStyle="bold"
             android:layout_gravity="end"/>
 
+        <TextView
+            android:id="@+id/txtAddLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Location"
+            android:padding="10dp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:layout_gravity="end"/>
         <LinearLayout
             android:layout_marginTop="10dp"
             android:id="@+id/showTag"

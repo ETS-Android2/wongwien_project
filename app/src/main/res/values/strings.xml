@@ -19,4 +19,7 @@
         <item>Domitory</item>
         <item>Tours</item>
     </string-array>
+    <string name="pick_place">Choose place</string>
+    <string name="default_info_title">Please allow  request</string>
+    <string name="default_info_snippet">"require location permission  "</string>
 </resources>

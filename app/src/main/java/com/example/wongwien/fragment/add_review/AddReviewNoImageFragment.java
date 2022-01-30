@@ -1,14 +1,18 @@
 package com.example.wongwien.fragment.add_review;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +22,12 @@ import android.widget.Toast;
 
 import com.example.wongwien.AddQuestionActivity;
 import com.example.wongwien.AddReviewActivity;
+import com.example.wongwien.MapsActivity;
 import com.example.wongwien.R;
 import com.example.wongwien.databinding.FragmentAddReviewNoImageBinding;
 import com.example.wongwien.model.ModelReview;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
@@ -28,12 +35,18 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 public class AddReviewNoImageFragment extends Fragment {
+    private static final String TAG = "AddReviewNoImage";
     private FragmentAddReviewNoImageBinding binding;
     private GetAllDataToActivity getdata;
+    public static final int ERROR_DIALOG_REQUESST=9001;
+    public static final int MY_LOCATION=9002;
 
     DatabaseReference ref;
     ModelReview review;
+    HashMap<String,String> mylocation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +66,7 @@ public class AddReviewNoImageFragment extends Fragment {
         binding.spinnerCollection.setAdapter(adapter);
 
         Bundle bundle=getArguments();
+        mylocation=new HashMap<>();
         if(bundle!=null){
             review=bundle.getParcelable("list");
 
@@ -106,13 +120,22 @@ public class AddReviewNoImageFragment extends Fragment {
                             tag="";
                         }
 
-                        getdata.uploadReviewWithNoImage(title, descipt,tag,collection);
+                        getdata.uploadReviewWithNoImage(title, descipt,tag,collection,mylocation);
                     }else{
                         Toast.makeText(getContext(), "Please fill all", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
+        binding.txtAddLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isService()){
+                    Intent intent=new Intent(getContext(), MapsActivity.class);
+                    startActivityForResult(intent,MY_LOCATION);
+                }
+            }
+        });
 
 
         binding.txtAddtag.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +167,36 @@ public class AddReviewNoImageFragment extends Fragment {
 
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == MY_LOCATION) {
+            // here you can retrieve your bundle data.
+            String yourdata = data.getStringExtra("Sent");
+
+            mylocation.put("map_title",data.getStringExtra("title"));
+            mylocation.put("address",data.getStringExtra("address"));
+            mylocation.put("latitude",data.getStringExtra("loc1"));
+            mylocation.put("longitude",data.getStringExtra("loc2"));
+
+            Log.d(TAG, "onActivityResult: yourdata::"+yourdata);
+            Log.d(TAG, "onActivityResult: yourdata::"+mylocation.get(0));
+        }
+    }
+    public boolean isService(){
+        int avalible= GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+        if(avalible== ConnectionResult.SUCCESS){
+            return true;
+        }else if(GoogleApiAvailability.getInstance().isUserResolvableError(avalible)){
+            //error occured but we can resolve it
+            Dialog dialog=GoogleApiAvailability.getInstance().getErrorDialog((Activity) getContext(),avalible,ERROR_DIALOG_REQUESST);
+            dialog.show();
+        }else{
+            Toast.makeText(getContext(), "Something occurs you can't make map requests ", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 
     private void hideKeyboard(FragmentActivity activity) {

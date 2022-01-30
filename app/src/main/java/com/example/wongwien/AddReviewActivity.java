@@ -67,7 +67,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
 
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
-           binding.addreviewTopbar.setVisibility(View.GONE);
+            binding.addreviewTopbar.setVisibility(View.GONE);
 
             String type = bundle.getString("rtype");
             ModelReview review = bundle.getParcelable("list");
@@ -255,7 +255,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
     }
 
     @Override
-    public void uploadReviewWithNoImage(String title, String descrip, String tag, String collection) {
+    public void uploadReviewWithNoImage(String title, String descrip, String tag, String collection, HashMap<String, String> mylocation) {
         progressDialog.show();
 
         ref = database.getReference("Reviews");
@@ -275,6 +275,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
         hashMap.put("uImg", myImg);
         hashMap.put("uName", myName);
         hashMap.put("uEmail", myEmail);
+        hashMap.put("mylocation", mylocation);
 
         ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -356,7 +357,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
     @Override
     public void uploadReviewWithVerticalImage(String title, ArrayList<String> allDescrip, ArrayList<Uri> allImageUri, String tag, String collection, int count) {
         progressDialog.show();
-        uploadDataToSever(title, allDescrip, allImageUri, tag, collection,count);
+        uploadDataToSever(title, allDescrip, allImageUri, tag, collection, count);
         progressDialog.dismiss();
     }
 
@@ -366,7 +367,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
     }
 
     private boolean checkNumberOfImageLinks(int numberOfImage, int index) {
-        if (numberOfImage == index+1) {
+        if (numberOfImage == index + 1) {
             return true;
         }
 
@@ -393,7 +394,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
         hashMap.put("uEmail", myEmail);
 
         for (int i = 0; i < numBlockImage; i++) {
-            hashMap.put("r_image" + i,allImageUri.get(i).toString());
+            hashMap.put("r_image" + i, allImageUri.get(i).toString());
             hashMap.put("r_desc" + i, allDescrip.get(i));
         }
 
@@ -407,9 +408,10 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
             }
         });
     }
-    private void gobackToMain(){
-        Intent intent =new Intent(AddReviewActivity.this,MainActivity.class);
-        intent.putExtra("refresh","review");
+
+    private void gobackToMain() {
+        Intent intent = new Intent(AddReviewActivity.this, MainActivity.class);
+        intent.putExtra("refresh", "review");
         startActivity(intent);
     }
 }
