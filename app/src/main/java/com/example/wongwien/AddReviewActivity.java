@@ -275,7 +275,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
         hashMap.put("uImg", myImg);
         hashMap.put("uName", myName);
         hashMap.put("uEmail", myEmail);
-        hashMap.put("mylocation", mylocation);
+        hashMap.put("ModelMylocation", mylocation);
 
         ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -290,7 +290,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
     }
 
     @Override
-    public void uploadReviewWithOneImage(String title, String descrip, String tag, String collection, Uri image_uri) {
+    public void uploadReviewWithOneImage(String title, String descrip, String tag, String collection, Uri image_uri, HashMap<String, String> mylocation) {
         progressDialog.show();
 //        Log.d(TAG, "uploadReviewWithOneImage: UriExample::"+image_uri);
         String timeStamp = String.valueOf(System.currentTimeMillis());
@@ -334,6 +334,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
                             hashMap.put("uImg", myImg);
                             hashMap.put("uName", myName);
                             hashMap.put("uEmail", myEmail);
+                            hashMap.put("ModelMylocation", mylocation);
 
                             ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -355,9 +356,9 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
     }
 
     @Override
-    public void uploadReviewWithVerticalImage(String title, ArrayList<String> allDescrip, ArrayList<Uri> allImageUri, String tag, String collection, int count) {
+    public void uploadReviewWithVerticalImage(String title, ArrayList<String> allDescrip, ArrayList<Uri> allImageUri, String tag, String collection, int count, HashMap<String, String> mylocation) {
         progressDialog.show();
-        uploadDataToSever(title, allDescrip, allImageUri, tag, collection, count);
+        uploadDataToSever(title, allDescrip, allImageUri, tag, collection, count,mylocation);
         progressDialog.dismiss();
     }
 
@@ -374,7 +375,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
         return false;
     }
 
-    private void uploadDataToSever(String title, ArrayList<String> allDescrip, ArrayList<Uri> allImageUri, String tag, String collection, int numBlockImage) {
+    private void uploadDataToSever(String title, ArrayList<String> allDescrip, ArrayList<Uri> allImageUri, String tag, String collection, int numBlockImage, HashMap<String, String> mylocation) {
         String timeStamp = String.valueOf(System.currentTimeMillis());
 
         ref = database.getReference("Reviews");
@@ -392,6 +393,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
         hashMap.put("uImg", myImg);
         hashMap.put("uName", myName);
         hashMap.put("uEmail", myEmail);
+        hashMap.put("ModelMylocation", mylocation);
 
         for (int i = 0; i < numBlockImage; i++) {
             hashMap.put("r_image" + i, allImageUri.get(i).toString());

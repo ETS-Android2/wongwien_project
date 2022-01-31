@@ -11,6 +11,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +46,8 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,6 +83,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String[] likelyPlaceAddresses;
     private List[] likelyPlaceAttributions;
     private LatLng[] likelyPlaceLatLngs;
+
+    private Geocoder geocoder;
+    private List<Address>myAddress;
 
     Marker marker;
     private static final CharSequence[] MAP_TYPE_ITEMS =
@@ -169,6 +176,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent = new Intent();
         intent.putExtra("Sent", "my location");
         intent.putExtra("title", titlte);
+        Log.d(TAG, "getdataLocation: address::"+address);
         intent.putExtra("address", address);
         intent.putExtra("loc1", lat);
         intent.putExtra("loc2", log);
@@ -341,7 +349,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             // Set the map's camera position to the current location of the device.
                             lastKnownLocation = task.getResult();
                             if (lastKnownLocation != null) {
-                                moveCameraAndMark(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), DEFAULT_ZOOM, "My Location","");
+                                try {
+                                    findAddress(new LatLng(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude()));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                moveCameraAndMark(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), DEFAULT_ZOOM, "My Location",myAddress.get(0).getAddressLine(0).toString());
                             }
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
@@ -358,6 +371,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private void findAddress(LatLng latLng) throws IOException {
+        geocoder = new Geocoder(this);
+        myAddress=new ArrayList<>();
+        myAddress=geocoder.getFromLocation(latLng.latitude,latLng.longitude,1);
+        Log.d(TAG, "findAddress: myAddress::"+myAddress);
+    }
     private void moveCameraAndMark(LatLng location, int zoom, String title, String markerSnippet) {
         removeAllMarker();
 
@@ -369,7 +388,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .position(location)
                 .snippet(markerSnippet);
         marker=map.addMarker(options);
-
+        marker.showInfoWindow();
         hideKeboard();
     }
 
@@ -426,7 +445,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void removeAllMarker(){
         map.clear();
     }
-
 
     /**
      * Updates the map's UI settings based on whether the user has granted location permission.

@@ -27,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:padding="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:text="Title Review"
             android:textColor="@color/primary"
             android:textSize="20sp"
@@ -35,9 +36,8 @@
 
         <com.example.wongwien.EdittextV2
             android:id="@+id/edTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:background="@drawable/dialog_bg"
             android:gravity="start"
             android:hint="Add your title review"
@@ -71,16 +71,15 @@
 
             <com.example.wongwien.EdittextV2
                 android:id="@+id/edD1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
                 android:background="@drawable/dialog_bg"
                 android:gravity="start"
                 android:hint="Add your description of image"
                 android:inputType="textCapSentences|textMultiLine"
                 android:minHeight="70dp"
-                android:padding="5dp"
+                android:padding="20dp"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -108,16 +107,15 @@
 
             <com.example.wongwien.EdittextV2
                 android:id="@+id/edD2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
                 android:background="@drawable/dialog_bg"
                 android:gravity="start"
                 android:hint="Add your description of image"
                 android:inputType="textCapSentences|textMultiLine"
                 android:minHeight="70dp"
-                android:padding="5dp"
+                android:padding="20dp"
                 android:textSize="18sp" />
 
             <TextView
@@ -158,16 +156,15 @@
 
             <com.example.wongwien.EdittextV2
                 android:id="@+id/edD3"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
                 android:background="@drawable/dialog_bg"
                 android:gravity="start"
                 android:hint="Add your description of image"
                 android:inputType="textCapSentences|textMultiLine"
                 android:minHeight="70dp"
-                android:padding="5dp"
+                android:padding="20dp"
                 android:textSize="18sp" />
 
             <TextView
@@ -208,16 +205,15 @@
 
             <com.example.wongwien.EdittextV2
                 android:id="@+id/edD4"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
                 android:background="@drawable/dialog_bg"
                 android:gravity="start"
                 android:hint="Add your description of image"
                 android:inputType="textCapSentences|textMultiLine"
                 android:minHeight="70dp"
-                android:padding="5dp"
+                android:padding="20dp"
                 android:textSize="18sp" />
 
 
@@ -233,6 +229,15 @@
             android:layout_marginEnd="10dp"
             android:textColor="@color/primary"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txtAddLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Location"
+            android:padding="10dp"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:layout_gravity="end"/>
 
         <LinearLayout
             android:id="@+id/showTag"
@@ -284,12 +289,46 @@
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"
             android:layout_width="match_parent"
-            android:layout_height="16dp"
+            android:layout_height="wrap_content"
             android:duplicateParentState="false"
             android:padding="10dp">
-
         </com.google.android.material.chip.ChipGroup>
 
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:id="@+id/showAddress"
+            android:visibility="gone"
+            android:background="@color/backgroundApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_location_pin" />
+
+                <TextView
+                    android:id="@+id/txtShowAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="address line: djafjodigjosdjiajfoj"
+                    android:textColor="@color/primary"
+                    android:textSize="13dp"/>
+            </LinearLayout>
+        </LinearLayout>
         <Button
             android:id="@+id/btnPost"
             android:layout_width="match_parent"

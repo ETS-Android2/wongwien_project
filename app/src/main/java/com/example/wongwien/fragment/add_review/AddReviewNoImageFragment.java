@@ -183,8 +183,17 @@ public class AddReviewNoImageFragment extends Fragment {
 
             Log.d(TAG, "onActivityResult: yourdata::"+yourdata);
             Log.d(TAG, "onActivityResult: yourdata::"+mylocation.get(0));
+            showAddress();
         }
     }
+    private void showAddress() {
+        if (mylocation.size() > 0) {
+            binding.txtAddLocation.setVisibility(View.GONE);
+            binding.showAddress.setVisibility(View.VISIBLE);
+            binding.txtShowAddress.setText(mylocation.get("address"));
+        }
+    }
+
     public boolean isService(){
         int avalible= GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
         if(avalible== ConnectionResult.SUCCESS){

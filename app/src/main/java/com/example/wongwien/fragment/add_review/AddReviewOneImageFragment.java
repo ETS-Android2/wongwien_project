@@ -3,6 +3,7 @@ package com.example.wongwien.fragment.add_review;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -33,9 +34,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wongwien.MapsActivity;
 import com.example.wongwien.R;
 import com.example.wongwien.databinding.FragmentAddReviewOneImgBinding;
 import com.example.wongwien.model.ModelReview;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,27 +60,24 @@ import static android.app.Activity.RESULT_OK;
 import java.util.HashMap;
 
 public class AddReviewOneImageFragment extends Fragment {
+    public static final int ERROR_DIALOG_REQUESST = 9001;
+    public static final int MY_LOCATION = 9002;
     private static final String TAG = "AddReviewOneImageFragme";
-    private FragmentAddReviewOneImgBinding binding;
-
     //permissions constants
     private static final int CAMERA_REQUEST_CODE = 100;
     private static final int STORAGE_REQUEST_CODE = 200;
     //permission pick image constants
     private static final int IMAGE_PICK_GALLERY_REQUEST_CODE = 300;
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE = 400;
-
-
-    private GetAllDataToActivity getdata;
-
+    HashMap<String, String> mylocation;
     Uri image_uri;
     ModelReview review;
     DatabaseReference ref;
     FirebaseStorage storage;
-
     ProgressDialog progressDialog;
-
-    boolean isUpdate=false;
+    boolean isUpdate = false;
+    private FragmentAddReviewOneImgBinding binding;
+    private GetAllDataToActivity getdata;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class AddReviewOneImageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding=FragmentAddReviewOneImgBinding.inflate(inflater);
+        binding = FragmentAddReviewOneImgBinding.inflate(inflater);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.collections, R.layout.spinner_item);
@@ -94,25 +95,26 @@ public class AddReviewOneImageFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCollection.setAdapter(adapter);
 
-        progressDialog=new ProgressDialog(getContext());
+        progressDialog = new ProgressDialog(getContext());
 
-        Bundle bundle=getArguments();
-        if(bundle!=null){
-            review=bundle.getParcelable("list");
+        mylocation = new HashMap<>();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            review = bundle.getParcelable("list");
 
             binding.edTitle.setText(review.getR_title());
             binding.edDescription.setText(review.getR_desc0());
 
-            String image=review.getR_image0();
-            try{
-                if(image!=null ||!image.equals("")){
-                    changeImageToImageView(binding.tvImage,image);
-                    image_uri=Uri.parse(image);
+            String image = review.getR_image0();
+            try {
+                if (image != null || !image.equals("")) {
+                    changeImageToImageView(binding.tvImage, image);
+                    image_uri = Uri.parse(image);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            String tag=review.getR_tag();
+            String tag = review.getR_tag();
             if (!tag.equals("")) {
                 String tags[] = tag.split("::");
                 for (String s : tags) {
@@ -121,20 +123,20 @@ public class AddReviewOneImageFragment extends Fragment {
                     }
                 }
             }
-            isUpdate=true;
+            isUpdate = true;
 
             binding.btnPost.setText("Update");
             binding.btnPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String rId=review.getrId();
+                    String rId = review.getrId();
 
-                    String tag=getAllTag();
+                    String tag = getAllTag();
                     String title = binding.edTitle.getText().toString().trim();
                     String collection = binding.spinnerCollection.getSelectedItem().toString();
                     String descipt = binding.edDescription.getText().toString().trim();
 
-                    ref= FirebaseDatabase.getInstance().getReference("Reviews").child(rId);
+                    ref = FirebaseDatabase.getInstance().getReference("Reviews").child(rId);
                     ref.child("r_title").setValue(title);
                     ref.child("r_desc0").setValue(descipt);
                     ref.child("r_image0").setValue(String.valueOf(image_uri));
@@ -148,7 +150,7 @@ public class AddReviewOneImageFragment extends Fragment {
                 }
             });
 
-        }else{
+        } else {
             binding.btnPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -160,11 +162,21 @@ public class AddReviewOneImageFragment extends Fragment {
         binding.txtAddtag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(binding.showTag.getVisibility()==View.VISIBLE){
+                if (binding.showTag.getVisibility() == View.VISIBLE) {
                     binding.showTag.setVisibility(View.GONE);
-                }else{
+                } else {
                     binding.showTag.setVisibility(View.VISIBLE);
                     binding.edTag.requestFocus();
+                }
+            }
+        });
+
+        binding.txtAddLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isService()) {
+                    Intent intent = new Intent(getContext(), MapsActivity.class);
+                    startActivityForResult(intent, MY_LOCATION);
                 }
             }
         });
@@ -172,8 +184,8 @@ public class AddReviewOneImageFragment extends Fragment {
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tag=binding.edTag.getText().toString().trim();
-                if(!TextUtils.isEmpty(tag)){
+                String tag = binding.edTag.getText().toString().trim();
+                if (!TextUtils.isEmpty(tag)) {
                     addToChipGroup(tag);
                     binding.edTag.setText("");
 
@@ -193,25 +205,25 @@ public class AddReviewOneImageFragment extends Fragment {
         binding.tvImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String options[]={"Camera","Gallery"};
-                AlertDialog.Builder builder=new AlertDialog.Builder(getContext(),R.style.CustomAlertDialog);
+                String options[] = {"Camera", "Gallery"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
                 builder.setTitle("Pick Image From");
 
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        switch(which){
+                        switch (which) {
                             case 0:
-                                if(!checkCameraPermission()){
+                                if (!checkCameraPermission()) {
                                     requestCameraPermission();
-                                }else{
+                                } else {
                                     pickFromCamera();
                                 }
                                 break;
                             case 1:
-                                if(!checkStoragePermission()){
+                                if (!checkStoragePermission()) {
                                     requestStoragePermissions();
-                                }else{
+                                } else {
                                     pickFromGallery();
                                 }
                                 break;
@@ -228,43 +240,82 @@ public class AddReviewOneImageFragment extends Fragment {
         return binding.getRoot();
     }
 
+    public boolean isService() {
+        int avalible = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+        if (avalible == ConnectionResult.SUCCESS) {
+            return true;
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(avalible)) {
+            //error occured but we can resolve it
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog((Activity) getContext(), avalible, ERROR_DIALOG_REQUESST);
+            dialog.show();
+        } else {
+            Toast.makeText(getContext(), "Something occurs you can't make map requests ", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable  Intent data) {
-        if(resultCode==RESULT_OK){
-            switch(requestCode){
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case IMAGE_PICK_CAMERA_REQUEST_CODE:
-                    changeImageToImageView(binding.tvImage,image_uri);
+                    changeImageToImageView(binding.tvImage, image_uri);
                     break;
 
                 case IMAGE_PICK_GALLERY_REQUEST_CODE:
-                    image_uri=data.getData();
+                    image_uri = data.getData();
 
-                    changeImageToImageView(binding.tvImage,image_uri);
+                    changeImageToImageView(binding.tvImage, image_uri);
+                    break;
+
+                case MY_LOCATION:
+                    // here you can retrieve your bundle data.
+                    String yourdata = data.getStringExtra("Sent");
+
+                    mylocation.put("map_title", data.getStringExtra("title"));
+                    mylocation.put("address", data.getStringExtra("address"));
+                    mylocation.put("latitude", data.getStringExtra("loc1"));
+                    mylocation.put("longitude", data.getStringExtra("loc2"));
+
+                    Log.d(TAG, "onActivityResult: yourdata::" + yourdata);
+                    Log.d(TAG, "onActivityResult: yourdata::" + mylocation.get(0));
+
+                    showAddress();
                     break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    private void showAddress() {
+        if (mylocation.size() > 0) {
+            binding.txtAddLocation.setVisibility(View.GONE);
+            binding.showAddress.setVisibility(View.VISIBLE);
+            binding.txtShowAddress.setText(mylocation.get("address"));
+        }
+    }
+
     public void changeImageToImageView(ImageView imageView, String img) {
         imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        try{
+        try {
             Picasso.get().load(img).into(imageView);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void changeImageToImageView(ImageView imageView, Uri img){
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+
+    public void changeImageToImageView(ImageView imageView, Uri img) {
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         imageView.setImageURI(img);
 
-        if(isUpdate){
+        if (isUpdate) {
             progressDialog.setMessage("Upload image...");
             progressDialog.show();
 
             String timeStamp = String.valueOf(System.currentTimeMillis());
 
             String filePathAndName = "Review_image/" + review.getuId() + "_" + timeStamp;
-            storage=FirebaseStorage.getInstance();
+            storage = FirebaseStorage.getInstance();
 
             StorageReference s_ref = storage.getReference().child(filePathAndName);
             s_ref.putFile(img).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -287,7 +338,7 @@ public class AddReviewOneImageFragment extends Fragment {
                                 Uri downloadUri = task.getResult();
                                 Log.d(TAG, "onComplete: img Uri::" + downloadUri);
 
-                                image_uri=downloadUri;
+                                image_uri = downloadUri;
                                 progressDialog.dismiss();
                             }
                         }
@@ -295,59 +346,59 @@ public class AddReviewOneImageFragment extends Fragment {
                 }
             });
         }
-
     }
+
     private void uploadImage(Uri image_uri) {
-        String tag=getAllTag();
+        String tag = getAllTag();
         String title = binding.edTitle.getText().toString().trim();
         String collection = binding.spinnerCollection.getSelectedItem().toString();
         String descipt = binding.edDescription.getText().toString().trim();
 
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(descipt)) {
 
-            if(TextUtils.isEmpty(tag)){
-                tag="";
+            if (TextUtils.isEmpty(tag)) {
+                tag = "";
             }
 
-            if(!image_uri.equals("") && image_uri!=null){
-                getdata.uploadReviewWithOneImage(title, descipt,tag,collection,image_uri);
+            if (!image_uri.equals("") && image_uri != null) {
+                getdata.uploadReviewWithOneImage(title, descipt, tag, collection, image_uri, mylocation);
 
 //                Log.d(TAG, "uploadImage: upload image::"+image_uri);
 //                Picasso.get().load(image_uri).into(binding.tvImage);
             }
-        }else{
+        } else {
             Toast.makeText(getContext(), "Please fill all", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void pickFromGallery() {
-        Intent gallery=new Intent(Intent.ACTION_PICK);
+        Intent gallery = new Intent(Intent.ACTION_PICK);
         gallery.setType("image/*");
-        startActivityForResult(gallery,IMAGE_PICK_GALLERY_REQUEST_CODE);
+        startActivityForResult(gallery, IMAGE_PICK_GALLERY_REQUEST_CODE);
     }
 
     private void pickFromCamera() {
-        ContentValues values=new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE,"wongwieng");
-        values.put(MediaStore.Images.Media.DESCRIPTION,"wongwieng review");
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "wongwieng");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "wongwieng review");
 
-        image_uri=getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+        image_uri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-        Intent cameraIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
-        startActivityForResult(cameraIntent,IMAGE_PICK_CAMERA_REQUEST_CODE);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
+        startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_REQUEST_CODE);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull  String[] permissions, @NonNull  int[] grantResults) {
-        switch(requestCode){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
             case CAMERA_REQUEST_CODE:
-                if(grantResults.length>0){
-                    boolean cameraAccepted=grantResults[0]==PackageManager.PERMISSION_GRANTED;
-                    boolean writeStorageAccepted=grantResults[1]==PackageManager.PERMISSION_GRANTED;
-                    if(cameraAccepted&&writeStorageAccepted){
+                if (grantResults.length > 0) {
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted && writeStorageAccepted) {
                         pickFromCamera();
-                    }else{
+                    } else {
                         Toast.makeText(getActivity(), "Plase enable camera & storage permission", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -367,31 +418,33 @@ public class AddReviewOneImageFragment extends Fragment {
     }
 
     private void requestCameraPermission() {
-        String cameraPermissions[]=new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String cameraPermissions[] = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         requestPermissions(cameraPermissions, CAMERA_REQUEST_CODE);
     }
+
     private void requestStoragePermissions() {
-        String storagePermissions[]=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String storagePermissions[] = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         requestPermissions(storagePermissions, STORAGE_REQUEST_CODE);
     }
 
 
     private boolean checkCameraPermission() {
-        boolean result= ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                ==(PackageManager.PERMISSION_GRANTED);
-        boolean result2= ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ==(PackageManager.PERMISSION_GRANTED);
-        return result&&result2;
+        boolean result = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                == (PackageManager.PERMISSION_GRANTED);
+        boolean result2 = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == (PackageManager.PERMISSION_GRANTED);
+        return result && result2;
     }
+
     private boolean checkStoragePermission() {
-        boolean result2= ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ==(PackageManager.PERMISSION_GRANTED);
+        boolean result2 = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == (PackageManager.PERMISSION_GRANTED);
         return result2;
     }
 
     private void addToChipGroup(String tag) {
-        Chip chip=new Chip(getContext());
-        ChipDrawable chipDrawable=ChipDrawable.createFromAttributes(getContext(),
+        Chip chip = new Chip(getContext());
+        ChipDrawable chipDrawable = ChipDrawable.createFromAttributes(getContext(),
                 null,
                 0,
                 R.style.chipCustom);
@@ -425,18 +478,19 @@ public class AddReviewOneImageFragment extends Fragment {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    private String getAllTag(){
-        String txtTag="";
+    private String getAllTag() {
+        String txtTag = "";
 
-        for(int i=0;i<binding.chipGroup.getChildCount();i++){
-            txtTag=txtTag+"::"+((Chip)binding.chipGroup.getChildAt(i)).getText().toString();
+        for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
+            txtTag = txtTag + "::" + ((Chip) binding.chipGroup.getChildAt(i)).getText().toString();
         }
         return txtTag;
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
-        getdata= (GetAllDataToActivity) getActivity();
+        getdata = (GetAllDataToActivity) getActivity();
         super.onAttach(context);
     }
+
 }

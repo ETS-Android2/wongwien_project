@@ -8,8 +8,32 @@ public class ModelReview implements Parcelable {
             r_image0, r_image1, r_image2, r_image3, r_image4, r_num, r_tag, r_timeStamp, r_title,
             r_type, uEmail, uId, uImg, uName;
     int r_point;
+    private ModelMylocation mylocation;
 
-    public ModelReview() {
+    public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image2, String r_image3, String r_image4, String r_num, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImg, String uName, int r_point, ModelMylocation mylocation) {
+        this.rId = rId;
+        this.r_collection = r_collection;
+        this.r_desc0 = r_desc0;
+        this.r_desc1 = r_desc1;
+        this.r_desc2 = r_desc2;
+        this.r_desc3 = r_desc3;
+        this.r_desc4 = r_desc4;
+        this.r_image0 = r_image0;
+        this.r_image1 = r_image1;
+        this.r_image2 = r_image2;
+        this.r_image3 = r_image3;
+        this.r_image4 = r_image4;
+        this.r_num = r_num;
+        this.r_tag = r_tag;
+        this.r_timeStamp = r_timeStamp;
+        this.r_title = r_title;
+        this.r_type = r_type;
+        this.uEmail = uEmail;
+        this.uId = uId;
+        this.uImg = uImg;
+        this.uName = uName;
+        this.r_point = r_point;
+        this.mylocation = mylocation;
     }
 
     protected ModelReview(Parcel in) {
@@ -35,6 +59,37 @@ public class ModelReview implements Parcelable {
         uImg = in.readString();
         uName = in.readString();
         r_point = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(rId);
+        dest.writeString(r_collection);
+        dest.writeString(r_desc0);
+        dest.writeString(r_desc1);
+        dest.writeString(r_desc2);
+        dest.writeString(r_desc3);
+        dest.writeString(r_desc4);
+        dest.writeString(r_image0);
+        dest.writeString(r_image1);
+        dest.writeString(r_image2);
+        dest.writeString(r_image3);
+        dest.writeString(r_image4);
+        dest.writeString(r_num);
+        dest.writeString(r_tag);
+        dest.writeString(r_timeStamp);
+        dest.writeString(r_title);
+        dest.writeString(r_type);
+        dest.writeString(uEmail);
+        dest.writeString(uId);
+        dest.writeString(uImg);
+        dest.writeString(uName);
+        dest.writeInt(r_point);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ModelReview> CREATOR = new Creator<ModelReview>() {
@@ -225,60 +280,45 @@ public class ModelReview implements Parcelable {
         this.r_point = r_point;
     }
 
-    public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image2, String r_image3, String r_image4, String r_num, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImg, String uName, int r_point) {
-        this.rId = rId;
-        this.r_collection = r_collection;
-        this.r_desc0 = r_desc0;
-        this.r_desc1 = r_desc1;
-        this.r_desc2 = r_desc2;
-        this.r_desc3 = r_desc3;
-        this.r_desc4 = r_desc4;
-        this.r_image0 = r_image0;
-        this.r_image1 = r_image1;
-        this.r_image2 = r_image2;
-        this.r_image3 = r_image3;
-        this.r_image4 = r_image4;
-        this.r_num = r_num;
-        this.r_tag = r_tag;
-        this.r_timeStamp = r_timeStamp;
-        this.r_title = r_title;
-        this.r_type = r_type;
-        this.uEmail = uEmail;
-        this.uId = uId;
-        this.uImg = uImg;
-        this.uName = uName;
-        this.r_point = r_point;
+    public ModelMylocation getMylocation() {
+        return mylocation;
+    }
+
+    public void setMylocation(ModelMylocation mylocation) {
+        this.mylocation = mylocation;
+    }
+
+    public ModelReview() {
+
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(rId);
-        parcel.writeString(r_collection);
-        parcel.writeString(r_desc0);
-        parcel.writeString(r_desc1);
-        parcel.writeString(r_desc2);
-        parcel.writeString(r_desc3);
-        parcel.writeString(r_desc4);
-        parcel.writeString(r_image0);
-        parcel.writeString(r_image1);
-        parcel.writeString(r_image2);
-        parcel.writeString(r_image3);
-        parcel.writeString(r_image4);
-        parcel.writeString(r_num);
-        parcel.writeString(r_tag);
-        parcel.writeString(r_timeStamp);
-        parcel.writeString(r_title);
-        parcel.writeString(r_type);
-        parcel.writeString(uEmail);
-        parcel.writeString(uId);
-        parcel.writeString(uImg);
-        parcel.writeString(uName);
-        parcel.writeInt(r_point);
+    public String toString() {
+        return "ModelReview{" +
+                "rId='" + rId + '\'' +
+                ", r_collection='" + r_collection + '\'' +
+                ", r_desc0='" + r_desc0 + '\'' +
+                ", r_desc1='" + r_desc1 + '\'' +
+                ", r_desc2='" + r_desc2 + '\'' +
+                ", r_desc3='" + r_desc3 + '\'' +
+                ", r_desc4='" + r_desc4 + '\'' +
+                ", r_image0='" + r_image0 + '\'' +
+                ", r_image1='" + r_image1 + '\'' +
+                ", r_image2='" + r_image2 + '\'' +
+                ", r_image3='" + r_image3 + '\'' +
+                ", r_image4='" + r_image4 + '\'' +
+                ", r_num='" + r_num + '\'' +
+                ", r_tag='" + r_tag + '\'' +
+                ", r_timeStamp='" + r_timeStamp + '\'' +
+                ", r_title='" + r_title + '\'' +
+                ", r_type='" + r_type + '\'' +
+                ", uEmail='" + uEmail + '\'' +
+                ", uId='" + uId + '\'' +
+                ", uImg='" + uImg + '\'' +
+                ", uName='" + uName + '\'' +
+                ", r_point=" + r_point +
+                ", mylocation=" + mylocation +
+                '}';
     }
 }
 

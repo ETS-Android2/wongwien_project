@@ -5,6 +5,7 @@ import static android.app.Activity.RESULT_OK;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -33,10 +34,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.wongwien.EdittextV2;
+import com.example.wongwien.MapsActivity;
 import com.example.wongwien.R;
 import com.example.wongwien.SplashActivity;
 import com.example.wongwien.databinding.FragmentAddReviewImageVertitcalBinding;
 import com.example.wongwien.model.ModelReview;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,6 +57,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AddReviewImageVertitcalFragment extends Fragment {
     private static final String TAG = "AddReviewImageVertitcal";
@@ -76,6 +81,10 @@ public class AddReviewImageVertitcalFragment extends Fragment {
     private static final int IMAGE_PICK_CAMERA_REQUEST_CODE_4 = 404;
 
     private GetAllDataToActivity getdata;
+
+    public static final int ERROR_DIALOG_REQUESST=9001;
+    public static final int MY_LOCATION=9002;
+    HashMap<String,String> mylocation;
 
     int codeRequest_camera;
     int codeRequest_gallery;
@@ -112,6 +121,17 @@ public class AddReviewImageVertitcalFragment extends Fragment {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerCollection.setAdapter(adapter);
+        mylocation=new HashMap<>();
+
+        binding.txtAddLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isService()){
+                    Intent intent=new Intent(getContext(), MapsActivity.class);
+                    startActivityForResult(intent,MY_LOCATION);
+                }
+            }
+        });
 
         Bundle bundle=getArguments();
         if(bundle!=null){
@@ -325,6 +345,20 @@ public class AddReviewImageVertitcalFragment extends Fragment {
         firebaseAuth=FirebaseAuth.getInstance();
     }
 
+    public boolean isService(){
+        int avalible= GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+        if(avalible== ConnectionResult.SUCCESS){
+            return true;
+        }else if(GoogleApiAvailability.getInstance().isUserResolvableError(avalible)){
+            //error occured but we can resolve it
+            Dialog dialog=GoogleApiAvailability.getInstance().getErrorDialog((Activity) getContext(),avalible,ERROR_DIALOG_REQUESST);
+            dialog.show();
+        }else{
+            Toast.makeText(getContext(), "Something occurs you can't make map requests ", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
     private void uploadData() {
         String tag=getAllTag();
         String title = binding.edTitle.getText().toString().trim();
@@ -365,7 +399,7 @@ public class AddReviewImageVertitcalFragment extends Fragment {
                 Log.d(TAG, "uploadData: image::"+allImageUri.get(i));
             }
 
-            getdata.uploadReviewWithVerticalImage(title,allDescrip,allImageUri,tag,collection,count);
+            getdata.uploadReviewWithVerticalImage(title,allDescrip,allImageUri,tag,collection,count,mylocation);
 
 
         }else{
@@ -451,9 +485,31 @@ public class AddReviewImageVertitcalFragment extends Fragment {
                     image_uri=data.getData();
                     changeImageToImageView(binding.im4,image_uri,3);
                     break;
+
+                case  MY_LOCATION :
+                    // here you can retrieve your bundle data.
+                    String yourdata = data.getStringExtra("Sent");
+
+                    mylocation.put("map_title",data.getStringExtra("title"));
+                    mylocation.put("address",data.getStringExtra("address"));
+                    mylocation.put("latitude",data.getStringExtra("loc1"));
+                    mylocation.put("longitude",data.getStringExtra("loc2"));
+
+                    Log.d(TAG, "onActivityResult: yourdata::"+yourdata);
+                    Log.d(TAG, "onActivityResult: yourdata::"+mylocation.get(0));
+                    showAddress();
+
+                    break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    private void showAddress() {
+        if (mylocation.size() > 0) {
+            binding.txtAddLocation.setVisibility(View.GONE);
+            binding.showAddress.setVisibility(View.VISIBLE);
+            binding.txtShowAddress.setText(mylocation.get("address"));
+        }
     }
 
     @Override

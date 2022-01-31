@@ -195,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
+            String timeStamp=String.valueOf(System.currentTimeMillis());
+            checkOnlineStatus(timeStamp);
+
             return;
         }
 
