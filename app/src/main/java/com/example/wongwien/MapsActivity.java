@@ -96,6 +96,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // TODO: 2/1/2022 Next add new map activity then get ride of 'get place 'button and make a new  current location ui
+
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
