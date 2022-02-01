@@ -365,6 +365,12 @@ public class AddReviewImageVertitcalFragment extends Fragment {
                     if(location!=null){
                         binding.showAddress.setVisibility(View.VISIBLE);
                         binding.txtAddLocation.setVisibility(View.GONE);
+
+                        String title=location.getMap_title();
+                        if(title.equals("My Location")){
+                            title=review.getuName()+" Location";
+                        }
+                        binding.txtMapTitle.setText(title);
                         binding.txtShowAddress.setText(location.getAddress());
 
                         mylocation.put("map_title",location.getMap_title());
@@ -585,6 +591,7 @@ public class AddReviewImageVertitcalFragment extends Fragment {
                     startActivityForResult(intent,MY_LOCATION);
                 }
             });
+            binding.txtMapTitle.setText(mylocation.get("map_title"));
             binding.txtShowAddress.setText(mylocation.get("address"));
         }
     }

@@ -133,7 +133,15 @@ public class Pattern2Fragment extends Fragment {
                     mylocation = snapshot.getValue(ModelMylocation.class);
                     if(mylocation!=null){
                         binding.showAddress.setVisibility(View.VISIBLE);
-                        binding.txtShowAddress.setText(mylocation.getAddress());
+                        String title=mylocation.getMap_title();
+                        if(title.equals("My Location")){
+                            title=review.getuName()+" Location";
+                        }
+                        binding.txtMapTitle .setText(title);
+                        String add=mylocation.getAddress();
+                        String address[] = add.split(",");
+                        binding.txtShowAddress.setText(address[address.length-2]+","+address[address.length-1]);
+
                         binding.showAddress.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -142,6 +150,7 @@ public class Pattern2Fragment extends Fragment {
                                 if(maptitle.equals("My Location")){
                                     maptitle=review.getuName() +" Location";
                                 }
+                                intent.putExtra("view","view");
                                 intent.putExtra("map_title",maptitle);
                                 intent.putExtra("map_address",mylocation.getAddress());
                                 intent.putExtra("map_lo",mylocation.getLongitude());

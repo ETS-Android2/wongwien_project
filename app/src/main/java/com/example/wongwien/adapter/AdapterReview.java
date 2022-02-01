@@ -86,7 +86,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 
     @Override
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
-        loadLocation(reviews.get(position).getrId(),holder);
+        loadLocation(reviews.get(position),holder);
 
 
         loadAllStarToReviews(reviews.get(position).getrId(), myUid, holder);
@@ -311,30 +311,26 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 //        });
 //
     }
-        private void loadLocation(String rId, Myholder holder) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews").child(rId).child("Mylocation");
+        private void loadLocation(ModelReview review, Myholder holder) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews").child(review.getrId()).child("Mylocation");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 try{
                     mylocation = snapshot.getValue(ModelMylocation.class);
-                    Log.d(TAG, "onDataChange: location::"+mylocation);
                     if(mylocation!=null){
                         holder.showAddress.setVisibility(View.VISIBLE);
-                        holder.txtShowAddress.setText(mylocation.getAddress());
 
-//                        holder.showAddress.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                Intent intent=new Intent(context, MapsActivity.class);
-//                                intent.putExtra("map_title",mylocation.getMap_title());
-//                                intent.putExtra("map_address",mylocation.getAddress());
-//                                intent.putExtra("map_lo",mylocation.getLongitude());
-//                                intent.putExtra("map_la",mylocation.getLatitude());
-//                                context.startActivity(intent);
-//                            }
-//                        });
+                        String title=mylocation.getMap_title();
+                        if(title.equals("My Location")){
+                            title=review.getuName()+" Location";
+                        }
+                        holder.txtMapTitle .setText(title);
+                        String add=mylocation.getAddress();
+                        String address[] = add.split(",");
+                        holder.txtShowAddress.setText(address[address.length-2]+","+address[address.length-1]);
+
                     }else{
                         holder.txtShowAddress.setText("hello");
                         holder.showAddress.setVisibility(View.GONE);
@@ -564,7 +560,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
     }
 
     class Myholder extends RecyclerView.ViewHolder {
-        private TextView rTitile, rDesc0, rDesc1, rDesc2, rDesc3, txtPoint,txtShowAddress;
+        private TextView rTitile, rDesc0, rDesc1, rDesc2, rDesc3, txtPoint,txtShowAddress,txtMapTitle;
         private ImageView r_image0, r_image1, r_image2, r_image3, starScore;
         private LinearLayout score,showAddress;
         private RelativeLayout cover00, cover01, cover02, cover03;
@@ -579,6 +575,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
             rDesc0 = itemView.findViewById(R.id.r_desc0);
             txtShowAddress=itemView.findViewById(R.id.txtShowAddress);
             showAddress=itemView.findViewById(R.id.showAddress);
+            txtMapTitle=itemView.findViewById(R.id.txtMapTitle);
 
             try{
                 rDesc0 = itemView.findViewById(R.id.r_desc0);

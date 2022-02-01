@@ -122,12 +122,23 @@
                         android:src="@drawable/ic_location_pin_gray" />
 
                     <TextView
+                        android:id="@+id/txtMapTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="title"
+                        android:layout_marginEnd="10dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/light_gray"
+                        android:textSize="10dp"/>
+                    <TextView
                         android:id="@+id/txtShowAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
-                        android:text="address line: djafjodigjosdjiajfoj"
+                        android:text="chiangmai,thailand"
                         android:textColor="@color/light_gray"
                         android:textSize="10dp"/>
                 </LinearLayout>

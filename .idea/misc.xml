@@ -59,11 +59,11 @@
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/activity_chat.xml" value="0.264" />
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/activity_chatlist.xml" value="0.23229166666666667" />
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/activity_login.xml" value="0.4" />
-        <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/activity_maps.xml" value="0.13645833333333332" />
+        <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/activity_maps.xml" value="0.4" />
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/activity_review_detail.xml" value="0.153125" />
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/custom_info_contents.xml" value="0.1484375" />
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/fragment_add_review_image_vertitcal.xml" value="0.264" />
-        <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/fragment_add_review_no_image.xml" value="0.264" />
+        <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/fragment_add_review_no_image.xml" value="0.4" />
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/fragment_add_review_one_img.xml" value="0.4010791366906475" />
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/fragment_pattern1.xml" value="0.4" />
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/fragment_pattern2.xml" value="0.48828125" />
@@ -73,6 +73,7 @@
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/row_review_pattern2.xml" value="0.536" />
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/layout/row_review_pattern3.xml" value="0.4" />
         <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/menu/location_menu.xml" value="0.13645833333333332" />
+        <entry key="..\:/project_wongwien/project_wongwien_final/wongwien_project/app/src/main/res/menu/menu_top.xml" value="0.1" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/background_profile.xml" value="0.2484375" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/background_question.xml" value="0.2484375" />
         <entry key="..\:/project_wongwien/wongwien_project/app/src/main/res/drawable/background_review.xml" value="0.2484375" />

@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -52,7 +53,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "MapActivity";
 
     private static final int DEFAULT_ZOOM = 16;
@@ -61,42 +62,37 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String KEY_LOCATION = "location";
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+    // Used for selecting the current place.
+    private static final int M_MAX_ENTRIES = 5;
+    private static final CharSequence[] MAP_TYPE_ITEMS =
+            {"Road Map", "Hybrid", "Satellite", "Terrain"};
     // A default location (Sydney, Australia) and default zoom to use when location permission is
     // not granted.
     private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
     String[] locationRequest = {android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-
+    boolean showGetdata = true;
+    Intent intent;
+    Marker marker;
     private GoogleMap map;
     private CameraPosition cameraPosition;
     private ActivityMapsBinding binding;
     private PlacesClient placesClient;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private boolean locationPermissionGranted;
-
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
     private Location lastKnownLocation;
-
-    // Used for selecting the current place.
-    private static final int M_MAX_ENTRIES = 5;
     private String[] likelyPlaceNames;
     private String[] likelyPlaceAddresses;
     private List[] likelyPlaceAttributions;
     private LatLng[] likelyPlaceLatLngs;
-
     private Geocoder geocoder;
-    private List<Address>myAddress;
-
-    Marker marker;
-    private static final CharSequence[] MAP_TYPE_ITEMS =
-            {"Road Map", "Hybrid", "Satellite", "Terrain"};
-
+    private List<Address> myAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: 2/1/2022 Next add new map activity then get ride of 'get place 'button and make a new  current location ui
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -108,6 +104,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         getSupportActionBar().setTitle("My Location");
+
+
+        intent = getIntent();
+        if (intent != null) {
+            String view = intent.getStringExtra("view");
+            if (view != null) {
+                if (view.equals("view")) {
+                    showGetdata = false;
+                    getSupportActionBar().setTitle("Location");
+                }
+            }
+        }
 
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
@@ -121,7 +129,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 Log.i(TAG, "Place: " + place.getName() + ", " + place);
-                moveCameraAndMark(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), DEFAULT_ZOOM, place.getName(),place.getAddress());
+                moveCameraAndMark(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), DEFAULT_ZOOM, place.getName(), place.getAddress());
             }
 
             @Override
@@ -158,6 +166,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.location_menu, menu);
+        if (!showGetdata) {
+            menu.findItem(R.id.option_get_place).setVisible(false);
+        }
         return true;
     }
 
@@ -170,19 +181,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getdataLocation() {
-        String titlte=marker.getTitle();
-        String address=marker.getSnippet();
-        String lat=String.valueOf(marker.getPosition().latitude);
-        String log=String.valueOf(marker.getPosition().longitude);
+        String titlte = marker.getTitle();
+        String address = marker.getSnippet();
+        String lat = String.valueOf(marker.getPosition().latitude);
+        String log = String.valueOf(marker.getPosition().longitude);
 
         Intent intent = new Intent();
         intent.putExtra("Sent", "my location");
         intent.putExtra("title", titlte);
-        Log.d(TAG, "getdataLocation: address::"+address);
+        Log.d(TAG, "getdataLocation: address::" + address);
         intent.putExtra("address", address);
         intent.putExtra("loc1", lat);
         intent.putExtra("loc2", log);
-        setResult(RESULT_OK, intent );
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -222,20 +233,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
 
-        Intent intent=getIntent();
-        if(intent!=null){
-            String map_title=intent.getStringExtra("map_title");
-            if(map_title!=null){
-                String map_address=intent.getStringExtra("map_address");
-                String map_lo=intent.getStringExtra("map_lo");
-                String map_la=intent.getStringExtra("map_la");
 
-                moveCameraAndMark(new LatLng(Double.parseDouble(map_la),Double.parseDouble(map_lo)),DEFAULT_ZOOM,map_title,map_address);
+        if (intent != null) {
+            String map_title = intent.getStringExtra("map_title");
+            if(map_title!=null){
+                String map_address = intent.getStringExtra("map_address");
+                String map_lo = intent.getStringExtra("map_lo");
+                String map_la = intent.getStringExtra("map_la");
+
+                moveCameraAndMark(new LatLng(Double.parseDouble(map_la), Double.parseDouble(map_lo)), DEFAULT_ZOOM, map_title, map_address);
             }else{
-                // Get the current location of the device and set the position of the map.
                 getDeviceLocation();
             }
-        }else{
+
+        } else {
+            // Get the current location of the device and set the position of the map.
             getDeviceLocation();
         }
 
@@ -253,7 +265,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 showMapTypeSelectorDialog();
             }
         });
+        binding.btnMylocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDeviceLocation();
+            }
+        });
     }
+
     private void showCurrentPlace() {
         if (map == null) {
             return;
@@ -272,7 +291,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // are the best match for the device's current location.
             @SuppressWarnings("MissingPermission") final Task<FindCurrentPlaceResponse> placeResult =
                     placesClient.findCurrentPlace(request);
-            placeResult.addOnCompleteListener (new OnCompleteListener<FindCurrentPlaceResponse>() {
+            placeResult.addOnCompleteListener(new OnCompleteListener<FindCurrentPlaceResponse>() {
                 @Override
                 public void onComplete(@NonNull Task<FindCurrentPlaceResponse> task) {
                     if (task.isSuccessful() && task.getResult() != null) {
@@ -309,8 +328,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         // Show a dialog offering the user the list of likely places, and add a
                         // marker at the selected place.
                         MapsActivity.this.openPlacesDialog();
-                    }
-                    else {
+                    } else {
                         Log.e(TAG, "Exception: %s", task.getException());
                     }
                 }
@@ -344,7 +362,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 // Add a marker for the selected place, with an info window
                 // showing information about that place.
-                moveCameraAndMark(markerLatLng,DEFAULT_ZOOM,likelyPlaceNames[which],markerSnippet);
+                moveCameraAndMark(markerLatLng, DEFAULT_ZOOM, likelyPlaceNames[which], markerSnippet);
             }
         };
 
@@ -367,11 +385,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             lastKnownLocation = task.getResult();
                             if (lastKnownLocation != null) {
                                 try {
-                                    findAddress(new LatLng(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude()));
+                                    findAddress(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()));
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                moveCameraAndMark(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), DEFAULT_ZOOM, "My Location",myAddress.get(0).getAddressLine(0).toString());
+                                moveCameraAndMark(new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), DEFAULT_ZOOM, "My Location", myAddress.get(0).getAddressLine(0).toString());
                             }
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
@@ -390,21 +408,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void findAddress(LatLng latLng) throws IOException {
         geocoder = new Geocoder(this);
-        myAddress=new ArrayList<>();
-        myAddress=geocoder.getFromLocation(latLng.latitude,latLng.longitude,1);
-        Log.d(TAG, "findAddress: myAddress::"+myAddress);
+        myAddress = new ArrayList<>();
+        myAddress = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+        Log.d(TAG, "findAddress: myAddress::" + myAddress);
     }
+
     private void moveCameraAndMark(LatLng location, int zoom, String title, String markerSnippet) {
         removeAllMarker();
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(location.latitude,
-                        location.longitude), DEFAULT_ZOOM));
+        LatLng coordinate = new LatLng(location.latitude, location.longitude); //Store these lat lng values somewhere. These should be constant.
+        CameraUpdate lo = CameraUpdateFactory.newLatLngZoom(
+                coordinate, zoom);
+        map.animateCamera(lo);
+
         MarkerOptions options = new MarkerOptions();
         options.title(title)
                 .position(location)
                 .snippet(markerSnippet);
-        marker=map.addMarker(options);
+        marker = map.addMarker(options);
         marker.showInfoWindow();
         hideKeboard();
     }
@@ -439,7 +460,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         locationPermissionGranted = false;
 
@@ -459,7 +481,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         updateLocationUI();
         getDeviceLocation();
     }
-    private void removeAllMarker(){
+
+    private void removeAllMarker() {
         map.clear();
     }
 
@@ -474,8 +497,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (locationPermissionGranted) {
                 map.setMyLocationEnabled(true);
                 map.setPadding(0, 190, 0, 0);
-                map.getUiSettings().setMyLocationButtonEnabled(true);
-                map.setOnMyLocationButtonClickListener(this);
             } else {
                 map.setMyLocationEnabled(false);
                 map.getUiSettings().setMyLocationButtonEnabled(false);
@@ -530,9 +551,4 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         fMapTypeDialog.show();
     }
 
-    @Override
-    public boolean onMyLocationButtonClick() {
-        getDeviceLocation();
-        return false;
-    }
 }
