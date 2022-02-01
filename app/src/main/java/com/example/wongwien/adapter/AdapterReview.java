@@ -3,6 +3,9 @@ package com.example.wongwien.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -19,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wongwien.MapsActivity;
@@ -37,6 +41,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -105,6 +111,39 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 
         int num = Integer.parseInt(reviews.get(position).getR_num());
 //        holder.rDesc0.setText(reviews.get(position).getR_desc0());
+
+        /*
+        * Share funciton
+        *
+        * */
+        // TODO: 2/2/2022 share event
+//        holder.btnShare.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                /*some posts contains only text,and some contains image and text so,
+//                we will handle them both
+//                 */
+//                //get image from imageview
+//                BitmapDrawable bitmapDrawable = (BitmapDrawable) holder.pImage.getDrawable();
+//                if (bitmapDrawable == null) {
+//                    //post without image
+//                    shareTextOnly(pTitle, pDesc);
+//                } else {
+//                    //post with image
+//
+//                    //convert image to bitmap
+//                    Bitmap bitmap = bitmapDrawable.getBitmap();
+//                    ShareImageAndText(pTitle, pDesc, bitmap);
+//                }
+//            }
+//        });
+
+
+
+
+
+
+
 
         switch (num) {
             case 0:
@@ -285,31 +324,6 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 
             }
         });
-
-
-//        holder.itemView.setOnTouchListener(new OnSwipeTouchListener(context) {
-//            @Override
-//            public void onSwipeRight() {
-//                super.onSwipeRight();
-//            }
-//
-//            @Override
-//            public void onSwipeLeft() {
-//                super.onSwipeLeft();
-//            }
-//
-//            @Override
-//            public void onClick() {
-//                Intent intent = new Intent(context, ReviewDetailActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable("list", reviews.get(position));
-//
-//                intent.putExtra("bundle", bundle);
-//                context.startActivity(intent);
-//                super.onClick();
-//            }
-//        });
-//
     }
         private void loadLocation(ModelReview review, Myholder holder) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews").child(review.getrId()).child("Mylocation");
@@ -347,6 +361,55 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
             }
         });
 
+    }
+
+    // TODO: 2/2/2022 share function text and image
+    private void ShareImageAndText(String pTitle, String pDesc, Bitmap bitmap) {
+        //concatenate title and description to share
+        String sharebody = pTitle + "\n" + pDesc;
+
+        //first we will save this image in catche,get the saved image uri
+        Uri uri = saveImageToShare(bitmap);
+
+        //share intent
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.putExtra(Intent.EXTRA_TEXT, sharebody);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+        intent.setType("image/png");
+        context.startActivity(Intent.createChooser(intent, "Share Via"));
+    }
+
+    private Uri saveImageToShare(Bitmap bitmap) {
+        // TODO: 9/2/2021 debug share with image
+        File imageFolder = new File(context.getCacheDir(), "images");
+        Uri uri = null;
+        try {
+            imageFolder.mkdirs();//create if not exists
+            File file = new File(imageFolder, "shared_image.png");
+
+            FileOutputStream stream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
+            stream.flush();
+            stream.close();
+            uri = FileProvider.getUriForFile(context, "com.example.socialtestingapp.fileprovider", file);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return uri;
+    }
+
+    private void shareTextOnly(String pTitle, String pDesc) {
+        //concatenate title and description to share
+        String sharebody = pTitle + "\n" + pDesc;
+
+        //share intent
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here"); //in case you share via an email app
+        intent.putExtra(Intent.EXTRA_TEXT, sharebody);//text to share
+        context.startActivity(Intent.createChooser(intent, "Share Via"));//message to show in share
     }
     private void goToReviewDetail(int position){
         Intent intent = new Intent(context, ReviewDetailActivity.class);

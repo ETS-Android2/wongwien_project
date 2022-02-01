@@ -9,11 +9,11 @@
 
     <LinearLayout
         android:id="@+id/allDetails"
-        android:background="@drawable/rec_conor_bottom_white"
-        android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@drawable/rec_conor_bottom_white"
+        android:orientation="vertical"
+        android:padding="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,10 +29,10 @@
                 app:civ_border_width="2dp" />
 
             <LinearLayout
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -40,56 +40,59 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Name"
+                    android:textColor="@color/primary"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary"/>
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/txtEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="xxxx@gmail.com"
-                    android:textSize="11sp"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/primary"
+                    android:textSize="11sp" />
+
                 <TextView
                     android:id="@+id/txtTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12/20/21 20:21AM"
-                    android:textSize="9sp"/>
+                    android:textSize="9sp" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:padding="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <TextView
                 android:id="@+id/txtQues"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Question Title"
-                android:textStyle="bold"
+                android:textColor="@color/primary"
                 android:textSize="16sp"
-                android:textColor="@color/primary"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/txtDescrip"
-                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="Description"
-                android:textSize="14sp"
-                android:textColor="#A99DEB"/>
+                android:textColor="#A99DEB"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txtStaticTag"
-                android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:text="#Tag"
-                android:textSize="10sp"
-                android:textColor="@color/primary"/>
+                android:textColor="@color/primary"
+                android:textSize="10sp" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup"
@@ -97,42 +100,42 @@
                 android:layout_height="wrap_content"
                 android:duplicateParentState="false">
 
-<!--                <com.google.android.material.chip.Chip-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:visibility="visible"-->
-<!--                    android:text="helllo"/>-->
+                <!--                <com.google.android.material.chip.Chip-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:visibility="visible"-->
+                <!--                    android:text="helllo"/>-->
             </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/btnUp"
-                android:layout_width="20dp"
-                android:background="@color/white"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="5dp"
-                android:src="@drawable/ic_up_secound_primary"/>
+                android:background="@color/white"
+                android:src="@drawable/ic_up_secound_primary" />
 
             <ImageButton
                 android:id="@+id/btnDown"
-                android:layout_width="20dp"
-                android:background="@color/white"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="5dp"
-                android:src="@drawable/ic_down_secound_primary"/>
+                android:background="@color/white"
+                android:src="@drawable/ic_down_secound_primary" />
 
             <ImageButton
-                android:layout_width="20dp"
-                android:background="@color/white"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="5dp"
-                android:src="@drawable/ic_share_secound_primary"/>
+                android:background="@color/white"
+                android:src="@drawable/ic_share_secound_primary" />
         </LinearLayout>
     </LinearLayout>
 
