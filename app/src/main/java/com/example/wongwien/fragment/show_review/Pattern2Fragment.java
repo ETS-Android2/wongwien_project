@@ -3,6 +3,7 @@ package com.example.wongwien.fragment.show_review;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.format.DateFormat;
@@ -11,15 +12,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.wongwien.MapsActivity;
 import com.example.wongwien.QuesAnsDetailActivity;
 import com.example.wongwien.R;
 import com.example.wongwien.SearchActivity;
 import com.example.wongwien.databinding.FragmentPattern1Binding;
 import com.example.wongwien.databinding.FragmentPattern2Binding;
+import com.example.wongwien.model.ModelMylocation;
 import com.example.wongwien.model.ModelReview;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -28,6 +36,7 @@ import java.util.Locale;
 public class Pattern2Fragment extends Fragment {
     private FragmentPattern2Binding binding;
     ModelReview review;
+    ModelMylocation mylocation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +66,8 @@ public class Pattern2Fragment extends Fragment {
         binding.txtName.setText(review.getuName());
         binding.txtEmail.setText(review.getuEmail());
         binding.txtTime.setText(dateTime);
+
+        loadLocation(review.getrId());
 
         try{
             if(review.getuImg()!=null){
@@ -109,6 +120,48 @@ public class Pattern2Fragment extends Fragment {
                 intent.putExtra("tag", s);
                 intent.putExtra("collection", "review");
                 startActivity(intent);
+            }
+        });
+    }
+    private void loadLocation(String rId) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews").child(rId).child("Mylocation");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                try{
+                    mylocation = snapshot.getValue(ModelMylocation.class);
+                    if(mylocation!=null){
+                        binding.showAddress.setVisibility(View.VISIBLE);
+                        binding.txtShowAddress.setText(mylocation.getAddress());
+                        binding.showAddress.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent=new Intent(getContext(), MapsActivity.class);
+                                String maptitle=mylocation.getMap_title();
+                                if(maptitle.equals("My Location")){
+                                    maptitle=review.getuName() +" Location";
+                                }
+                                intent.putExtra("map_title",maptitle);
+                                intent.putExtra("map_address",mylocation.getAddress());
+                                intent.putExtra("map_lo",mylocation.getLongitude());
+                                intent.putExtra("map_la",mylocation.getLatitude());
+                                startActivity(intent);
+                            }
+                        });
+                    }else{
+                        binding.txtShowAddress.setText("hello");
+                        binding.showAddress.setVisibility(View.GONE);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

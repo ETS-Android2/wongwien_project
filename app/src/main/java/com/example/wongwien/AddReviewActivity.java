@@ -18,6 +18,7 @@ import com.example.wongwien.fragment.add_review.AddReviewImageVertitcalFragment;
 import com.example.wongwien.fragment.add_review.AddReviewNoImageFragment;
 import com.example.wongwien.fragment.add_review.AddReviewOneImageFragment;
 import com.example.wongwien.fragment.add_review.GetAllDataToActivity;
+import com.example.wongwien.model.ModelMylocation;
 import com.example.wongwien.model.ModelReview;
 import com.example.wongwien.model.ModelUser;
 import com.google.android.gms.tasks.Continuation;
@@ -51,6 +52,8 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
     FirebaseAuth firebaseAuth;
     FirebaseStorage storage;
     ProgressDialog progressDialog;
+
+    ModelMylocation mylocation;
     private ActivityAddReviewBinding binding;
 
     @Override

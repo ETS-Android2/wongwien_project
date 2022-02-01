@@ -38,6 +38,7 @@ import com.example.wongwien.MapsActivity;
 import com.example.wongwien.R;
 import com.example.wongwien.SplashActivity;
 import com.example.wongwien.databinding.FragmentAddReviewImageVertitcalBinding;
+import com.example.wongwien.model.ModelMylocation;
 import com.example.wongwien.model.ModelReview;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -49,8 +50,11 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -101,6 +105,7 @@ public class AddReviewImageVertitcalFragment extends Fragment {
     String myUid;
 
     ModelReview review;
+    ModelMylocation location;
     DatabaseReference ref;
 
     @Override
@@ -195,6 +200,8 @@ public class AddReviewImageVertitcalFragment extends Fragment {
                     }
                 }
             }
+            loadLocation(review.getrId());
+
             binding.btnPost.setText("Update");
             binding.btnPost.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -239,7 +246,17 @@ public class AddReviewImageVertitcalFragment extends Fragment {
                     ref.child("r_tag").setValue(tag).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            getdata.updateReview(true);
+                            ref= FirebaseDatabase.getInstance().getReference("Reviews").child(rId).child("Mylocation");
+                            ref.child("map_title").setValue(mylocation.get("map_title"));
+                            ref.child("address").setValue(mylocation.get("address"));
+                            ref.child("latitude").setValue(mylocation.get("latitude"));
+                            ref.child("longitude").setValue(mylocation.get("longitude"))
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            getdata.updateReview(true);
+                                        }
+                                    });
                         }
                     });
                 }
@@ -336,6 +353,55 @@ public class AddReviewImageVertitcalFragment extends Fragment {
 
         return binding.getRoot();
     }
+    private void loadLocation(String rId) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews").child(rId).child("Mylocation");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                try{
+                    location = snapshot.getValue(ModelMylocation.class);
+                    Log.d(TAG, "onDataChange: location::"+mylocation);
+                    if(location!=null){
+                        binding.showAddress.setVisibility(View.VISIBLE);
+                        binding.txtAddLocation.setVisibility(View.GONE);
+                        binding.txtShowAddress.setText(location.getAddress());
+
+                        mylocation.put("map_title",location.getMap_title());
+                        mylocation.put("address",location.getAddress());
+                        mylocation.put("latitude",location.getLatitude());
+                        mylocation.put("longitude",location.getLongitude());
+
+                        binding.showAddress.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent=new Intent(getContext(), MapsActivity.class);
+                                String maptitle=location.getMap_title();
+                                intent.putExtra("map_title",maptitle);
+                                intent.putExtra("map_address",location.getAddress());
+                                intent.putExtra("map_lo",location.getLongitude());
+                                intent.putExtra("map_la",location.getLatitude());
+                                startActivityForResult(intent,MY_LOCATION);
+                            }
+                        });
+                    }else{
+                        binding.txtShowAddress.setText("hello");
+                        binding.showAddress.setVisibility(View.GONE);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
 
     private void initView() {
         allUriPosition=new Uri[4];
@@ -508,6 +574,17 @@ public class AddReviewImageVertitcalFragment extends Fragment {
         if (mylocation.size() > 0) {
             binding.txtAddLocation.setVisibility(View.GONE);
             binding.showAddress.setVisibility(View.VISIBLE);
+            binding.showAddress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(getContext(), MapsActivity.class);
+                    intent.putExtra("map_title",mylocation.get("map_title"));
+                    intent.putExtra("map_address",mylocation.get("address"));
+                    intent.putExtra("map_la",mylocation.get("latitude"));
+                    intent.putExtra("map_lo",mylocation.get("longitude"));
+                    startActivityForResult(intent,MY_LOCATION);
+                }
+            });
             binding.txtShowAddress.setText(mylocation.get("address"));
         }
     }

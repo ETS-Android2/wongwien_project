@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.wongwien.R;
 import com.example.wongwien.adapter.AdapterQuestion;
 import com.example.wongwien.adapter.AdapterReview;
+import com.example.wongwien.model.ModelMylocation;
 import com.example.wongwien.model.ModelReview;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 public class SearchReviewFragment extends Fragment {
     ArrayList<ModelReview>reviewList;
+    ArrayList<ModelMylocation> mylocation;
     RecyclerView rcReview;
     AdapterReview adapter;
 

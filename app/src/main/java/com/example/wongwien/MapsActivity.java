@@ -220,8 +220,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
 
-        // Get the current location of the device and set the position of the map.
-        getDeviceLocation();
+        Intent intent=getIntent();
+        if(intent!=null){
+            String map_title=intent.getStringExtra("map_title");
+            if(map_title!=null){
+                String map_address=intent.getStringExtra("map_address");
+                String map_lo=intent.getStringExtra("map_lo");
+                String map_la=intent.getStringExtra("map_la");
+
+                moveCameraAndMark(new LatLng(Double.parseDouble(map_la),Double.parseDouble(map_lo)),DEFAULT_ZOOM,map_title,map_address);
+            }else{
+                // Get the current location of the device and set the position of the map.
+                getDeviceLocation();
+            }
+        }else{
+            getDeviceLocation();
+        }
+
 
         binding.btnfindCurrent.setOnClickListener(new View.OnClickListener() {
             @Override

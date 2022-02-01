@@ -46,7 +46,7 @@ public class ReviewsFragment extends Fragment {
     String categoryList[] = {"General", "Course", "Food", "Domitory", "Tours"};
     AdapterReview adapter;
     ArrayList<ModelReview> reviewLists;
-    ArrayList<ModelMylocation> mylocation;
+
     private FragmentReviewsBinding binding;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference ref;
@@ -63,6 +63,7 @@ public class ReviewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentReviewsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+
 
         initView();
 //        loadReivewList();
@@ -202,10 +203,8 @@ public class ReviewsFragment extends Fragment {
                     ModelReview model = d.getValue(ModelReview.class);
 
                     if (category == 0) {
-                        Log.d(TAG, "onDataChange: use" + category);
                         reviewLists.add(model);
                     } else {
-                        Log.d(TAG, "onDataChange: use2" + category);
                         if (model.getR_collection().equals(categoryList[category])) {
                             reviewLists.add(model);
                         }
@@ -222,29 +221,6 @@ public class ReviewsFragment extends Fragment {
         });
     }
 
-    private void loadLocation(String rId) {
-        mylocation = new ArrayList<>();
-        ref = database.getReference("Reviews").child(rId).child("Mylocation");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                try{
-                    ModelMylocation model = snapshot.getValue(ModelMylocation.class);
-                    mylocation.add(model);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
 
     private void loadPopularBycategory() {
         ref = FirebaseDatabase.getInstance().getReference("Reviews");

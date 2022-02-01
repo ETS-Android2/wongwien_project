@@ -32,6 +32,7 @@ import com.example.wongwien.fragment.show_review.Pattern1Fragment;
 import com.example.wongwien.fragment.show_review.Pattern2Fragment;
 import com.example.wongwien.fragment.show_review.Pattern3Fragment;
 import com.example.wongwien.model.ModelComment;
+import com.example.wongwien.model.ModelMylocation;
 import com.example.wongwien.model.ModelReview;
 import com.example.wongwien.model.ModelUser;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -239,6 +240,7 @@ public class ReviewDetailActivity extends AppCompatActivity {
 
 
     }
+
     private void loadUser() {
         ref = database.getReference("Users");
         ref.addValueEventListener(new ValueEventListener() {

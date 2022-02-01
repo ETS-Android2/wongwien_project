@@ -8,9 +8,11 @@ public class ModelReview implements Parcelable {
             r_image0, r_image1, r_image2, r_image3, r_image4, r_num, r_tag, r_timeStamp, r_title,
             r_type, uEmail, uId, uImg, uName;
     int r_point;
-    private ModelMylocation mylocation;
 
-    public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image2, String r_image3, String r_image4, String r_num, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImg, String uName, int r_point, ModelMylocation mylocation) {
+    public ModelReview() {
+    }
+
+    public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image2, String r_image3, String r_image4, String r_num, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImg, String uName, int r_point) {
         this.rId = rId;
         this.r_collection = r_collection;
         this.r_desc0 = r_desc0;
@@ -33,7 +35,6 @@ public class ModelReview implements Parcelable {
         this.uImg = uImg;
         this.uName = uName;
         this.r_point = r_point;
-        this.mylocation = mylocation;
     }
 
     protected ModelReview(Parcel in) {
@@ -280,18 +281,6 @@ public class ModelReview implements Parcelable {
         this.r_point = r_point;
     }
 
-    public ModelMylocation getMylocation() {
-        return mylocation;
-    }
-
-    public void setMylocation(ModelMylocation mylocation) {
-        this.mylocation = mylocation;
-    }
-
-    public ModelReview() {
-
-    }
-
     @Override
     public String toString() {
         return "ModelReview{" +
@@ -317,7 +306,6 @@ public class ModelReview implements Parcelable {
                 ", uImg='" + uImg + '\'' +
                 ", uName='" + uName + '\'' +
                 ", r_point=" + r_point +
-                ", mylocation=" + mylocation +
                 '}';
     }
 }

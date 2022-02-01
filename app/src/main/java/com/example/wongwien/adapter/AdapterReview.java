@@ -21,9 +21,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.wongwien.MapsActivity;
 import com.example.wongwien.OnSwipeTouchListener;
 import com.example.wongwien.R;
 import com.example.wongwien.ReviewDetailActivity;
+import com.example.wongwien.model.ModelMylocation;
 import com.example.wongwien.model.ModelReview;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +48,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
     private static final String TAG = "AdapterReview";
     Context context;
     ArrayList<ModelReview> reviews;
+    ModelMylocation mylocation;
 
     FirebaseUser user;
     String myUid;
@@ -53,6 +56,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
     int star, starBeforeChange;
     boolean isUseReview = false;
     int point;
+
 
 
     public AdapterReview(Context context, ArrayList<ModelReview> reviews) {
@@ -82,6 +86,9 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 
     @Override
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
+        loadLocation(reviews.get(position).getrId(),holder);
+
+
         loadAllStarToReviews(reviews.get(position).getrId(), myUid, holder);
 
         String timeStamp = reviews.get(position).getR_timeStamp();
@@ -304,7 +311,47 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 //        });
 //
     }
+        private void loadLocation(String rId, Myholder holder) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews").child(rId).child("Mylocation");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                try{
+                    mylocation = snapshot.getValue(ModelMylocation.class);
+                    Log.d(TAG, "onDataChange: location::"+mylocation);
+                    if(mylocation!=null){
+                        holder.showAddress.setVisibility(View.VISIBLE);
+                        holder.txtShowAddress.setText(mylocation.getAddress());
+
+//                        holder.showAddress.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                Intent intent=new Intent(context, MapsActivity.class);
+//                                intent.putExtra("map_title",mylocation.getMap_title());
+//                                intent.putExtra("map_address",mylocation.getAddress());
+//                                intent.putExtra("map_lo",mylocation.getLongitude());
+//                                intent.putExtra("map_la",mylocation.getLatitude());
+//                                context.startActivity(intent);
+//                            }
+//                        });
+                    }else{
+                        holder.txtShowAddress.setText("hello");
+                        holder.showAddress.setVisibility(View.GONE);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
     private void goToReviewDetail(int position){
         Intent intent = new Intent(context, ReviewDetailActivity.class);
         Bundle bundle = new Bundle();
@@ -517,9 +564,9 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
     }
 
     class Myholder extends RecyclerView.ViewHolder {
-        private TextView rTitile, rDesc0, rDesc1, rDesc2, rDesc3, txtPoint;
+        private TextView rTitile, rDesc0, rDesc1, rDesc2, rDesc3, txtPoint,txtShowAddress;
         private ImageView r_image0, r_image1, r_image2, r_image3, starScore;
-        private LinearLayout score;
+        private LinearLayout score,showAddress;
         private RelativeLayout cover00, cover01, cover02, cover03;
         private HorizontalScrollView hsv;
 
@@ -530,7 +577,8 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
             score = itemView.findViewById(R.id.score);
             starScore = itemView.findViewById(R.id.starScore);
             rDesc0 = itemView.findViewById(R.id.r_desc0);
-
+            txtShowAddress=itemView.findViewById(R.id.txtShowAddress);
+            showAddress=itemView.findViewById(R.id.showAddress);
 
             try{
                 rDesc0 = itemView.findViewById(R.id.r_desc0);

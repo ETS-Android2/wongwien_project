@@ -9,6 +9,10 @@ public class ModelMylocation {
     public ModelMylocation() {
     }
 
+    public ModelMylocation(String map_title) {
+        this.map_title = map_title;
+    }
+
     public ModelMylocation(String address, String latitude, String longitude, String map_title) {
         this.address = address;
         this.latitude = latitude;
