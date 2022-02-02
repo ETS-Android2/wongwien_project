@@ -108,6 +108,24 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+
+        <!-- define file provider -->
+        <!--
+        set the android:exported attribute to false;
+            the fileProvider does not need to be public
+            set the android:grantUriPermissions attribute to true,
+            to allow to grant temporary access to files.
+        -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.wongwien.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths" />
+        </provider>
     </application>
 
 </manifest>

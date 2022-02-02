@@ -45,6 +45,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> {
@@ -54,6 +55,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
     private static final String TAG = "AdapterReview";
     Context context;
     ArrayList<ModelReview> reviews;
+    ArrayList<Uri>imageUriArray;
     ModelMylocation mylocation;
 
     FirebaseUser user;
@@ -110,40 +112,75 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
         holder.txtPoint.setText(String.valueOf(scorepoint));
 
         int num = Integer.parseInt(reviews.get(position).getR_num());
-//        holder.rDesc0.setText(reviews.get(position).getR_desc0());
 
         /*
-        * Share funciton
+        * Handle Share funciton
         *
         * */
         // TODO: 2/2/2022 share event
-//        holder.btnShare.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                /*some posts contains only text,and some contains image and text so,
-//                we will handle them both
-//                 */
-//                //get image from imageview
-//                BitmapDrawable bitmapDrawable = (BitmapDrawable) holder.pImage.getDrawable();
-//                if (bitmapDrawable == null) {
-//                    //post without image
-//                    shareTextOnly(pTitle, pDesc);
-//                } else {
-//                    //post with image
-//
-//                    //convert image to bitmap
-//                    Bitmap bitmap = bitmapDrawable.getBitmap();
-//                    ShareImageAndText(pTitle, pDesc, bitmap);
-//                }
-//            }
-//        });
 
+        holder.btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (getItemViewType(position)){
+                    case PATTERN_REVIEW_1:
+                        shareTextOnly(reviews.get(position).getR_title(),reviews.get(position).getR_desc0());
+                        break;
+                    case PATTERN_REVIEW_2:
+                        BitmapDrawable bitmapDrawable = ((BitmapDrawable) holder.r_image0.getDrawable());
+                        Bitmap bitmap = bitmapDrawable .getBitmap();
+                        ShareImageAndText(reviews.get(position).getR_title(), reviews.get(position).getR_desc0(),bitmap);
+                        break;
+                    case PATTERN_REVIEW_3:
+                        Log.d(TAG, "onClick: r_num:"+Integer.parseInt(reviews.get(position).getR_num()));
+                        switch (Integer.parseInt(reviews.get(position).getR_num())){
+                            case 1:
+                                Bitmap[] bit=new Bitmap[1];
+                                bitmapDrawable = ((BitmapDrawable) holder.r_image0.getDrawable());
+                                bit[0] = bitmapDrawable .getBitmap();
+                                ShareMultiImageAndText(reviews.get(position).getR_title(), reviews.get(position).getR_desc0(),  bit);
+                                break;
 
+                            case 2:
+                                 bit=new Bitmap[2];
+                                bit[0] =((BitmapDrawable) holder.r_image0.getDrawable()).getBitmap();
+                                bit[1] =((BitmapDrawable) holder.r_image1.getDrawable()).getBitmap();
 
+                                String descrpt=reviews.get(position).getR_desc0()+","+reviews.get(position).getR_desc1();
+                                ShareMultiImageAndText(reviews.get(position).getR_title(), descrpt,  bit);
+                                break;
+                            case 3:
+                                bit=new Bitmap[3];
+                                bit[0] =((BitmapDrawable) holder.r_image0.getDrawable()).getBitmap();
+                                bit[1] =((BitmapDrawable) holder.r_image1.getDrawable()).getBitmap();
+                                bit[2] =((BitmapDrawable) holder.r_image2.getDrawable()).getBitmap();
 
+                                 descrpt=reviews.get(position).getR_desc0()+","+reviews.get(position).getR_desc1()+","+reviews.get(position).getR_desc2();
+                                ShareMultiImageAndText(reviews.get(position).getR_title(), descrpt,  bit);
+                                break;
+                            case 4:
+                                bit=new Bitmap[4];
+                                bit[0] =((BitmapDrawable) holder.r_image0.getDrawable()).getBitmap();
+                                bit[1] =((BitmapDrawable) holder.r_image1.getDrawable()).getBitmap();
+                                bit[2] =((BitmapDrawable) holder.r_image2.getDrawable()).getBitmap();
+                                bit[3] =((BitmapDrawable) holder.r_image3.getDrawable()).getBitmap();
 
-
-
+                                descrpt=reviews.get(position).getR_desc0()+","+reviews.get(position).getR_desc1()+","+reviews.get(position).getR_desc2()+","+reviews.get(position).getR_desc3();
+                                ShareMultiImageAndText(reviews.get(position).getR_title(), descrpt,  bit);
+                                break;
+                            default:
+                                 bit=new Bitmap[1];
+                                bitmapDrawable = ((BitmapDrawable) holder.r_image0.getDrawable());
+                                bit[0] = bitmapDrawable .getBitmap();
+                                ShareMultiImageAndText(reviews.get(position).getR_title(), reviews.get(position).getR_desc0(),  bit);
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
 
         switch (num) {
             case 0:
@@ -363,7 +400,6 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 
     }
 
-    // TODO: 2/2/2022 share function text and image
     private void ShareImageAndText(String pTitle, String pDesc, Bitmap bitmap) {
         //concatenate title and description to share
         String sharebody = pTitle + "\n" + pDesc;
@@ -377,11 +413,11 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
         intent.putExtra(Intent.EXTRA_TEXT, sharebody);
         intent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
         intent.setType("image/png");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         context.startActivity(Intent.createChooser(intent, "Share Via"));
     }
 
     private Uri saveImageToShare(Bitmap bitmap) {
-        // TODO: 9/2/2021 debug share with image
         File imageFolder = new File(context.getCacheDir(), "images");
         Uri uri = null;
         try {
@@ -392,12 +428,55 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
             stream.flush();
             stream.close();
-            uri = FileProvider.getUriForFile(context, "com.example.socialtestingapp.fileprovider", file);
-
+            uri = FileProvider.getUriForFile(context, "com.example.wongwien.fileprovider", file);
+            Log.d(TAG, "saveImageToShare: uri::"+uri);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return uri;
+    }
+    private void ShareMultiImageAndText(String pTitle, String pDesc, Bitmap[] bitmap) {
+        //concatenate title and description to share
+        String sharebody = pTitle + "\n" + pDesc;
+
+        //first we will save this image in catche,get the saved image uri
+       saveMultiImageToShare(bitmap);
+       if(imageUriArray!=null){
+           Log.d(TAG, "ShareMultiImageAndText: ImageUriArray:"+imageUriArray.toString());
+           //share intent
+           Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+           intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUriArray);
+           intent.putExtra(Intent.EXTRA_TEXT, sharebody);
+           intent.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+           intent.setType("image/png");
+           intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+           context.startActivity(Intent.createChooser(intent, "Share Via"));
+       }
+
+    }
+
+    private void saveMultiImageToShare(Bitmap[] bitmap) {
+        imageUriArray=new ArrayList<>();
+        File imageFolder = new File(context.getCacheDir(), "images");
+
+        for(int i=0;i<bitmap.length;i++){
+            Date now = new Date();
+            Uri uri = null;
+            try {
+                imageFolder.mkdirs();//create if not exists
+                File file = new File(imageFolder, "shared_image_"+now+".png");
+
+                FileOutputStream stream = new FileOutputStream(file);
+                bitmap[i].compress(Bitmap.CompressFormat.PNG, 90, stream);
+                stream.flush();
+                stream.close();
+                uri = FileProvider.getUriForFile(context, "com.example.wongwien.fileprovider", file);
+                imageUriArray.add(uri);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void shareTextOnly(String pTitle, String pDesc) {
@@ -625,7 +704,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
     class Myholder extends RecyclerView.ViewHolder {
         private TextView rTitile, rDesc0, rDesc1, rDesc2, rDesc3, txtPoint,txtShowAddress,txtMapTitle;
         private ImageView r_image0, r_image1, r_image2, r_image3, starScore;
-        private LinearLayout score,showAddress;
+        private LinearLayout score,showAddress,btnShare;
         private RelativeLayout cover00, cover01, cover02, cover03;
         private HorizontalScrollView hsv;
 
@@ -639,6 +718,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
             txtShowAddress=itemView.findViewById(R.id.txtShowAddress);
             showAddress=itemView.findViewById(R.id.showAddress);
             txtMapTitle=itemView.findViewById(R.id.txtMapTitle);
+            btnShare=itemView.findViewById(R.id.btnShare);
 
             try{
                 rDesc0 = itemView.findViewById(R.id.r_desc0);
