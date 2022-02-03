@@ -160,7 +160,9 @@
             </LinearLayout>
 
             <TextView
-                android:padding="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
                 android:id="@+id/r_desc0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -171,7 +173,6 @@
         </LinearLayout>
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"
-            android:paddingTop="10dp"
             android:paddingEnd="10dp"
             android:paddingStart="20dp"
             android:layout_width="match_parent"

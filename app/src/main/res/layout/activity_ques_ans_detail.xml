@@ -65,7 +65,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingTop="20dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp">
 
             <TextView
                 android:id="@+id/txtQues"
@@ -114,29 +116,26 @@
             android:layout_gravity="end"
             android:orientation="horizontal">
 
-            <ImageButton
+            <ImageView
+                android:layout_margin="5dp"
                 android:id="@+id/btnUp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_up_secound_primary"/>
+            <ImageView
                 android:layout_margin="5dp"
-                android:background="@color/white"
-                android:src="@drawable/ic_up_secound_primary" />
-
-            <ImageButton
                 android:id="@+id/btnDown"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_down_secound_primary"/>
+            <ImageView
                 android:layout_margin="5dp"
-                android:background="@color/white"
-                android:src="@drawable/ic_down_secound_primary" />
+                android:id="@+id/btnShare"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_share_secound_primary"/>
 
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="5dp"
-                android:background="@color/white"
-                android:src="@drawable/ic_share_secound_primary" />
-        </LinearLayout>
+              </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

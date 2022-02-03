@@ -385,10 +385,15 @@ public class ReviewDetailActivity extends AppCompatActivity {
                     ModelComment comment = d.getValue(ModelComment.class);
                     comments.add(comment);
                 }
-                adapterComment = new AdapterComment(comments, ReviewDetailActivity.this);
-                binding.rcComment.setHasFixedSize(true);
-                binding.rcComment.setLayoutManager(new LinearLayoutManager(ReviewDetailActivity.this));
-                binding.rcComment.setAdapter(adapterComment);
+                if(myUid!=null){
+                    boolean manageComment=false;
+                    if(rUid.equals(myUid))manageComment=true;
+                    adapterComment = new AdapterComment(comments, ReviewDetailActivity.this,manageComment,rId,"R",myUid);
+                    binding.rcComment.setHasFixedSize(true);
+                    binding.rcComment.setLayoutManager(new LinearLayoutManager(ReviewDetailActivity.this));
+                    binding.rcComment.setAdapter(adapterComment);
+                }
+
             }
 
             @Override
@@ -418,13 +423,14 @@ public class ReviewDetailActivity extends AppCompatActivity {
                 for (DataSnapshot d : snapshot.getChildren()) {
                     String timeStamp = String.valueOf(System.currentTimeMillis());
 
-                    HashMap<String, String> hash = new HashMap<>();
+                    HashMap<String, Object> hash = new HashMap<>();
                     hash.put("cId", timeStamp);
                     hash.put("cUid", myUid);
                     hash.put("cImage",myImage);
                     hash.put("cName", myName);
                     hash.put("comment", comment);
                     hash.put("timeStamp", timeStamp);
+                    hash.put("isUsefull", "false");
 
                     d.getRef().child("Comments").child(timeStamp).setValue(hash).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

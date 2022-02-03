@@ -15,4 +15,6 @@
     <color name="light_gray">#AFAAAA</color>
     <color name="reviewTitle">#6E55CF</color>
     <color name="reviewDescrip">#A99DEB</color>
+    <color name="comment_active">#E6FDF6</color>
+    <color name="comment_active_border">#44C67F</color>
 </resources>

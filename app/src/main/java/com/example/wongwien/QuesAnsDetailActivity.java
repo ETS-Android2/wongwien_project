@@ -291,10 +291,15 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                     ModelComment comment = d.getValue(ModelComment.class);
                     comments.add(comment);
                 }
-                adapterComment = new AdapterComment(comments, QuesAnsDetailActivity.this);
-                binding.rcComment.setHasFixedSize(true);
-                binding.rcComment.setLayoutManager(new LinearLayoutManager(QuesAnsDetailActivity.this));
-                binding.rcComment.setAdapter(adapterComment);
+                if(myUid!=null){
+                    boolean manageComment=false;
+                    if(qUid.equals(myUid))manageComment=true;
+                    adapterComment = new AdapterComment(comments, QuesAnsDetailActivity.this,manageComment,qId,"QA",myUid);
+                    binding.rcComment.setHasFixedSize(true);
+                    binding.rcComment.setLayoutManager(new LinearLayoutManager(QuesAnsDetailActivity.this));
+                    binding.rcComment.setAdapter(adapterComment);
+                }
+
             }
 
             @Override
@@ -334,13 +339,14 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                 for (DataSnapshot d : snapshot.getChildren()) {
                     String timeStamp = String.valueOf(System.currentTimeMillis());
 
-                    HashMap<String, String> hash = new HashMap<>();
+                    HashMap<String, Object> hash = new HashMap<>();
                     hash.put("cId", timeStamp);
                     hash.put("cUid", myUid);
                     hash.put("cImage", myImage);
                     hash.put("cName", myName);
                     hash.put("comment", comment);
                     hash.put("timeStamp", timeStamp);
+                    hash.put("isUsefull", "false");
 
                     d.getRef().child("Comments").child(timeStamp).setValue(hash).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -538,7 +544,6 @@ public class QuesAnsDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(QuesAnsDetailActivity.this, AddQuestionActivity.class);
                 intent.putExtra("qId", qId);
                 startActivity(intent);
-
                 return true;
         }
         return super.onOptionsItemSelected(item);

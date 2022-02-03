@@ -2,17 +2,19 @@ package com.example.wongwien.model;
 
 public class ModelComment {
     String cId,cName,cImage,cUid,comment,timeStamp;
+    String isUsefull;
 
     public ModelComment() {
     }
 
-    public ModelComment(String cId, String cName, String cImage, String cUid, String comment, String timeStamp) {
+    public ModelComment(String cId, String cName, String cImage, String cUid, String comment, String timeStamp, String isUsefull) {
         this.cId = cId;
         this.cName = cName;
         this.cImage = cImage;
         this.cUid = cUid;
         this.comment = comment;
         this.timeStamp = timeStamp;
+        this.isUsefull = isUsefull;
     }
 
     public String getcId() {
@@ -61,5 +63,26 @@ public class ModelComment {
 
     public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public String getIsUsefull() {
+        return isUsefull;
+    }
+
+    public void setIsUsefull(String isUsefull) {
+        this.isUsefull = isUsefull;
+    }
+
+    @Override
+    public String toString() {
+        return "ModelComment{" +
+                "cId='" + cId + '\'' +
+                ", cName='" + cName + '\'' +
+                ", cImage='" + cImage + '\'' +
+                ", cUid='" + cUid + '\'' +
+                ", comment='" + comment + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
+                ", isUsefull='" + isUsefull + '\'' +
+                '}';
     }
 }
