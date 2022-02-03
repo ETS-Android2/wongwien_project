@@ -122,6 +122,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
+
+        Button btnfb=findViewById(R.id.btnfb);
+
         LoginButton btnfacebook = findViewById(R.id.login_button);
 
         LoginManager.getInstance().logOut();
@@ -141,6 +144,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
+            }
+        });
+
+        btnfb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnfacebook.performClick();
             }
         });
 
