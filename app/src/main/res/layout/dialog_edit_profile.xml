@@ -21,6 +21,7 @@
             android:textColor="@color/primary"
             android:textStyle="bold"/>
         <Button
+            android:elevation="5dp"
             android:id="@+id/layoutEdName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,11 +30,12 @@
             android:textAllCaps="false"
             app:backgroundTint="@null"
             android:textSize="17sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            android:background="@drawable/rec_cornor_border_white"/>
+            android:background="@drawable/rec_cornor_border_gradient"/>
 
         <Button
+            android:elevation="5dp"
             android:id="@+id/layoutEdProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,10 +44,11 @@
             android:textAllCaps="false"
             app:backgroundTint="@null"
             android:textSize="17sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            android:background="@drawable/rec_cornor_border_white"/>
+            android:background="@drawable/rec_cornor_border_gradient"/>
         <Button
+            android:elevation="5dp"
             android:id="@+id/layoutEdProfileCover"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,11 +57,12 @@
             android:textAllCaps="false"
             app:backgroundTint="@null"
             android:textSize="17sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            android:background="@drawable/rec_cornor_border_white"/>
+            android:background="@drawable/rec_cornor_border_gradient"/>
 
         <Button
+            android:elevation="5dp"
             android:id="@+id/logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

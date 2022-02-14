@@ -221,6 +221,7 @@
         app:layout_constraintGuide_begin="50dp" />
 
     <Button
+        android:elevation="10dp"
         android:id="@+id/btnRegister2"
         android:layout_width="0dp"
         android:layout_height="50dp"

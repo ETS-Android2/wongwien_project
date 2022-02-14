@@ -29,9 +29,9 @@
             android:textAllCaps="false"
             app:backgroundTint="@null"
             android:textSize="17sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            android:background="@drawable/rec_cornor_border_white"/>
+            android:background="@drawable/rec_cornor_border_gradient"/>
 
         <Button
             android:id="@+id/deleteComment"

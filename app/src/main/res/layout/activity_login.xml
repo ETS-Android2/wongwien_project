@@ -136,13 +136,15 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
+                android:backgroundTint="@null"
+                android:elevation="10dp"
                 android:id="@+id/btnRegister2"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:background="@drawable/rec_cornor_primary"
+                android:background="@drawable/rec_cornor_border_gradient"
                 android:fontFamily="@font/roboto"
                 android:text="Login"
                 android:textAllCaps="false"
@@ -177,6 +179,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/FrameLayout1" />
 
             <Button
+                android:elevation="10dp"
                 android:id="@+id/btnGoogle"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
@@ -213,6 +216,7 @@
                     android:visibility="gone" />
 
                 <Button
+                    android:elevation="10dp"
                     android:id="@+id/btnfb"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

@@ -27,11 +27,12 @@
             android:layout_marginTop="20dp"
             android:text="Usefull Comment"
             android:textAllCaps="false"
+            android:elevation="5dp"
             app:backgroundTint="@null"
             android:textSize="17sp"
-            android:textColor="@color/primary"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            android:background="@drawable/rec_cornor_border_white"/>
+            android:background="@drawable/rec_cornor_border_gradient"/>
 
         <Button
             android:id="@+id/deleteComment"
