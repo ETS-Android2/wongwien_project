@@ -150,6 +150,10 @@
         <entry key="..\:/project_wongwien_report/project_wongwien_final/wongwien_project/app/src/main/res/layout/activity_login.xml" value="0.12135416666666667" />
         <entry key="..\:/project_wongwien_report/project_wongwien_final/wongwien_project/app/src/main/res/layout/dialog_edit_profile.xml" value="0.23229166666666667" />
         <entry key="..\:/project_wongwien_report/project_wongwien_final/wongwien_project/app/src/main/res/layout/dialog_recover_email.xml" value="0.23229166666666667" />
+        <entry key="..\:/project_wongwien_report/project_wongwien_final/wongwien_project/app/src/main/res/layout/fragment_profile.xml" value="0.23229166666666667" />
+        <entry key="..\:/project_wongwien_report/project_wongwien_final/wongwien_project/app/src/main/res/layout/row_chat_left.xml" value="0.23229166666666667" />
+        <entry key="..\:/project_wongwien_report/project_wongwien_final/wongwien_project/app/src/main/res/layout/row_chatlist_message.xml" value="0.6" />
+        <entry key="..\:/project_wongwien_report/project_wongwien_final/wongwien_project/app/src/main/res/layout/row_question.xml" value="0.3693516699410609" />
       </map>
     </option>
   </component>

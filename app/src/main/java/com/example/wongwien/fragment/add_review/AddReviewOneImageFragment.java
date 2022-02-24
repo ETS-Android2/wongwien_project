@@ -436,17 +436,20 @@ public class AddReviewOneImageFragment extends Fragment {
         String collection = binding.spinnerCollection.getSelectedItem().toString();
         String descipt = binding.edDescription.getText().toString().trim();
 
-        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(descipt)) {
+        if (!TextUtils.isEmpty(title) || !TextUtils.isEmpty(descipt)) {
 
             if (TextUtils.isEmpty(tag)) {
                 tag = "";
             }
 
             if (!image_uri.equals("") && image_uri != null) {
+                Log.d(TAG, "uploadImage: mylocation :"+mylocation);
                 getdata.uploadReviewWithOneImage(title, descipt, tag, collection, image_uri, mylocation);
 
 //                Log.d(TAG, "uploadImage: upload image::"+image_uri);
 //                Picasso.get().load(image_uri).into(binding.tvImage);
+            }else{
+                Toast.makeText(getContext(), "Image can't be empty", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(getContext(), "Please fill all", Toast.LENGTH_SHORT).show();

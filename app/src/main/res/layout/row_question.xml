@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Question ?"
+            android:maxLines="1"
             android:textColor="@color/primary"
             android:textSize="16sp" />
 
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtQuestion"
             android:padding="5dp"
+            android:maxLines="2"
             android:text="question detail"
             android:textColor="#A99DEB"
             android:textSize="14sp" />
@@ -37,9 +39,8 @@
             android:id="@+id/txtTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txtQuestion"
+            android:layout_below="@+id/txtQdetail"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
             android:text="12/10/2021 20:21AM"
             android:textColor="@color/hint"
             android:textSize="10sp" />

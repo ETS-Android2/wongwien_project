@@ -56,6 +56,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -390,6 +391,9 @@ public class ProfileFragment extends Fragment {
                 btnconfirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        String timeStamp=String.valueOf(System.currentTimeMillis());
+                        checkOnlineStatus(timeStamp);
+
                         firebaseAuth.signOut();
                          checkUserStatus();
                     }
@@ -664,5 +668,18 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private void checkOnlineStatus(String status){
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String myUid=user.getUid();
+        if(myUid != null ||!myUid.equals("")){
+            DatabaseReference onlineRef = database.getReference("Users").child(myUid);
+
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("status", status);
+
+            onlineRef.getRef().updateChildren(hashMap);
+        }
+
+    }
 
 }

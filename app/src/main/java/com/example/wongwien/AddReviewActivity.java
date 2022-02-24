@@ -337,7 +337,7 @@ public class AddReviewActivity extends AppCompatActivity implements GetAllDataTo
                             hashMap.put("uImg", myImg);
                             hashMap.put("uName", myName);
                             hashMap.put("uEmail", myEmail);
-                            hashMap.put("ModelMylocation", mylocation);
+                            hashMap.put("Mylocation", mylocation);
 
                             ref.child(timeStamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
