@@ -38,6 +38,8 @@ public class Pattern2Fragment extends Fragment {
     ModelReview review;
     ModelMylocation mylocation;
 
+    DatabaseReference ref;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,33 @@ public class Pattern2Fragment extends Fragment {
 
         review=getArguments().getParcelable("list");
 
+        loadReviewFromDatabase(review.getrId());
+        try{
+            if(review.getR_image0()!=null){
+                Picasso.get().load(review.getR_image0()).into(binding.rImage0);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return view;
+    }
+    private void loadReviewFromDatabase(String rId){
+        ref=FirebaseDatabase.getInstance().getReference("Reviews").child(rId);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                review=snapshot.getValue(ModelReview.class);
+                showDataReview();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private void showDataReview(){
         String timeStamp=review.getR_timeStamp();
 
         //conver time stamp to dd/mm/yyyy hh:mm am/pm
@@ -77,13 +106,7 @@ public class Pattern2Fragment extends Fragment {
             e.printStackTrace();
         }
 
-        try{
-            if(review.getR_image0()!=null){
-                Picasso.get().load(review.getR_image0()).into(binding.rImage0);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
 
         String tag=review.getR_tag();
         if (!tag.equals("")) {
@@ -94,8 +117,6 @@ public class Pattern2Fragment extends Fragment {
                 }
             }
         }
-
-        return view;
     }
     private void addToChipGroup(String s, ChipGroup chipGroup) {
         Chip chip = new Chip(getContext());

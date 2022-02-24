@@ -7,12 +7,12 @@ public class ModelReview implements Parcelable {
     String rId, r_collection, r_desc0, r_desc1, r_desc2, r_desc3, r_desc4,
             r_image0, r_image1, r_image2, r_image3, r_image4, r_num, r_tag, r_timeStamp, r_title,
             r_type, uEmail, uId, uImg, uName;
-    int r_point;
+    Double r_point;
 
     public ModelReview() {
     }
 
-    public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image2, String r_image3, String r_image4, String r_num, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImg, String uName, int r_point) {
+    public ModelReview(String rId, String r_collection, String r_desc0, String r_desc1, String r_desc2, String r_desc3, String r_desc4, String r_image0, String r_image1, String r_image2, String r_image3, String r_image4, String r_num, String r_tag, String r_timeStamp, String r_title, String r_type, String uEmail, String uId, String uImg, String uName, Double r_point) {
         this.rId = rId;
         this.r_collection = r_collection;
         this.r_desc0 = r_desc0;
@@ -59,7 +59,7 @@ public class ModelReview implements Parcelable {
         uId = in.readString();
         uImg = in.readString();
         uName = in.readString();
-        r_point = in.readInt();
+        r_point = in.readDouble();
     }
 
     @Override
@@ -85,7 +85,7 @@ public class ModelReview implements Parcelable {
         dest.writeString(uId);
         dest.writeString(uImg);
         dest.writeString(uName);
-        dest.writeInt(r_point);
+        dest.writeDouble(r_point);
     }
 
     @Override
@@ -273,11 +273,11 @@ public class ModelReview implements Parcelable {
         this.uName = uName;
     }
 
-    public int getR_point() {
+    public Double getR_point() {
         return r_point;
     }
 
-    public void setR_point(int r_point) {
+    public void setR_point(Double r_point) {
         this.r_point = r_point;
     }
 

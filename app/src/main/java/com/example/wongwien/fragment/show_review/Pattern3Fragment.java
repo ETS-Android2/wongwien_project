@@ -36,7 +36,7 @@ public class Pattern3Fragment extends Fragment {
     FragmentPattern3Binding binding;
     ModelReview review;
     ModelMylocation mylocation;
-
+    DatabaseReference ref;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,28 +44,8 @@ public class Pattern3Fragment extends Fragment {
         View view=binding.getRoot();
         review=getArguments().getParcelable("list");
 
-        String timeStamp=review.getR_timeStamp();
 
-        //conver time stamp to dd/mm/yyyy hh:mm am/pm
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(Long.parseLong(timeStamp));
-        String dateTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", cal);
-
-        binding.rTitle.setText(review.getR_title());
-        binding.txtPoint.setText(String.valueOf((review.getR_point())));
-        binding.txtName.setText(review.getuName());
-        binding.txtEmail.setText(review.getuEmail());
-        binding.txtTime.setText(dateTime);
-
-        loadLocation(review.getrId());
-
-        try{
-            if(review.getuImg()!=null){
-                Picasso.get().load(review.getuImg()).into(binding.imgPerson);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        loadReviewFromDatabase(review.getrId());
 
         switch (Integer.parseInt(review.getR_num())){
             case 1:
@@ -155,15 +135,7 @@ public class Pattern3Fragment extends Fragment {
                 binding.rDesc0.setText(review.getR_desc0());
                 break;
         }
-        String tag=review.getR_tag();
-        if (!tag.equals("")) {
-            String tags[] = tag.split("::");
-            for (String s : tags) {
-                if (!s.equals("")) {
-                    addToChipGroup(s, binding.chipGroup);
-                }
-            }
-        }
+
 
 
         return view;
@@ -194,6 +166,57 @@ public class Pattern3Fragment extends Fragment {
             }
         });
     }
+    private void loadReviewFromDatabase(String rId){
+        ref=FirebaseDatabase.getInstance().getReference("Reviews").child(rId);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                review=snapshot.getValue(ModelReview.class);
+                showDataReview();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void showDataReview() {
+        String timeStamp=review.getR_timeStamp();
+
+        //conver time stamp to dd/mm/yyyy hh:mm am/pm
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(Long.parseLong(timeStamp));
+        String dateTime = (String) DateFormat.format("dd/MM/yyyy hh:mm:aa", cal);
+
+        binding.rTitle.setText(review.getR_title());
+        binding.txtPoint.setText(String.valueOf((review.getR_point())));
+        binding.txtName.setText(review.getuName());
+        binding.txtEmail.setText(review.getuEmail());
+        binding.txtTime.setText(dateTime);
+
+        loadLocation(review.getrId());
+
+        try{
+            if(review.getuImg()!=null){
+                Picasso.get().load(review.getuImg()).into(binding.imgPerson);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        String tag=review.getR_tag();
+        if (!tag.equals("")) {
+            String tags[] = tag.split("::");
+            for (String s : tags) {
+                if (!s.equals("")) {
+                    addToChipGroup(s, binding.chipGroup);
+                }
+            }
+        }
+    }
+
     private void loadLocation(String rId) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews").child(rId).child("Mylocation");
         ref.addValueEventListener(new ValueEventListener() {

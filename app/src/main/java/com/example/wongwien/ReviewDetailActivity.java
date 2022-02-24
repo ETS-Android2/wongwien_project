@@ -70,8 +70,10 @@ public class ReviewDetailActivity extends AppCompatActivity {
     String rUid;
     String rId;
     String myName,myImage;
+    Double avgscore;
 
-    int star,point,starBeforeChange;
+    int  star,starBeforeChange;
+    Double point;
     boolean isUseReview;
 
     @Override
@@ -181,52 +183,76 @@ public class ReviewDetailActivity extends AppCompatActivity {
             }
         });
     }
-    private void calculateScore(ModelReview review, int star){
-
-        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Reviews");
-        Query q=ref.orderByChild("rId").equalTo(review.getrId());
+    private void calculateAvgScore(ModelReview review){
+        ArrayList<Double>score=new ArrayList<>();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("RParticipations");
+        Query q=ref.child(review.getrId());
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot d:snapshot.getChildren()){
-                    ModelReview model=d.getValue(ModelReview.class);
-                    point=model.getR_point();
+                for(DataSnapshot snapshort:snapshot.getChildren()){
+                    String s=snapshort.getValue(String.class);
+                    score.add(Double.parseDouble(s));
+                }
 
+                double sum=0;
+                for(int i=0;i<score.size();i++){
+                    sum+=score.get(i);
+                }
+                avgscore= sum/score.size();
+                Log.d(TAG, "onDataChange: value::"+score+" avg:"+avgscore);
+                if(avgscore!=0){
+                    point=avgscore;
+                }
+                double point2 = round(point,2);
 
-                    Log.d(TAG, "calculateScore: star::"+star);
-                    Log.d(TAG, "calculateScore: beforechange::"+starBeforeChange);
-                    Log.d(TAG, "calculateScore: point::"+point);
-                    Log.d(TAG, "calculateScore: isUseReview::"+isUseReview);
-
-                    if(isUseReview){
-                        point=point+(star-starBeforeChange);
-                    }else{
-                        point=point+star;
-                    }
-                    int point2=point;
-
-                    Log.d(TAG, "calculateScore: point afterchange::"+point);
-                    Log.d(TAG, "calculateScore:***********************");
-
-                    DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Reviews");
-                    Query q=ref.orderByChild("rId").equalTo(review.getrId());
-                    q.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot d:snapshot.getChildren()){
-                                ModelReview model=d.getValue(ModelReview.class);
-                                if(model.getrId().equals(review.getrId())){
-                                    d.getRef().child("r_point").setValue(point2);
-                                    loadReviewFromDatabase();
-                                }
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews");
+                Query q = ref.orderByChild("rId").equalTo(review.getrId());
+                q.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot d : snapshot.getChildren()) {
+                            ModelReview model = d.getValue(ModelReview.class);
+                            if (model.getrId().equals(review.getrId())) {
+                                d.getRef().child("r_point").setValue(point2);
+//                                loadReviewFromDatabase();
                             }
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public  double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
+    private void calculateScore(ModelReview review, int star) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews");
+        Query q = ref.orderByChild("rId").equalTo(review.getrId());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    ModelReview model = d.getValue(ModelReview.class);
+                    point =model.getR_point();
+
+                    calculateAvgScore(review);
 
                 }
 
@@ -237,9 +263,64 @@ public class ReviewDetailActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
+//    private void calculateScore(ModelReview review, int star){
+//
+//        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Reviews");
+//        Query q=ref.orderByChild("rId").equalTo(review.getrId());
+//        q.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for(DataSnapshot d:snapshot.getChildren()){
+//                    ModelReview model=d.getValue(ModelReview.class);
+//                    point=model.getR_point();
+//
+//
+//                    Log.d(TAG, "calculateScore: star::"+star);
+//                    Log.d(TAG, "calculateScore: beforechange::"+starBeforeChange);
+//                    Log.d(TAG, "calculateScore: point::"+point);
+//                    Log.d(TAG, "calculateScore: isUseReview::"+isUseReview);
+//
+//                    if(isUseReview){
+//                        point=point+(star-starBeforeChange);
+//                    }else{
+//                        point=point+star;
+//                    }
+//                    int point2=point;
+//
+//                    Log.d(TAG, "calculateScore: point afterchange::"+point);
+//                    Log.d(TAG, "calculateScore:***********************");
+//
+//                    DatabaseReference ref=FirebaseDatabase.getInstance().getReference("Reviews");
+//                    Query q=ref.orderByChild("rId").equalTo(review.getrId());
+//                    q.addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            for(DataSnapshot d:snapshot.getChildren()){
+//                                ModelReview model=d.getValue(ModelReview.class);
+//                                if(model.getrId().equals(review.getrId())){
+//                                    d.getRef().child("r_point").setValue(point2);
+//                                    loadReviewFromDatabase();
+//                                }
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
 
     private void loadUser() {
         ref = database.getReference("Users");

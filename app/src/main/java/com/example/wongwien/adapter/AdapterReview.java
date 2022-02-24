@@ -63,7 +63,8 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 
     int star, starBeforeChange;
     boolean isUseReview = false;
-    int point;
+    double point;
+    double avgscore=0;
 
 
 
@@ -101,7 +102,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 
         String timeStamp = reviews.get(position).getR_timeStamp();
         String title = reviews.get(position).getR_title();
-        int scorepoint = reviews.get(position).getR_point();
+        Double scorepoint = reviews.get(position).getR_point();
 
         //conver time stamp to dd/mm/yyyy hh:mm am/pm
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
@@ -499,6 +500,56 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
         context.startActivity(intent);
     }
 
+    private void calculateAvgScore(ModelReview review,Myholder holder){
+        ArrayList<Double>score=new ArrayList<>();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("RParticipations");
+        Query q=ref.child(review.getrId());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snapshort:snapshot.getChildren()){
+                    String s=snapshort.getValue(String.class);
+                    score.add(Double.parseDouble(s));
+                }
+
+                double sum=0;
+                for(int i=0;i<score.size();i++){
+                    sum+=score.get(i);
+                }
+                avgscore= sum/score.size();
+                Log.d(TAG, "onDataChange: value::"+score+" avg:"+avgscore);
+                if(avgscore!=0){
+                    point=avgscore;
+                }
+                double point2 = round(point,2);
+
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews");
+                Query q = ref.orderByChild("rId").equalTo(review.getrId());
+                q.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot d : snapshot.getChildren()) {
+                            ModelReview model = d.getValue(ModelReview.class);
+                            if (model.getrId().equals(review.getrId())) {
+                                d.getRef().child("r_point").setValue(point2);
+                                changeShowTextScore(holder, point2);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     private void calculateScore(ModelReview review, int star, Myholder holder) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews");
         Query q = ref.orderByChild("rId").equalTo(review.getrId());
@@ -509,41 +560,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
                     ModelReview model = d.getValue(ModelReview.class);
                     point =model.getR_point();
 
-
-                    Log.d(TAG, "calculateScore: star::" + star);
-                    Log.d(TAG, "calculateScore: beforechange::" + starBeforeChange);
-                    Log.d(TAG, "calculateScore: point::" + point);
-                    Log.d(TAG, "calculateScore: isUseReview::" + isUseReview);
-
-                    if (isUseReview) {
-                        point = point + (star - starBeforeChange);
-                    } else {
-                        point = point + star;
-                    }
-                    int point2 = point;
-
-                    Log.d(TAG, "calculateScore: point afterchange::" + point);
-                    Log.d(TAG, "calculateScore:***********************");
-
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Reviews");
-                    Query q = ref.orderByChild("rId").equalTo(review.getrId());
-                    q.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot d : snapshot.getChildren()) {
-                                ModelReview model = d.getValue(ModelReview.class);
-                                if (model.getrId().equals(review.getrId())) {
-                                    d.getRef().child("r_point").setValue(point2);
-                                    changeShowTextScore(holder, point2);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                    calculateAvgScore(review,holder);
 
                 }
 
@@ -554,11 +571,17 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
 
             }
         });
+    }
+    public  double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
 
-
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 
-    private void changeShowTextScore(Myholder holder, int point) {
+    private void changeShowTextScore(Myholder holder, double point) {
         holder.txtPoint.setText(String.valueOf(point));
     }
 
