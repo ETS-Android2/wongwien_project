@@ -66,6 +66,8 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
     double point;
     double avgscore=0;
 
+    int max_w=600;
+    int max_h=400;
 
 
     public AdapterReview(Context context, ArrayList<ModelReview> reviews) {
@@ -189,7 +191,7 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
                 break;
             case 1:
                 try {
-                    Picasso.get().load(reviews.get(position).getR_image0()).into(holder.r_image0);
+                    Picasso.get().load(reviews.get(position).getR_image0()).resize(max_w, max_h) .onlyScaleDown().into(holder.r_image0);
                     holder.rDesc0.setText(reviews.get(position).getR_desc0());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -198,10 +200,10 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
             case 2:
                 if(getItemViewType(position)==PATTERN_REVIEW_3){
                     try {
-                        Picasso.get().load(reviews.get(position).getR_image0()).into(holder.r_image0);
+                        Picasso.get().load(reviews.get(position).getR_image0()).resize(max_w, max_h) .onlyScaleDown().into(holder.r_image0);
                         holder.rDesc0.setText(reviews.get(position).getR_desc0());
 
-                        Picasso.get().load(reviews.get(position).getR_image1()).into(holder.r_image1);
+                        Picasso.get().load(reviews.get(position).getR_image1()).resize(max_w, max_h) .onlyScaleDown().into(holder.r_image1);
                         holder.rDesc1.setText(reviews.get(position).getR_desc1());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -213,13 +215,13 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
                 if(getItemViewType(position)==PATTERN_REVIEW_3) {
                     holder.cover02.setVisibility(View.VISIBLE);
                     try {
-                        Picasso.get().load(reviews.get(position).getR_image0()).into(holder.r_image0);
+                        Picasso.get().load(reviews.get(position).getR_image0()).resize(max_w, max_h) .onlyScaleDown().into(holder.r_image0);
                         holder.rDesc0.setText(reviews.get(position).getR_desc0());
 
-                        Picasso.get().load(reviews.get(position).getR_image1()).into(holder.r_image1);
+                        Picasso.get().load(reviews.get(position).getR_image1()).resize(max_w, max_h) .onlyScaleDown().into(holder.r_image1);
                         holder.rDesc1.setText(reviews.get(position).getR_desc1());
 
-                        Picasso.get().load(reviews.get(position).getR_image2()).into(holder.r_image2);
+                        Picasso.get().load(reviews.get(position).getR_image2()).resize(max_w, max_h) .onlyScaleDown().into(holder.r_image2);
                         holder.rDesc2.setText(reviews.get(position).getR_desc2());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -231,16 +233,16 @@ public class AdapterReview extends RecyclerView.Adapter<AdapterReview.Myholder> 
                     holder.cover02.setVisibility(View.VISIBLE);
                     holder.cover03.setVisibility(View.VISIBLE);
                     try {
-                        Picasso.get().load(reviews.get(position).getR_image0()).into(holder.r_image0);
+                        Picasso.get().load(reviews.get(position).getR_image0()).resize(max_w, max_h) .onlyScaleDown().into(holder.r_image0);
                         holder.rDesc0.setText(reviews.get(position).getR_desc0());
 
-                        Picasso.get().load(reviews.get(position).getR_image1()).into(holder.r_image1);
+                        Picasso.get().load(reviews.get(position).getR_image1()).resize(max_w, max_h) .onlyScaleDown().into(holder.r_image1);
                         holder.rDesc1.setText(reviews.get(position).getR_desc1());
 
-                        Picasso.get().load(reviews.get(position).getR_image2()).into(holder.r_image2);
+                        Picasso.get().load(reviews.get(position).getR_image2()).resize(max_w, max_h) .onlyScaleDown().into(holder.r_image2);
                         holder.rDesc2.setText(reviews.get(position).getR_desc2());
 
-                        Picasso.get().load(reviews.get(position).getR_image3()).into(holder.r_image3);
+                        Picasso.get().load(reviews.get(position).getR_image3()).resize(max_w, max_h) .onlyScaleDown().into(holder.r_image3);
                         holder.rDesc3.setText(reviews.get(position).getR_desc3());
                     } catch (Exception e) {
                         e.printStackTrace();

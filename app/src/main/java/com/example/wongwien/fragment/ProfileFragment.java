@@ -181,11 +181,11 @@ public class ProfileFragment extends Fragment {
                 }
 
                 if (!user.getImage().equals("")) {
-                    Picasso.get().load(user.getImage()).into(binding.imagePerson);
+                    Picasso.get().load(user.getImage()).resize(200,200) .onlyScaleDown().into(binding.imagePerson);
                     imgPerson=user.getImage();
                 }
                 if (!user.getCover_image().equals("")) {
-                    Picasso.get().load(user.getCover_image()).into(binding.imageCover);
+                    Picasso.get().load(user.getCover_image()).resize(400,400) .onlyScaleDown().into(binding.imageCover);
                     imgCover=user.getCover_image();
                 }
 

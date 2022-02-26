@@ -78,7 +78,7 @@ public class AdapterMessageList extends RecyclerView.Adapter<AdapterMessageList.
         holder.txtMessage.setText(message);
 
         try{
-            Picasso.get().load(image).into(holder.imgPerson);
+            Picasso.get().load(image).resize(200,200) .onlyScaleDown().into(holder.imgPerson);
         }catch (Exception e){
             e.printStackTrace();
         }

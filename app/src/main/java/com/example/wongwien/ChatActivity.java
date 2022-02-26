@@ -254,7 +254,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     txtName.setText(name);
                     try{
-                        Picasso.get().load(hisImg).into(imgPerson);
+                        Picasso.get().load(hisImg).resize(200,200) .onlyScaleDown().into(imgPerson);
                     }catch (Exception e){
                         e.printStackTrace();
                     }

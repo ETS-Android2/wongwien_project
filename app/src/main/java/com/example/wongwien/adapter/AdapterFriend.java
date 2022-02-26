@@ -53,7 +53,7 @@ public class AdapterFriend extends RecyclerView.Adapter<AdapterFriend.Myholder>{
         holder.tvEmail.setText(email);
 
         try{
-            Picasso.get().load(image).into(holder.imgPerson);
+            Picasso.get().load(image).resize(200,200) .onlyScaleDown().into(holder.imgPerson);
         }catch (Exception e){
             e.printStackTrace();
         }
