@@ -13,6 +13,6 @@ A review application
 git clone https://github.com/Tenshirolnwza/wongwien_project/new/master?readme=1
 
 ```bash
-open inside folder
+open root folder with android studio
 run AVD
 ```
