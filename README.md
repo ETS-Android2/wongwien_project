@@ -10,7 +10,7 @@ A review application
 
 ## Installation
 
-git clone https://github.com/Tenshirolnwza/wongwien_project/new/master?readme=1
+git clone https://github.com/Tenshirolnwza/wongwien_project/
 
 ```bash
 open root folder with android studio
